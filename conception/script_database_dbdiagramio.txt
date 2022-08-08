@@ -1,0 +1,75 @@
+TABLE f_client {
+    c_id   INT [pk, increment,not null]
+    c_fk_media_id   INT
+    c_fk_city_id   INT [not null]
+    c_name           VARCHAR [not null]
+    c_firstname              VARCHAR [not null]
+    c_address           VARCHAR
+    c_email            VARCHAR
+    c_phone_fixed        VARCHAR
+    c_phone_cell              VARCHAR
+    c_is_pro      bit [not null]
+    c_location_long            decimal(9,7)
+    c_location_lat     decimal(9,7)
+    c_distance           decimal(3,1)
+    c_travel_time   INT
+}
+
+TABLE f_intervention {
+    i_id   INT [pk, increment,not null]
+    i_fk_client_id   INT [not null]
+    i_fk_invoice_id   INT
+    i_fk_category_id   INT [not null]
+    i_date   date [not null]
+    i_description   VARCHAR
+    i_nb_round_trip   INT [not null]
+}
+
+TABLE f_invoice {
+    in_id   INT [pk,increment,not null]
+    in_fk_payment_id   INT [not null]
+    in_receipt_date   date [not null]
+    in_credit_date   date
+    in_amount   INT [not null]
+    in_is_eligible_tax_credit   bit
+}
+
+TABLE f_city {
+    ci_id   INT [pk,increment,not null]
+    ci_postal_code   VARCHAR [not null]
+    ci_name   VARCHAR [not null]
+}
+
+TABLE f_purchase {
+    p_id   INT [pk,increment,not null]
+    p_fk_payment_id INT [not null]
+    p_fk_category_id INT [not null]
+    p_fk_supplier_id INT [not null]
+    p_invoice_date   date
+    p_disbursement_date date [not null]
+    p_debit_date date
+    p_description VARCHAR
+    p_amount decimal(6,2) [not null]
+}
+
+TABLE f_category {
+    ca_id   INT [pk,increment,not null]
+    ca_fk_category_type_id   INT [not null]
+    ca_name   VARCHAR [not null]
+}
+
+TABLE f_category_type {
+    ct_id   INT [pk,increment,not null]
+    ct_name   VARCHAR [not null]
+}
+
+Ref: f_client.c_fk_city_id > f_city.ci_id
+Ref: f_client.c_fk_media_id > f_category.ca_id
+Ref: f_intervention.i_fk_client_id > f_client.c_id
+Ref: f_intervention.i_fk_invoice_id > f_invoice.in_id
+Ref: f_intervention.i_fk_category_id > f_category.ca_id
+Ref: f_invoice.in_fk_payment_id > f_category.ca_id
+Ref: f_purchase.p_fk_category_id > f_category.ca_id
+Ref: f_purchase.p_fk_payment_id > f_category.ca_id
+Ref: f_purchase.p_fk_supplier_id > f_category.ca_id
+Ref: f_category.ca_fk_category_type_id > f_category_type.ct_id
