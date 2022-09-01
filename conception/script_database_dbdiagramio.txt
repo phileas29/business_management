@@ -2,6 +2,7 @@ TABLE f_client {
     c_id   INT [pk, increment,not null]
     c_fk_media_id   INT
     c_fk_city_id   INT [not null]
+    c_fk_birth_city_id INT
     c_name           VARCHAR [not null]
     c_firstname              VARCHAR [not null]
     c_address           VARCHAR
@@ -13,6 +14,14 @@ TABLE f_client {
     c_location_lat     decimal(9,7)
     c_distance           decimal(3,1)
     c_travel_time   INT
+    c_urssaf_uuid VARCHAR
+    c_is_man bit
+    c_birth_name VARCHAR
+    c_birth_country_code INT
+    c_birth_date date
+    c_bic VARCHAR
+    c_iban VARCHAR
+    c_account_holder VARCHAR
 }
 
 TABLE f_intervention {
@@ -28,16 +37,20 @@ TABLE f_intervention {
 TABLE f_invoice {
     in_id   INT [pk,increment,not null]
     in_fk_payment_id   INT [not null]
-    in_receipt_date   date [not null]
+    in_invoice_date   date [not null]
+    in_receipt_date   date
     in_credit_date   date
     in_amount   INT [not null]
-    in_is_eligible_tax_credit   bit
+    in_is_eligible_deferred_tax_credit   bit
+    in_urssaf_payment_request_uuid   VARCHAR
 }
 
 TABLE f_city {
     ci_id   INT [pk,increment,not null]
     ci_postal_code   VARCHAR [not null]
     ci_name   VARCHAR [not null]
+    ci_insee_code INT
+    ci_depart_code INT
 }
 
 TABLE f_purchase {
@@ -73,3 +86,4 @@ Ref: f_purchase.p_fk_category_id > f_category.ca_id
 Ref: f_purchase.p_fk_payment_id > f_category.ca_id
 Ref: f_purchase.p_fk_supplier_id > f_category.ca_id
 Ref: f_category.ca_fk_category_type_id > f_category_type.ct_id
+Ref: f_client.c_fk_birth_city_id > f_city.ci_id
