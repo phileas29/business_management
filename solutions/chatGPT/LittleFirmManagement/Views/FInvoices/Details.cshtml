@@ -1,0 +1,72 @@
+@model LittleFirmManagement.Models.FInvoice
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>FInvoice</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.InInvoiceId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.InInvoiceId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.InInvoiceIdCorrected)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.InInvoiceIdCorrected)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.InInvoiceDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.InInvoiceDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.InReceiptDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.InReceiptDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.InCreditDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.InCreditDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.InAmount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.InAmount)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.InIsEligibleDeferredTaxCredit)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.InIsEligibleDeferredTaxCredit)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.InUrssafPaymentRequestUuid)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.InUrssafPaymentRequestUuid)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.InFkPayment)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.InFkPayment.CaId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.InId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

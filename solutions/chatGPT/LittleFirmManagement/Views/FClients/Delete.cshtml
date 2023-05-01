@@ -1,0 +1,153 @@
+@model LittleFirmManagement.Models.FClient
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>FClient</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CFirstname)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CFirstname)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CAddress)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CAddress)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CEmail)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CEmail)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CPhoneFixed)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CPhoneFixed)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CPhoneCell)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CPhoneCell)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CIsPro)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CIsPro)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CLocationLong)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CLocationLong)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CLocationLat)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CLocationLat)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CDistance)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CDistance)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CTravelTime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CTravelTime)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CUrssafUuid)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CUrssafUuid)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CIsMan)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CIsMan)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CBirthName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CBirthName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CBirthCountryCode)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CBirthCountryCode)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CBirthDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CBirthDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CBic)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CBic)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CIban)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CIban)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CAccountHolder)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CAccountHolder)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CFkBirthCity)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CFkBirthCity.CiId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CFkCity)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CFkCity.CiId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CFkMedia)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CFkMedia.CaId)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="CId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

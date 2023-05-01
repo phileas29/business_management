@@ -1,0 +1,54 @@
+@model LittleFirmManagement.Models.FIntervention
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>FIntervention</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IDescription)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IDescription)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.INbRoundTrip)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.INbRoundTrip)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IFkCategory)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IFkCategory.CaId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IFkClient)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IFkClient.CId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IFkInvoice)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IFkInvoice.InId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.IId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

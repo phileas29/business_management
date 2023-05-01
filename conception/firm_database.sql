@@ -37,6 +37,8 @@ CREATE TABLE "f_intervention" (
 CREATE TABLE "f_invoice" (
   "in_id" SERIAL PRIMARY KEY NOT NULL,
   "in_fk_payment_id" INT NOT NULL,
+  "in_invoice_id" INT,
+  "in_invoice_id_corrected" INT,
   "in_invoice_date" date NOT NULL,
   "in_receipt_date" date,
   "in_credit_date" date,

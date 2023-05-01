@@ -1,0 +1,42 @@
+@model LittleFirmManagement.Models.FCity
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>FCity</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CiPostalCode)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CiPostalCode)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CiName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CiName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CiInseeCode)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CiInseeCode)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CiDepartCode)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CiDepartCode)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.CiId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,77 @@
+@model IEnumerable<LittleFirmManagement.Models.FPurchase>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PInvoiceDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PDisbursementDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PDebitDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PFkCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PFkPayment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PFkSupplier)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PInvoiceDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PDisbursementDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PDebitDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PFkCategory.CaId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PFkPayment.CaId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PFkSupplier.CaId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

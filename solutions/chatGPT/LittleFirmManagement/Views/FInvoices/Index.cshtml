@@ -1,0 +1,83 @@
+@model IEnumerable<LittleFirmManagement.Models.FInvoice>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.InInvoiceId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InInvoiceIdCorrected)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InInvoiceDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InReceiptDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InCreditDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InIsEligibleDeferredTaxCredit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InUrssafPaymentRequestUuid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InFkPayment)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.InInvoiceId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InInvoiceIdCorrected)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InInvoiceDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InReceiptDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InCreditDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InIsEligibleDeferredTaxCredit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InUrssafPaymentRequestUuid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InFkPayment.CaId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.InId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.InId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.InId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

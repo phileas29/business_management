@@ -1,0 +1,69 @@
+@model LittleFirmManagement.Models.FPurchase
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>FPurchase</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PId" />
+            <div class="form-group">
+                <label asp-for="PFkPaymentId" class="control-label"></label>
+                <select asp-for="PFkPaymentId" class="form-control" asp-items="ViewBag.PFkPaymentId"></select>
+                <span asp-validation-for="PFkPaymentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PFkCategoryId" class="control-label"></label>
+                <select asp-for="PFkCategoryId" class="form-control" asp-items="ViewBag.PFkCategoryId"></select>
+                <span asp-validation-for="PFkCategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PFkSupplierId" class="control-label"></label>
+                <select asp-for="PFkSupplierId" class="form-control" asp-items="ViewBag.PFkSupplierId"></select>
+                <span asp-validation-for="PFkSupplierId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PInvoiceDate" class="control-label"></label>
+                <input asp-for="PInvoiceDate" class="form-control" />
+                <span asp-validation-for="PInvoiceDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PDisbursementDate" class="control-label"></label>
+                <input asp-for="PDisbursementDate" class="form-control" />
+                <span asp-validation-for="PDisbursementDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PDebitDate" class="control-label"></label>
+                <input asp-for="PDebitDate" class="form-control" />
+                <span asp-validation-for="PDebitDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PDescription" class="control-label"></label>
+                <input asp-for="PDescription" class="form-control" />
+                <span asp-validation-for="PDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PAmount" class="control-label"></label>
+                <input asp-for="PAmount" class="form-control" />
+                <span asp-validation-for="PAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

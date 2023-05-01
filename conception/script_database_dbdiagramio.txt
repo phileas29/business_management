@@ -37,6 +37,8 @@ TABLE f_intervention {
 TABLE f_invoice {
     in_id   INT [pk,increment,not null]
     in_fk_payment_id   INT [not null]
+    in_invoice_id   INT
+    in_invoice_id_corrected   INT
     in_invoice_date   date [not null]
     in_receipt_date   date
     in_credit_date   date

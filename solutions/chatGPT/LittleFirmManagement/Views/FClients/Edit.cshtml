@@ -1,0 +1,139 @@
+@model LittleFirmManagement.Models.FClient
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>FClient</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CId" />
+            <div class="form-group">
+                <label asp-for="CFkMediaId" class="control-label"></label>
+                <select asp-for="CFkMediaId" class="form-control" asp-items="ViewBag.CFkMediaId"></select>
+                <span asp-validation-for="CFkMediaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CFkCityId" class="control-label"></label>
+                <select asp-for="CFkCityId" class="form-control" asp-items="ViewBag.CFkCityId"></select>
+                <span asp-validation-for="CFkCityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CFkBirthCityId" class="control-label"></label>
+                <select asp-for="CFkBirthCityId" class="form-control" asp-items="ViewBag.CFkBirthCityId"></select>
+                <span asp-validation-for="CFkBirthCityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CName" class="control-label"></label>
+                <input asp-for="CName" class="form-control" />
+                <span asp-validation-for="CName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CFirstname" class="control-label"></label>
+                <input asp-for="CFirstname" class="form-control" />
+                <span asp-validation-for="CFirstname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CAddress" class="control-label"></label>
+                <input asp-for="CAddress" class="form-control" />
+                <span asp-validation-for="CAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CEmail" class="control-label"></label>
+                <input asp-for="CEmail" class="form-control" />
+                <span asp-validation-for="CEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CPhoneFixed" class="control-label"></label>
+                <input asp-for="CPhoneFixed" class="form-control" />
+                <span asp-validation-for="CPhoneFixed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CPhoneCell" class="control-label"></label>
+                <input asp-for="CPhoneCell" class="form-control" />
+                <span asp-validation-for="CPhoneCell" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CIsPro" class="control-label"></label>
+                <input asp-for="CIsPro" class="form-control" />
+                <span asp-validation-for="CIsPro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CLocationLong" class="control-label"></label>
+                <input asp-for="CLocationLong" class="form-control" />
+                <span asp-validation-for="CLocationLong" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CLocationLat" class="control-label"></label>
+                <input asp-for="CLocationLat" class="form-control" />
+                <span asp-validation-for="CLocationLat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CDistance" class="control-label"></label>
+                <input asp-for="CDistance" class="form-control" />
+                <span asp-validation-for="CDistance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CTravelTime" class="control-label"></label>
+                <input asp-for="CTravelTime" class="form-control" />
+                <span asp-validation-for="CTravelTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CUrssafUuid" class="control-label"></label>
+                <input asp-for="CUrssafUuid" class="form-control" />
+                <span asp-validation-for="CUrssafUuid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CIsMan" class="control-label"></label>
+                <input asp-for="CIsMan" class="form-control" />
+                <span asp-validation-for="CIsMan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CBirthName" class="control-label"></label>
+                <input asp-for="CBirthName" class="form-control" />
+                <span asp-validation-for="CBirthName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CBirthCountryCode" class="control-label"></label>
+                <input asp-for="CBirthCountryCode" class="form-control" />
+                <span asp-validation-for="CBirthCountryCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CBirthDate" class="control-label"></label>
+                <input asp-for="CBirthDate" class="form-control" />
+                <span asp-validation-for="CBirthDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CBic" class="control-label"></label>
+                <input asp-for="CBic" class="form-control" />
+                <span asp-validation-for="CBic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CIban" class="control-label"></label>
+                <input asp-for="CIban" class="form-control" />
+                <span asp-validation-for="CIban" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CAccountHolder" class="control-label"></label>
+                <input asp-for="CAccountHolder" class="form-control" />
+                <span asp-validation-for="CAccountHolder" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

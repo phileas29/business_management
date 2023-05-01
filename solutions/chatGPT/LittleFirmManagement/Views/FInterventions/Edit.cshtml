@@ -1,0 +1,59 @@
+@model LittleFirmManagement.Models.FIntervention
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>FIntervention</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IId" />
+            <div class="form-group">
+                <label asp-for="IFkClientId" class="control-label"></label>
+                <select asp-for="IFkClientId" class="form-control" asp-items="ViewBag.IFkClientId"></select>
+                <span asp-validation-for="IFkClientId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IFkInvoiceId" class="control-label"></label>
+                <select asp-for="IFkInvoiceId" class="form-control" asp-items="ViewBag.IFkInvoiceId"></select>
+                <span asp-validation-for="IFkInvoiceId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IFkCategoryId" class="control-label"></label>
+                <select asp-for="IFkCategoryId" class="form-control" asp-items="ViewBag.IFkCategoryId"></select>
+                <span asp-validation-for="IFkCategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IDate" class="control-label"></label>
+                <input asp-for="IDate" class="form-control" />
+                <span asp-validation-for="IDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IDescription" class="control-label"></label>
+                <input asp-for="IDescription" class="form-control" />
+                <span asp-validation-for="IDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="INbRoundTrip" class="control-label"></label>
+                <input asp-for="INbRoundTrip" class="form-control" />
+                <span asp-validation-for="INbRoundTrip" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
