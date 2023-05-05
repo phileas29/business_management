@@ -10,7 +10,6 @@ namespace LittleFirmManagement.Models;
 public partial class FCategory
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("ca_id")]
     public int CaId { get; set; }
 

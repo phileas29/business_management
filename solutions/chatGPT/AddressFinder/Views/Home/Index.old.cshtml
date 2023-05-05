@@ -1,0 +1,72 @@
+﻿@model AddressFinder.Models.AddressViewModel
+
+<div class="container">
+    <h1>Address Finder</h1>
+    <form method="post" action="@Url.Action("FindAddress", "Home")">
+        <div class="form-group">
+            <label for="town">Town</label>
+            <input type="text" class="form-control" id="town" name="Town" placeholder="Enter town name">
+        </div>
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" class="form-control" id="address" name="Address" placeholder="Enter address">
+        </div>
+        <button type="submit" class="btn btn-primary">Find Address</button>
+    </form>
+
+    @if (Model != null)
+    {
+        <div id="result">
+            @if (Model.Address != null)
+            {
+                <p>Address: @Model.Address</p>
+            }
+            @if (Model.Town != null)
+            {
+                <p>Town: @Model.Town</p>
+            }
+            @if (Model.Latitude != null && Model.Longitude != null)
+            {
+                <p>Latitude: @Model.Latitude</p>
+                <p>Longitude: @Model.Longitude</p>
+            }
+        </div>
+    }
+
+    <div id="map" style="height: 500px;"></div>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        var map = L.map('map').setView([42.505, -0.09], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+            maxZoom: 18,
+        }).addTo(map);
+
+
+        var redIcon = L.icon({
+            iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            tooltipAnchor: [16, -28],
+            shadowSize: [41, 41]
+        });
+
+        var marker = L.marker([51.505, -0.09], { icon: redIcon }).addTo(map);
+
+        function updateMarker(lat, lng) {
+            console.log("updateMarker", lat, lng);
+            marker.setLatLng([lat, lng], { icon: redIcon });
+        }
+    </script>
+}

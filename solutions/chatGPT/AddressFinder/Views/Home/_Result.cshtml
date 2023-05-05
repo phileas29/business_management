@@ -1,0 +1,14 @@
+﻿@model AddressFinder.Models.AddressViewModel
+
+@if (Model.Address != null || Model.Town != null || Model.Latitude != null || Model.Longitude != null)
+{
+    <p>Result:</p>
+    <p>@Model.Address</p>
+    <p>@Model.Town</p>
+    <p>@Model.Latitude</p>
+    <p>@Model.Longitude</p>
+}
+else
+{
+    <p>No result found</p>
+}
