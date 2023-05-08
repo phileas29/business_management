@@ -5,6 +5,10 @@
 }
 
 <div class="container">
+    @if (TempData.Count != 0)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
     <div class="row">
         @foreach (var categoryType in Model.CategoryTypes)
         {

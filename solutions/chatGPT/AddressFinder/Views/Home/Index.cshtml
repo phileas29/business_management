@@ -106,13 +106,13 @@
         });
 
         function onMapClick(e) {
-            updateMarker(e.latlng.lat, e.latlng.lng);
             // Reverse geocode the clicked location to get an address
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" + e.latlng.lat + "&lon=" + e.latlng.lng, true);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var data = JSON.parse(xhr.responseText);
+                    updateResult({ address: data.address.road, town: data.address.town || data.address.city || data.address.village || "", latitude: e.latlng.lat, longitude: e.latlng.lng });
                     console.log(data);
                     if (data.address != null) {
                         var address = data.address.road + ", " + data.address.city + ", " + data.address.state + ", " + data.address.postcode;
@@ -122,6 +122,7 @@
                 }
             };
             xhr.send();
+            updateMarker(e.latlng.lat, e.latlng.lng);
         }
 
         var clearButton = document.getElementById("clear");

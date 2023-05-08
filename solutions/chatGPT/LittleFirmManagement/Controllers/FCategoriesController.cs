@@ -32,6 +32,11 @@ namespace LittleFirmManagement.Controllers
                     .ToDictionary(g => g.Key.CtId, g => g.ToList())
             };
 
+            if (TempData.ContainsKey("ErrorMessage"))
+            {
+                ModelState.AddModelError(string.Empty, TempData["ErrorMessage"].ToString());
+            }
+
             return View(viewModel);
         }
 
@@ -171,18 +176,22 @@ namespace LittleFirmManagement.Controllers
                 return NotFound();
             }
 
-            var products = await _context.FCategories.Where(p => p. == id).ToListAsync();
-            if (products.Any())
+            List<FClient> clients = await _context.FClients.Where(c => c.CFkMediaId == id).ToListAsync();
+            List<FIntervention> inters = await _context.FInterventions.Where(i => i.IFkCategoryId == id).ToListAsync();
+            List<FInvoice> invoices = await _context.FInvoices.Where(c => c.InFkPaymentId == id).ToListAsync();
+            List<FPurchase> pursSup = await _context.FPurchases.Where(c => c.PFkSupplierId == id).ToListAsync();
+            List<FPurchase> pursPay = await _context.FPurchases.Where(c => c.PFkPaymentId == id).ToListAsync();
+            if (clients.Any() || inters.Any() || invoices.Any() || pursSup.Any() || pursPay.Any())
             {
-                ModelState.AddModelError(string.Empty, "Cannot delete category as there are associated products.");
-                ViewData["CategoryTypeId"] = categoryTypeId;
-                return View(category);
+                TempData["ErrorMessage"] = "Cannot delete category as there are associated products.";
+                //ModelState.AddModelError(string.Empty, "Cannot delete category as there are associated products.");
+                return RedirectToAction(nameof(Index));
             }
 
             _context.FCategories.Remove(category);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index), new { categoryTypeId = categoryTypeId });
+            return RedirectToAction(nameof(Index));
         }
 
         private bool FCategoryExists(int id)
