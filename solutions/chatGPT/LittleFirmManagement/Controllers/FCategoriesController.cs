@@ -21,8 +21,18 @@ namespace LittleFirmManagement.Controllers
         // GET: FCategories
         public async Task<IActionResult> Index()
         {
-            var firmContext = _context.FCategories.Include(f => f.CaFkCategoryType);
-            return View(await firmContext.ToListAsync());
+            var categoryTypes = await _context.FCategoryTypes.ToListAsync();
+            var categories = await _context.FCategories.ToListAsync();
+
+            var viewModel = new FCategoriesViewModel
+            {
+                CategoryTypes = categoryTypes,
+                CategoriesByType = categories
+                    .GroupBy(c => c.CaFkCategoryType)
+                    .ToDictionary(g => g.Key.CtId, g => g.ToList())
+            };
+
+            return View(viewModel);
         }
 
         // GET: FCategories/Details/5
@@ -47,7 +57,7 @@ namespace LittleFirmManagement.Controllers
         // GET: FCategories/Create
         public IActionResult Create()
         {
-            ViewData["CaFkCategoryTypeId"] = new SelectList(_context.FCategoryTypes, "CtId", "CtId");
+            ViewData["CaFkCategoryTypeId"] = new SelectList(_context.FCategoryTypes, "CtId", "CtName");
             return View();
         }
 
@@ -65,7 +75,7 @@ namespace LittleFirmManagement.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CaFkCategoryTypeId"] = new SelectList(_context.FCategoryTypes, "CtId", "CtId", fCategory.CaFkCategoryTypeId);
+            ViewData["CaFkCategoryTypeId"] = new SelectList(_context.FCategoryTypes, "CtId", "CtName", fCategory.CaFkCategoryTypeId);
             return View(fCategory);
         }
 
@@ -82,7 +92,7 @@ namespace LittleFirmManagement.Controllers
             {
                 return NotFound();
             }
-            ViewData["CaFkCategoryTypeId"] = new SelectList(_context.FCategoryTypes, "CtId", "CtId", fCategory.CaFkCategoryTypeId);
+            ViewData["CaFkCategoryTypeId"] = new SelectList(_context.FCategoryTypes, "CtId", "CtName", fCategory.CaFkCategoryTypeId);
             return View(fCategory);
         }
 
@@ -118,7 +128,7 @@ namespace LittleFirmManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CaFkCategoryTypeId"] = new SelectList(_context.FCategoryTypes, "CtId", "CtId", fCategory.CaFkCategoryTypeId);
+            ViewData["CaFkCategoryTypeId"] = new SelectList(_context.FCategoryTypes, "CtId", "CtName", fCategory.CaFkCategoryTypeId);
             return View(fCategory);
         }
 
@@ -142,7 +152,7 @@ namespace LittleFirmManagement.Controllers
         }
 
         // POST: FCategories/Delete/5
-        [HttpPost, ActionName("Delete")]
+        /*[HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -150,6 +160,29 @@ namespace LittleFirmManagement.Controllers
             _context.FCategories.Remove(fCategory);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }*/
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id, int categoryTypeId)
+        {
+            var category = await _context.FCategories.FindAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            var products = await _context.FCategories.Where(p => p. == id).ToListAsync();
+            if (products.Any())
+            {
+                ModelState.AddModelError(string.Empty, "Cannot delete category as there are associated products.");
+                ViewData["CategoryTypeId"] = categoryTypeId;
+                return View(category);
+            }
+
+            _context.FCategories.Remove(category);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index), new { categoryTypeId = categoryTypeId });
         }
 
         private bool FCategoryExists(int id)

@@ -75,3 +75,52 @@ copier dans `Views\Shared\_Layout.cshtml`
 </nav>
 ```
 
+remplacer dans `Views\FCategories\Index.cshtml`
+
+`@Html.DisplayFor(modelItem => item.CaFkCategoryType.CtName)`
+
+remplacer dans `Controllers\FCategoriesController.cs`
+
+`ViewData["CaFkCategoryTypeId"] = new SelectList(_context.FCategoryTypes, "CtId", "CtName");`
+
+ajouter une carte
+
+```<div id="mapid" style="height: 400px;"></div>```
+
+
+```
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        var mymap = L.map('mapid').setView([47.9375, -3.9585], 11);
+
+        var redIcon = L.icon({
+            iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            tooltipAnchor: [16, -28],
+            shadowSize: [41, 41]
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+        }).addTo(mymap);
+
+        // loop through each city and add a marker to the map
+        @foreach (var c in Model)
+        {
+            <text>var marker = L.marker([@c.CLocationLat, @c.CLocationLong], { icon: redIcon }).addTo(mymap);
+            marker.bindPopup("<b>@c.CName</b>"); </text>
+
+        }
+    </script>
+}
+```

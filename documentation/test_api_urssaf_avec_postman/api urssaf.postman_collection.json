@@ -1,0 +1,405 @@
+{
+	"info": {
+		"_postman_id": "27e74596-3ad5-4393-a202-e6f521535365",
+		"name": "api urssaf",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "inscription client",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "tokenName",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "accessToken",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "cd2660b3-9424-4d3b-830e-4743b4c5588c",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "string"
+						},
+						{
+							"key": "state",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "homeplus.tiersprestations",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "https://api-edi.urssaf.fr/homeplus.tiersprestations/particulier",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "https://api-edi.urssaf.fr/api/oauth/v1/token",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "5cd2c3a0-e620-402d-8b7d-69db37430891",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "https://api-edi.urssaf.fr/api/oauth/v1/auth",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer DfDc0PCWNDYf9wd_Q2Hx4jObf_2ELvnDFGENMdwtrkQ",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"adresseMail\": \"contact@phileasinformatique.fr\",\r\n    \"adressePostale\": {\r\n        \"codeCommune\": 29060,\r\n        \"codePays\": 99100,\r\n        \"codePostal\": 29950,\r\n        \"codeTypeVoie\": \"R\",\r\n        \"complement\": \"\",\r\n        \"lettreVoie\": \"\",\r\n        \"libelleVoie\": \"lesquidic-nevez\",\r\n        \"lieuDit\": \"\",\r\n        \"numeroVoie\": 29,\r\n        \"libelleCommune\": \"gouesnac'h\"\r\n    },\r\n    \"civilite\": \"1\",\r\n    \"coordonneeBancaire\": {\r\n        \"bic\": \"BDFEFRPPCCT\",\r\n        \"iban\": \"FR7630001007941234567890185\",\r\n        \"titulaire\": \"M phileas peron\"\r\n    },\r\n    \"dateNaissance\": \"1996-04-09T00:00:00Z\",\r\n    \"lieuNaissance\": {\r\n        \"codePaysNaissance\": 99100,\r\n        \"communeNaissance\": {\r\n            \"codeCommune\": \"029\",\r\n            \"libelleCommune\": \"Brest\"\r\n        },\r\n        \"departementNaissance\": \"029\"\r\n    },\r\n    \"nomNaissance\": \"peron\",\r\n    \"nomUsage\": \"peron\",\r\n    \"numeroTelephonePortable\": \"0673486422\",\r\n    \"prenoms\": \"phileas gilles fulgenzio\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-edi.urssaf.fr/atp/v1/tiersPrestations/particulier",
+					"protocol": "https",
+					"host": [
+						"api-edi",
+						"urssaf",
+						"fr"
+					],
+					"path": [
+						"atp",
+						"v1",
+						"tiersPrestations",
+						"particulier"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "demande paiement",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "tokenType",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "accessToken",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "cd2660b3-9424-4d3b-830e-4743b4c5588c",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "string"
+						},
+						{
+							"key": "state",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "homeplus.tiersprestations",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "https://api-edi.urssaf.fr/homeplus.tiersprestations/particulier",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "https://api-edi.urssaf.fr/api/oauth/v1/token",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "5cd2c3a0-e620-402d-8b7d-69db37430891",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "https://api-edi.urssaf.fr/api/oauth/v1/auth",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer PzndsjibEjdhzO1wAh3nd2lpHO39ICMfz__Acacyj0M",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"idTiersFacturation\": \"PHILEAS INTERNATIONAL (c) ALL RIGHTS RESERVED\",\r\n        \"idClient\": \"c397328b-7bd5-4c81-abbd-29776e5e75a2\",\r\n        \"dateNaissanceClient\": \"1996-04-09T00:00:00Z\",\r\n        \"numFactureTiers\": \"6\",\r\n        \"dateFacture\": \"2022-11-03T19:50:00Z\",\r\n        \"dateDebutEmploi\": \"2022-11-03T19:40:00Z\",\r\n        \"dateFinEmploi\": \"2022-11-03T19:45:00Z\",\r\n        \"mntAcompte\": \"0\",\r\n        \"dateVersementAcompte\": \"\",\r\n        \"mntFactureTTC\": \"60.0\",\r\n        \"mntFactureHT\": \"60.0\",\r\n        \"inputPrestations\": [\r\n            {\r\n                \"codeActivite\": \"\",\r\n                \"codeNature\": \"160\",\r\n                \"mntUnitaireTTC\": \"60.00\",\r\n                \"quantite\": \"1\",\r\n                \"unite\": \"HEURE\",\r\n                \"mntPrestationTTC\": \"60.00\",\r\n                \"mntPrestationHT\": \"60.00\",\r\n                \"mntPrestationTVA\": \"0.00\",\r\n                \"complement1\": \"\",\r\n                \"complement2\": \"\",\r\n                \"dateDebutEmploi\": \"2022-11-03T19:42:00Z\",\r\n                \"dateFinEmploi\": \"2022-11-03T19:43:00Z\"\r\n            }\r\n        ]\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-edi.urssaf.fr/atp/v1/tiersPrestations/demandePaiement",
+					"protocol": "https",
+					"host": [
+						"api-edi",
+						"urssaf",
+						"fr"
+					],
+					"path": [
+						"atp",
+						"v1",
+						"tiersPrestations",
+						"demandePaiement"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "demande paiement recherche",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "tokenType",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "accessToken",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "clientId",
+							"value": "cd2660b3-9424-4d3b-830e-4743b4c5588c",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "string"
+						},
+						{
+							"key": "state",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "homeplus.tiersprestations",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "https://api-edi.urssaf.fr/homeplus.tiersprestations/particulier",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "https://api-edi.urssaf.fr/api/oauth/v1/token",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "5cd2c3a0-e620-402d-8b7d-69db37430891",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "https://api-edi.urssaf.fr/api/oauth/v1/auth",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer PzndsjibEjdhzO1wAh3nd2lpHO39ICMfz__Acacyj0M",
+						"type": "default",
+						"disabled": true
+					},
+					{
+						"key": "",
+						"value": "recouv.origin.id;",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dateDebut\": \"2022-11-03T00:00:00Z\",\r\n    \"dateFin\": \"2022-11-03T23:59:59Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-edi.urssaf.fr/atp/v1/tiersPrestations/demandePaiement/rechercher",
+					"protocol": "https",
+					"host": [
+						"api-edi",
+						"urssaf",
+						"fr"
+					],
+					"path": [
+						"atp",
+						"v1",
+						"tiersPrestations",
+						"demandePaiement",
+						"rechercher"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

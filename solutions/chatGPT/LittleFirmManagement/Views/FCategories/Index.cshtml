@@ -1,41 +1,59 @@
-@model IEnumerable<LittleFirmManagement.Models.FCategory>
+@model FCategoriesViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Categories";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CaName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CaFkCategoryType)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CaName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CaFkCategoryType.CtId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CaId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CaId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CaId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="container">
+    <div class="row">
+        @foreach (var categoryType in Model.CategoryTypes)
+        {
+            <div class="col-md-6 mb-3">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5>@categoryType.CtName</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="@Url.Action("Create", "FCategories")">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="CaId" value="0" />
+                            <input type="hidden" name="CaFkCategoryTypeId" value="@categoryType.CtId" />
+                            <div class="form-group">
+                                <label for="CaName">Name:</label>
+                                <input type="text" class="form-control" id="CaName" name="CaName" />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Create Category</button>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Category Name</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var category in Model.CategoriesByType[categoryType.CtId])
+                                {
+                                    <tr>
+                                        <td>@category.CaName</td>
+                                        <td><a class="btn btn-primary" href="/FCategories/Edit/@category.CaId">Edit</a></td>
+                                        <td>
+                                            <form method="post" action="/FCategories/Delete/@category.CaId">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="categoryTypeId" value="@categoryType.CtId" />
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
