@@ -41,8 +41,8 @@ public partial class FClient
     [Column("c_phone_cell", TypeName = "character varying")]
     public string? CPhoneCell { get; set; }
 
-    [Column("c_is_pro", TypeName = "bit(1)")]
-    public BitArray CIsPro { get; set; } = null!;
+    [Column("c_is_pro", TypeName = "boolean")]
+    public bool CIsPro { get; set; }
 
     [Column("c_location_long")]
     [Precision(9, 7)]

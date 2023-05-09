@@ -1,5 +1,18 @@
 # How create a project c#, asp.net core mvc
 
+## postgre sql database
+
+just after migration of the data in  the postgre sql database
+
+aware about "sequences" in the postgre sql database
+> SELECT setval('f_client_c_id_seq', (SELECT MAX(c_id) FROM f_client));
+
+convert "bit(1)" to "boolean" in the postgre sql database
+> ALTER TABLE f_client ALTER COLUMN c_is_pro TYPE boolean USING c_is_pro::text::boolean;
+
+
+## c# code
+
 From ps1
 > dotnet new mvc --name LittleFirmManagement
 

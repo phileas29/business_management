@@ -55,8 +55,8 @@
                 <span asp-validation-for="CPhoneCell" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CIsPro" class="control-label"></label>
-                <input asp-for="CIsPro" class="form-control" />
+                <label class="form-check-label" asp-for="CIsPro">Is Pro</label>
+                <input class="form-check-input" type="checkbox" name="CIsPro" value="true" asp-for="CIsPro">
                 <span asp-validation-for="CIsPro" class="text-danger"></span>
             </div>
             <div class="form-group">

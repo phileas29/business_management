@@ -49,9 +49,9 @@ namespace LittleFirmManagement.Controllers
         // GET: FClients/Create
         public IActionResult Create()
         {
-            ViewData["CFkBirthCityId"] = new SelectList(_context.FCities, "CiId", "CiId");
-            ViewData["CFkCityId"] = new SelectList(_context.FCities, "CiId", "CiId");
-            ViewData["CFkMediaId"] = new SelectList(_context.FCategories, "CaId", "CaId");
+            ViewData["CFkBirthCityId"] = new SelectList(_context.FCities, "CiId", "CiName");
+            ViewData["CFkCityId"] = new SelectList(_context.FCities, "CiId", "CiName");
+            ViewData["CFkMediaId"] = new SelectList(_context.FCategories.Where(c=>c.CaFkCategoryType.CtName=="média"), "CaId", "CaName");
             return View();
         }
 
@@ -62,15 +62,16 @@ namespace LittleFirmManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CId,CFkMediaId,CFkCityId,CFkBirthCityId,CName,CFirstname,CAddress,CEmail,CPhoneFixed,CPhoneCell,CIsPro,CLocationLong,CLocationLat,CDistance,CTravelTime,CUrssafUuid,CIsMan,CBirthName,CBirthCountryCode,CBirthDate,CBic,CIban,CAccountHolder")] FClient fClient)
         {
+            ModelState.Remove("CFkCity");
             if (ModelState.IsValid)
             {
                 _context.Add(fClient);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CFkBirthCityId"] = new SelectList(_context.FCities, "CiId", "CiId", fClient.CFkBirthCityId);
-            ViewData["CFkCityId"] = new SelectList(_context.FCities, "CiId", "CiId", fClient.CFkCityId);
-            ViewData["CFkMediaId"] = new SelectList(_context.FCategories, "CaId", "CaId", fClient.CFkMediaId);
+            ViewData["CFkBirthCityId"] = new SelectList(_context.FCities, "CiId", "CiName", fClient.CFkBirthCityId);
+            ViewData["CFkCityId"] = new SelectList(_context.FCities, "CiId", "CiName", fClient.CFkCityId);
+            ViewData["CFkMediaId"] = new SelectList(_context.FCategories.Where(c => c.CaFkCategoryType.CtName == "média"), "CaId", "CaName", fClient.CFkMediaId);
             return View(fClient);
         }
 
