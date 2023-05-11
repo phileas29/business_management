@@ -62,8 +62,15 @@ public partial class FClient
     [Column("c_urssaf_uuid", TypeName = "character varying")]
     public string? CUrssafUuid { get; set; }
 
-    [Column("c_is_man", TypeName = "bit(1)")]
-    public BitArray? CIsMan { get; set; }
+    [Column("c_is_man", TypeName = "boolean")]
+    public bool? CIsMan { get; set; }
+
+    [NotMapped]
+    public bool IsMan
+    {
+        get { return CIsMan ?? false; }
+        set { CIsMan = value; }
+    }
 
     [Column("c_birth_name", TypeName = "character varying")]
     public string? CBirthName { get; set; }
