@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LittleFirmManagement.Models;
+using System.Numerics;
+using static LittleFirmManagement.Models.CityUtility;
+using System.Text.Json;
 
 namespace LittleFirmManagement.Controllers
 {
@@ -49,9 +52,13 @@ namespace LittleFirmManagement.Controllers
         // GET: FClients/Create
         public IActionResult Create()
         {
-            ViewData["CFkBirthCityId"] = new SelectList(_context.FCities, "CiId", "CiName");
-            ViewData["CFkCityId"] = new SelectList(_context.FCities, "CiId", "CiName");
-            ViewData["CFkMediaId"] = new SelectList(_context.FCategories.Where(c=>c.CaFkCategoryType.CtName=="média"), "CaId", "CaName");
+            var citiesWithNull = _context.FCities.ToList();
+            citiesWithNull.Insert(0, new FCity { CiId = -1, CiName = "Select a city" });
+            var mediasWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "média").ToList();
+            mediasWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a media" });
+
+            ViewData["CFkBirthCityId"] = new SelectList(citiesWithNull, "CiId", "CiName");
+            ViewData["CFkMediaId"] = new SelectList(mediasWithNull, "CaId", "CaName");
             return View();
         }
 
@@ -60,18 +67,39 @@ namespace LittleFirmManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CId,CFkMediaId,CFkCityId,CFkBirthCityId,CName,CFirstname,CAddress,CEmail,CPhoneFixed,CPhoneCell,CIsPro,CLocationLong,CLocationLat,CDistance,CTravelTime,CUrssafUuid,CIsMan,CBirthName,CBirthCountryCode,CBirthDate,CBic,CIban,CAccountHolder")] FClient fClient)
+        public async Task<IActionResult> Create([Bind("CId,CFkMediaId,CFkCityId,CFkBirthCityId,CName,CFirstname,CAddress,CEmail,CPhoneFixed,CPhoneCell,CIsPro,CLocationLong,CLocationLat,CDistance,CTravelTime,CUrssafUuid,CIsMan,CBirthName,CBirthCountryCode,CBirthDate,CBic,CIban,CAccountHolder")] FClient fClient, string town, string? birthCity = null)
         {
             ModelState.Remove("CFkCity");
+            ModelState.Remove("CFkBirthCityId");
+            if (fClient.CFkMediaId == -1)
+                ModelState.AddModelError("CFkMediaId", "Please select a media.");
+            if (fClient.CFkBirthCityId == -1)
+                fClient.CFkBirthCityId = null;
             if (ModelState.IsValid)
             {
-                _context.Add(fClient);
-                await _context.SaveChangesAsync();
+                foreach (string cityRaw in new List<string>(){ town, birthCity}) {
+                    if (CityUtility.ValidateCity(cityRaw, out CityUtility.City city))
+                    {
+                        FCity cityDb = _context.FCities.Where(c => c.CiInseeCode == Int32.Parse(city.Code)).FirstOrDefault();
+                        if (cityDb == null) {
+                            _context.Add(new FCity { CiPostalCode = city.CodesPostaux[0], CiName = city.Nom.ToUpper(), CiInseeCode = Int32.Parse(city.Code), CiDepartCode = Int32.Parse(city.CodeDepartement) });
+                            await _context.SaveChangesAsync();
+                            fClient.CFkCityId = _context.FCities.Where(c => c.CiName.ToLower() == city.Nom.ToLower()).Select(c => c.CiId).FirstOrDefault();
+                        } else
+                            fClient.CFkCityId = cityDb.CiId;
+                        _context.Add(fClient);
+                        await _context.SaveChangesAsync();
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CFkBirthCityId"] = new SelectList(_context.FCities, "CiId", "CiName", fClient.CFkBirthCityId);
-            ViewData["CFkCityId"] = new SelectList(_context.FCities, "CiId", "CiName", fClient.CFkCityId);
-            ViewData["CFkMediaId"] = new SelectList(_context.FCategories.Where(c => c.CaFkCategoryType.CtName == "média"), "CaId", "CaName", fClient.CFkMediaId);
+            var citiesWithNull = _context.FCities.ToList();
+            citiesWithNull.Insert(0, new FCity { CiId = -1, CiName = "Select a city" });
+            var mediasWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "média").ToList();
+            mediasWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a media" });
+
+            ViewData["CFkBirthCityId"] = new SelectList(citiesWithNull, "CiId", "CiName");
+            ViewData["CFkMediaId"] = new SelectList(mediasWithNull, "CaId", "CaName");
             return View(fClient);
         }
 
@@ -168,5 +196,10 @@ namespace LittleFirmManagement.Controllers
         {
             return _context.FClients.Any(e => e.CId == id);
         }
+        public IActionResult GetMatchingCities(string input)
+        {
+            return Json(CityUtility.GetMatchingCities(input));
+        }
+
     }
 }

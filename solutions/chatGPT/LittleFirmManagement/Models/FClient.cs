@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
+using System.Text;
+using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LittleFirmManagement.Models;
@@ -104,4 +108,64 @@ public partial class FClient
 
     [InverseProperty("IFkClient")]
     public virtual ICollection<FIntervention> FInterventions { get; set; } = new List<FIntervention>();
+}
+
+public class CityUtility
+{
+    private static List<City> Cities = new List<City>();
+    public static bool ValidateCity(string town, out City city)
+    {
+        LoadCitiesFromJson();
+        // Find the city with the matching name
+        city = Cities.FirstOrDefault(c => c.Nom.Equals(town, StringComparison.OrdinalIgnoreCase));
+
+        if (city != null)
+            return true;
+        else
+            return false;
+    }
+
+    private static void LoadCitiesFromJson()
+    {
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true // Ignore case when deserializing JSON properties
+        };
+        // Load and deserialize the "towns.json" file into a list of City objects
+        var json = File.ReadAllText("towns.json");
+        Cities = JsonSerializer.Deserialize<List<City>>(json, options);
+    }
+
+    private static string RemoveDiacritics(string text)
+    {
+        var normalizedString = text.Normalize(NormalizationForm.FormD);
+        var stringBuilder = new StringBuilder();
+
+        foreach (var c in normalizedString)
+        {
+            var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+            if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                stringBuilder.Append(c);
+        }
+
+        return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+    }
+
+    public class City
+    {
+        public string Nom { get; set; }
+        public string Code { get; set; }
+        public string CodeDepartement { get; set; }
+        public List<string> CodesPostaux { get; set; }
+    }
+    public static List<City> GetMatchingCities(string input)
+    {
+        CityUtility.LoadCitiesFromJson();
+        List<City> matchingCities = CityUtility.Cities
+            .Where(city => city.Nom.StartsWith(input, StringComparison.OrdinalIgnoreCase))
+            .Take(10) // Limit the number of suggestions
+            .ToList();
+
+        return matchingCities;
+    }
 }

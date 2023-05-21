@@ -61,8 +61,11 @@
                                         <span asp-validation-for="CBirthName" class="text-danger"></span>
                                     </div>
                                     <div class="mb-3">
-                                        <label asp-for="CFkBirthCityId" class="form-label"></label>
-                                        <select asp-for="CFkBirthCityId" class="form-control" asp-items="ViewBag.CFkBirthCityId"></select>
+                                        <label for="birthCityInput" class="form-label">Birth City</label>
+                                        <input type="text" class="form-control" id="birthCityInput" name="birthCity" placeholder="Enter birth city" autocomplete="off" />
+                                        <div class="dropdown">
+                                            <ul id="birthCitySuggestions" class="dropdown-menu" style="display: none;"></ul>
+                                        </div>
                                     </div>
                                     <div class="mb-3">
                                         <label asp-for="CAccountHolder" class="form-label">Account Holder</label>
@@ -91,24 +94,26 @@
                     <div class="card-header">Location</div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label asp-for="CFkCityId" class="form-label"></label>
-                            <select asp-for="CFkCityId" class="form-control" asp-items="ViewBag.CFkCityId"></select>
+                            <label for="town" class="form-label">Town</label>
+                            <input for="town" class="form-control" name="Town" placeholder="Enter town name" id="town"></input>
                         </div>
                         <div class="mb-3">
                             <label asp-for="CAddress" class="form-label"></label>
-                            <input asp-for="CAddress" class="form-control" />
+                            <input asp-for="CAddress" class="form-control" id="address" />
                             <span asp-validation-for="CAddress" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label asp-for="CLocationLong" class="form-label"></label>
-                            <input asp-for="CLocationLong" class="form-control" />
+                            <input asp-for="CLocationLong" class="form-control" id="lon" />
                             <span asp-validation-for="CLocationLong" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label asp-for="CLocationLat" class="form-label"></label>
-                            <input asp-for="CLocationLat" class="form-control" />
+                            <input asp-for="CLocationLat" class="form-control" id="lat" />
                             <span asp-validation-for="CLocationLat" class="text-danger"></span>
                         </div>
+                        <div id="map" style="height: 400px;" class="mb-3"></div>
+                        <button type="button" class="btn btn-danger" id="clear">Clear Map</button>
                     </div>
                 </div>
             </div>
@@ -124,4 +129,121 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        var map = L.map('map').setView([47.9384, -4.0234], 11);
+
+        map.on('click', onMapClick);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+            maxZoom: 18,
+        }).addTo(map);
+
+        var redIcon = L.icon({
+            iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            tooltipAnchor: [16, -28],
+            shadowSize: [41, 41]
+        });
+
+        var marker = L.marker([51.505, -0.09], { icon: redIcon }).addTo(map);
+
+        function updateMarker(lat, lng) {
+            marker.setLatLng([lat, lng], { icon: redIcon });
+            map.setView([lat, lng]);
+        }
+
+        function onMapClick(e) {
+            // Reverse geocode the clicked location to get an address
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" + e.latlng.lat + "&lon=" + e.latlng.lng, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    if (data.address != null) {
+                        var address = data.address.house_number + " " + data.address.road;
+                        document.getElementById("address").value = address;
+                        document.getElementById("lat").value = e.latlng.lat;
+                        document.getElementById("lon").value = e.latlng.lng;
+                        document.getElementById("town").value = data.address.town || data.address.city || data.address.village || "";
+                    }
+                }
+            };
+            xhr.send();
+            updateMarker(e.latlng.lat, e.latlng.lng);
+        }
+
+        var clearButton = document.getElementById("clear");
+        clearButton.addEventListener("click", function () {
+            marker.setLatLng([51.505, -0.09]);
+            document.getElementById("address").value = "";
+            document.getElementById("town").value = "";
+            document.getElementById("lat").value = "";
+            document.getElementById("lon").value = "";
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var birthCityInput = document.getElementById('birthCityInput');
+            var birthCitySuggestions = document.getElementById('birthCitySuggestions');
+
+            birthCityInput.addEventListener('input', function () {
+                var input = birthCityInput.value;
+                if (input.length >= 2) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', '/FClients/GetMatchingCities?input=' + encodeURIComponent(input));
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            var response = JSON.parse(xhr.responseText);
+                            birthCitySuggestions.innerHTML = '';
+                            response.forEach(function (city) {
+                                var suggestion = document.createElement('li');
+                                suggestion.className = 'dropdown-item';
+                                suggestion.textContent = city.nom;
+                                suggestion.addEventListener('click', function () {
+                                    birthCityInput.value = city.nom;
+                                    birthCitySuggestions.style.display = 'none';
+                                });
+                                birthCitySuggestions.appendChild(suggestion);
+                            });
+                            birthCitySuggestions.style.display = 'block';
+                        }
+                    };
+                    xhr.send();
+                } else {
+                    birthCitySuggestions.innerHTML = '';
+                    birthCitySuggestions.style.display = 'none';
+                }
+            });
+        });
+
+
+        // Assuming you have a switch input with the id "enableUrssafPayment"
+        const enableUrssafPaymentSwitch = document.getElementById("enableUrssafPayment");
+        const accountHolderInput = document.getElementById("CAccountHolder");
+        const firstnameInput = document.getElementById("CFirstname");
+        const nameInput = document.getElementById("CName");
+
+        // Add an event listener to the switch input
+        enableUrssafPaymentSwitch.addEventListener("change", function () {
+            if (this.checked) {
+                // When the switch is checked (on)
+                // Concatenate the firstname and name inputs and set it as the value of accountHolder
+                accountHolderInput.value = firstnameInput.value + " " + nameInput.value;
+            } else {
+                // When the switch is unchecked (off)
+                // Reset the value of accountHolder to an empty string
+                accountHolderInput.value = "";
+            }
+        });
+    </script>
 }
