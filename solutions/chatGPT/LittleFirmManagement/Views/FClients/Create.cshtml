@@ -1,4 +1,4 @@
-@model LittleFirmManagement.Models.FClient
+@model LittleFirmManagement.Models.FClientsViewModel
 
 <div class="container">
     <form asp-action="Create" method="post">
@@ -61,8 +61,8 @@
                                         <span asp-validation-for="CBirthName" class="text-danger"></span>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="birthCityInput" class="form-label">Birth City</label>
-                                        <input type="text" class="form-control" id="birthCityInput" name="birthCity" placeholder="Enter birth city" autocomplete="off" />
+                                        <label asp-for="BirthCityInput" class="form-label">Birth City</label>
+                                        <input asp-for="BirthCityInput" type="text" class="form-control" id="birthCityInput" name="birthCity" placeholder="Enter birth city" autocomplete="off" />
                                         <div class="dropdown">
                                             <ul id="birthCitySuggestions" class="dropdown-menu" style="display: none;"></ul>
                                         </div>
@@ -94,8 +94,9 @@
                     <div class="card-header">Location</div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <label for="town" class="form-label">Town</label>
-                            <input for="town" class="form-control" name="Town" placeholder="Enter town name" id="town"></input>
+                            <label asp-for="Town" class="form-label">Town</label>
+                            <input asp-for="Town" class="form-control" name="Town" placeholder="Enter town name" id="town"></input>
+                            <span asp-validation-for="Town" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label asp-for="CAddress" class="form-label"></label>
@@ -119,8 +120,8 @@
             </div>
 
             <div class="col-md-4 d-flex flex-column align-items-end">
-                <input type="submit" value="Save and record an intervention" class="btn btn-primary mb-4" />
-                <input type="submit" value="Save and exit" class="btn btn-primary mb-4" />
+                <button name="saveAndExit" value="false" asp-controller="FClients" asp-action="Create" class="btn btn-primary mb-4">Save and record an intervention</button>
+                <button name="saveAndExit" value="true" asp-controller="FClients" asp-action="Create" class="btn btn-primary mb-4">Save and exit</button>
                 <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
             </div>
         </div>

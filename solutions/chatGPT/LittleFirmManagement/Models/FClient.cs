@@ -6,8 +6,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
+using LittleFirmManagement.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static LittleFirmManagement.Models.FClientUtility;
 
 namespace LittleFirmManagement.Models;
 
@@ -110,7 +112,7 @@ public partial class FClient
     public virtual ICollection<FIntervention> FInterventions { get; set; } = new List<FIntervention>();
 }
 
-public class CityUtility
+public class FClientUtility
 {
     private static List<City> Cities = new List<City>();
     public static bool ValidateCity(string town, out City city)
@@ -123,6 +125,65 @@ public class CityUtility
             return true;
         else
             return false;
+    }
+    public async static Task<FClient> ValidateClient(FClientsViewModel viewModel, FirmContext _context)
+    {
+        FClientUtility.City city;
+
+        if (FClientUtility.ValidateCity(viewModel.Town, out city))
+        {
+            FCity cityDb = _context.FCities.Where(c => c.CiInseeCode == Int32.Parse(city.Code)).FirstOrDefault();
+            if (cityDb == null)
+            {
+                _context.Add(new FCity { CiPostalCode = city.CodesPostaux[0], CiName = city.Nom.ToUpper(), CiInseeCode = Int32.Parse(city.Code), CiDepartCode = Int32.Parse(city.CodeDepartement) });
+                await _context.SaveChangesAsync();
+                viewModel.CFkCityId = _context.FCities.Where(c => c.CiName.ToLower() == city.Nom.ToLower()).Select(c => c.CiId).FirstOrDefault();
+            }
+            else
+                viewModel.CFkCityId = cityDb.CiId;
+            _context.SaveChanges();
+        }
+
+        if (FClientUtility.ValidateCity(viewModel.BirthCityInput, out city))
+        {
+            FCity cityDb = _context.FCities.Where(c => c.CiInseeCode == Int32.Parse(city.Code)).FirstOrDefault();
+            if (cityDb == null)
+            {
+                _context.Add(new FCity { CiPostalCode = city.CodesPostaux[0], CiName = city.Nom.ToUpper(), CiInseeCode = Int32.Parse(city.Code), CiDepartCode = Int32.Parse(city.CodeDepartement) });
+                viewModel.CFkBirthCityId = _context.FCities.Where(c => c.CiName.ToLower() == city.Nom.ToLower()).Select(c => c.CiId).FirstOrDefault();
+            }
+            else
+                viewModel.CFkBirthCityId = cityDb.CiId;
+            _context.SaveChanges();
+        }
+
+
+        var client = new FClient();
+
+        client.CFkMediaId = viewModel.CFkMediaId;
+        client.CFkCityId = viewModel.CFkCityId;
+        client.CFkBirthCityId = viewModel.CFkBirthCityId;
+        client.CName = viewModel.CName;
+        client.CFirstname = viewModel.CFirstname;
+        client.CAddress = viewModel.CAddress;
+        client.CEmail = viewModel.CEmail;
+        client.CPhoneFixed = viewModel.CPhoneFixed;
+        client.CPhoneCell = viewModel.CPhoneCell;
+        client.CIsPro = viewModel.CIsPro;
+        client.CLocationLong = viewModel.CLocationLong;
+        client.CLocationLat = viewModel.CLocationLat;
+        client.CDistance = viewModel.CDistance;
+        client.CTravelTime = viewModel.CTravelTime;
+        client.CUrssafUuid = viewModel.CUrssafUuid;
+        client.CIsMan = viewModel.CIsMan;
+        client.CBirthName = viewModel.CBirthName;
+        client.CBirthDate = viewModel.CBirthDate;
+        client.CBic = viewModel.CBic;
+        client.CIban = viewModel.CIban;
+        client.CAccountHolder = viewModel.CAccountHolder;
+
+
+        return client;
     }
 
     private static void LoadCitiesFromJson()
@@ -160,12 +221,14 @@ public class CityUtility
     }
     public static List<City> GetMatchingCities(string input)
     {
-        CityUtility.LoadCitiesFromJson();
-        List<City> matchingCities = CityUtility.Cities
+        FClientUtility.LoadCitiesFromJson();
+        List<City> matchingCities = FClientUtility.Cities
             .Where(city => city.Nom.StartsWith(input, StringComparison.OrdinalIgnoreCase))
             .Take(10) // Limit the number of suggestions
             .ToList();
 
         return matchingCities;
     }
+
+
 }

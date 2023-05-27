@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LittleFirmManagement.Models;
 using System.Numerics;
-using static LittleFirmManagement.Models.CityUtility;
+using static LittleFirmManagement.Models.FClientUtility;
 using System.Text.Json;
 
 namespace LittleFirmManagement.Controllers
@@ -22,10 +22,31 @@ namespace LittleFirmManagement.Controllers
         }
 
         // GET: FClients
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string nameSearch="", string firstnameSearch = "", string citySearch = "")
         {
-            var firmContext = _context.FClients.Include(f => f.CFkBirthCity).Include(f => f.CFkCity).Include(f => f.CFkMedia);
-            return View(await firmContext.ToListAsync());
+            var clientsCtx = _context.FClients.Include(f => f.CFkBirthCity).Include(f => f.CFkCity).Include(f => f.CFkMedia);
+            var clients = clientsCtx.AsQueryable();
+
+            if (!string.IsNullOrEmpty(nameSearch))
+            {
+                clients = clients.Where(c => c.CName.Contains(nameSearch));
+            }
+
+            if (!string.IsNullOrEmpty(firstnameSearch))
+            {
+                clients = clients.Where(c => c.CFirstname.Contains(firstnameSearch));
+            }
+
+            if (!string.IsNullOrEmpty(citySearch))
+            {
+                clients = clients.Where(c => c.CFkCity.CiName.Contains(citySearch));
+            }
+
+            ViewData["NameSearch"] = nameSearch;
+            ViewData["FirstnameSearch"] = firstnameSearch;
+            ViewData["CitySearch"] = citySearch;
+
+            return View(clientsCtx);
         }
 
         // GET: FClients/Details/5
@@ -59,6 +80,16 @@ namespace LittleFirmManagement.Controllers
 
             ViewData["CFkBirthCityId"] = new SelectList(citiesWithNull, "CiId", "CiName");
             ViewData["CFkMediaId"] = new SelectList(mediasWithNull, "CaId", "CaName");
+
+            var viewModel = new FClientsViewModel();
+            viewModel.CName = "Default Name";
+            viewModel.CFirstname = "Default Firstname";
+            viewModel.CEmail = "default@example.com";
+            viewModel.CPhoneFixed = "1234567890";
+            viewModel.CPhoneCell = "9876543210";
+            viewModel.CFkMediaId = mediasWithNull[2].CaId;
+            return View(viewModel);
+
             return View();
         }
 
@@ -67,31 +98,23 @@ namespace LittleFirmManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CId,CFkMediaId,CFkCityId,CFkBirthCityId,CName,CFirstname,CAddress,CEmail,CPhoneFixed,CPhoneCell,CIsPro,CLocationLong,CLocationLat,CDistance,CTravelTime,CUrssafUuid,CIsMan,CBirthName,CBirthCountryCode,CBirthDate,CBic,CIban,CAccountHolder")] FClient fClient, string town, string? birthCity = null)
+        public async Task<IActionResult> Create([Bind("CFkMediaId,CName,CFirstname,CAddress,CEmail,CPhoneFixed,CPhoneCell,CIsPro,CLocationLong,CLocationLat,CDistance,CTravelTime,CUrssafUuid,CIsMan,CBirthName,CBirthCountryCode,CBirthDate,CBic,CIban,CAccountHolder,Town,BirthCityInput")] FClientsViewModel vClient, bool saveAndExit)
         {
             ModelState.Remove("CFkCity");
             ModelState.Remove("CFkBirthCityId");
-            if (fClient.CFkMediaId == -1)
+            if (vClient.CFkMediaId == -1)
                 ModelState.AddModelError("CFkMediaId", "Please select a media.");
-            if (fClient.CFkBirthCityId == -1)
-                fClient.CFkBirthCityId = null;
+            if (vClient.CFkBirthCityId == -1)
+                vClient.CFkBirthCityId = null;
             if (ModelState.IsValid)
             {
-                foreach (string cityRaw in new List<string>(){ town, birthCity}) {
-                    if (CityUtility.ValidateCity(cityRaw, out CityUtility.City city))
-                    {
-                        FCity cityDb = _context.FCities.Where(c => c.CiInseeCode == Int32.Parse(city.Code)).FirstOrDefault();
-                        if (cityDb == null) {
-                            _context.Add(new FCity { CiPostalCode = city.CodesPostaux[0], CiName = city.Nom.ToUpper(), CiInseeCode = Int32.Parse(city.Code), CiDepartCode = Int32.Parse(city.CodeDepartement) });
-                            await _context.SaveChangesAsync();
-                            fClient.CFkCityId = _context.FCities.Where(c => c.CiName.ToLower() == city.Nom.ToLower()).Select(c => c.CiId).FirstOrDefault();
-                        } else
-                            fClient.CFkCityId = cityDb.CiId;
-                        _context.Add(fClient);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                FClient fClient = FClientUtility.ValidateClient(vClient, _context).Result;
+                _context.Add(fClient);
+                await _context.SaveChangesAsync();
+                if (saveAndExit)
+                    return RedirectToAction(nameof(Index));
+                else
+                    return RedirectToAction("Create", "FInterventions", new { CId = fClient.CId });
             }
             var citiesWithNull = _context.FCities.ToList();
             citiesWithNull.Insert(0, new FCity { CiId = -1, CiName = "Select a city" });
@@ -100,7 +123,7 @@ namespace LittleFirmManagement.Controllers
 
             ViewData["CFkBirthCityId"] = new SelectList(citiesWithNull, "CiId", "CiName");
             ViewData["CFkMediaId"] = new SelectList(mediasWithNull, "CaId", "CaName");
-            return View(fClient);
+            return View(vClient);
         }
 
         // GET: FClients/Edit/5
@@ -198,7 +221,7 @@ namespace LittleFirmManagement.Controllers
         }
         public IActionResult GetMatchingCities(string input)
         {
-            return Json(CityUtility.GetMatchingCities(input));
+            return Json(FClientUtility.GetMatchingCities(input));
         }
 
     }

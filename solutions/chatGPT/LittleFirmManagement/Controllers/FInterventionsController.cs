@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LittleFirmManagement.Models;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Http;
 
 namespace LittleFirmManagement.Controllers
 {
@@ -47,11 +49,23 @@ namespace LittleFirmManagement.Controllers
         }
 
         // GET: FInterventions/Create
-        public IActionResult Create()
+        public IActionResult Create(int CId)
         {
-            ViewData["IFkCategoryId"] = new SelectList(_context.FCategories, "CaId", "CaId");
-            ViewData["IFkClientId"] = new SelectList(_context.FClients, "CId", "CId");
-            ViewData["IFkInvoiceId"] = new SelectList(_context.FInvoices, "InId", "InId");
+            var activitiesWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "activité").ToList();
+            activitiesWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select an activity" });
+            ViewData["IFkCategoryId"] = new SelectList(activitiesWithNull, "CaId", "CaName");
+            ViewData["FClient"] = _context.FClients.Include(c => c.CFkCity).FirstOrDefault(c => c.CId == CId);
+
+            // Create a new instance of FIntervention and set default values
+            var intervention = new FIntervention
+            {
+                IDate = DateOnly.FromDateTime(DateTime.Now),  // Set the default date to the current date
+                IDescription = "Default description",  // Set a default description
+                INbRoundTrip = 1,  // Set the default number of round trips
+                IFkCategoryId = 8  // Set the default category ID
+            };
+            return View(intervention);
+
             return View();
         }
 
@@ -60,17 +74,26 @@ namespace LittleFirmManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IId,IFkClientId,IFkInvoiceId,IFkCategoryId,IDate,IDescription,INbRoundTrip")] FIntervention fIntervention)
+        public async Task<IActionResult> Create([Bind("IId,IFkClientId,IFkInvoiceId,IFkCategoryId,IDate,IDescription,INbRoundTrip")] FIntervention fIntervention, bool saveAndExit, int CId, string dateString)
         {
+            ModelState.Remove("IFkClient");
+            ModelState.Remove("IFkCategory");
+            ModelState.Remove("dateString");
             if (ModelState.IsValid)
             {
+                fIntervention.IDate = DateOnly.Parse(dateString);
+                fIntervention.IFkClientId = CId;
                 _context.Add(fIntervention);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (saveAndExit)
+                    return RedirectToAction(nameof(Index));
+                else
+                    return RedirectToAction("Create", "FInvoices", new { CId = CId });
             }
-            ViewData["IFkCategoryId"] = new SelectList(_context.FCategories, "CaId", "CaId", fIntervention.IFkCategoryId);
-            ViewData["IFkClientId"] = new SelectList(_context.FClients, "CId", "CId", fIntervention.IFkClientId);
-            ViewData["IFkInvoiceId"] = new SelectList(_context.FInvoices, "InId", "InId", fIntervention.IFkInvoiceId);
+            var activitiesWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "activité").ToList();
+            activitiesWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select an activity" });
+            ViewData["IFkCategoryId"] = new SelectList(activitiesWithNull, "CaId", "CaName");
+            ViewData["FClient"] = _context.FClients.FirstOrDefault(c => c.CId == CId);
             return View(fIntervention);
         }
 

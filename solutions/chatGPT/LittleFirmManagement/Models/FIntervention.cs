@@ -24,6 +24,11 @@ public partial class FIntervention
 
     [Column("i_date")]
     public DateOnly IDate { get; set; }
+    // Additional property to bind the date value from the form
+    [NotMapped]
+    [Display(Name = "Date")]
+    [DataType(DataType.Date)]
+    public string DateString { get; set; }
 
     [Column("i_description", TypeName = "character varying")]
     public string? IDescription { get; set; }
@@ -42,4 +47,6 @@ public partial class FIntervention
     [ForeignKey("IFkInvoiceId")]
     [InverseProperty("FInterventions")]
     public virtual FInvoice? IFkInvoice { get; set; }
+
+    public string CombinedDateAndDescription => $"{IDate:MM/dd/yyyy} - {IDescription}";
 }

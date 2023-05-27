@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LittleFirmManagement.Models;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace LittleFirmManagement.Controllers
 {
@@ -45,9 +47,17 @@ namespace LittleFirmManagement.Controllers
         }
 
         // GET: FInvoices/Create
-        public IActionResult Create()
+        public IActionResult Create(int CId, int IId)
         {
-            ViewData["InFkPaymentId"] = new SelectList(_context.FCategories, "CaId", "CaId");
+            var paymentsWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "paiement").ToList();
+            paymentsWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a payment mode" });
+            ViewData["InFkPaymentId"] = new SelectList(paymentsWithNull, "CaId", "CaName");
+            ViewData["FClient"] = _context.FClients.FirstOrDefault(c => c.CId == CId);
+
+            ViewBag.FIntervention = new MultiSelectList(_context.FInterventions.Where(i => i.IFkClientId == CId), "IId", "CombinedDateAndDescription");
+
+            //var inters = _context.FInterventions.Where(i => i.IFkClientId == CId);
+            //ViewData["FIntervention"] = new SelectList(_context.FInterventions.Where(i => i.IFkClientId == CId), "IId", "IDescription");
             return View();
         }
 
@@ -56,16 +66,28 @@ namespace LittleFirmManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InId,InFkPaymentId,InInvoiceId,InInvoiceIdCorrected,InInvoiceDate,InReceiptDate,InCreditDate,InAmount,InIsEligibleDeferredTaxCredit,InUrssafPaymentRequestUuid")] FInvoice fInvoice)
+        public async Task<IActionResult> Create([Bind("InId,InFkPaymentId,InInvoiceId,InInvoiceIdCorrected,InInvoiceDate,InReceiptDate,InCreditDate,InAmount,InIsEligibleDeferredTaxCredit,InUrssafPaymentRequestUuid")] FInvoice fInvoice, List<int> selectedInterventions, int CId)
         {
+            ModelState.Remove("CId");
+            ModelState.Remove("fInvoice.InFkPayment");
             if (ModelState.IsValid)
             {
                 _context.Add(fInvoice);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["InFkPaymentId"] = new SelectList(_context.FCategories, "CaId", "CaId", fInvoice.InFkPaymentId);
-            return View(fInvoice);
+            var paymentsWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "paiement").ToList();
+            paymentsWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a payment mode" });
+            ViewData["InFkPaymentId"] = new SelectList(paymentsWithNull, "CaId", "CaName");
+            ViewData["FClient"] = _context.FClients.FirstOrDefault(c => c.CId == CId);
+
+            ViewBag.FIntervention = new MultiSelectList(_context.FInterventions.Where(i => i.IFkClientId == CId), "IId", "CombinedDateAndDescription");
+            FInvoicesViewModel fInvoiceViewModel = new FInvoicesViewModel
+            {
+                selectedInterventions = selectedInterventions,
+                fInvoice = fInvoice
+            };
+            return View(fInvoiceViewModel);
         }
 
         // GET: FInvoices/Edit/5
