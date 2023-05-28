@@ -48,13 +48,13 @@ namespace LittleFirmManagement.Controllers
             return View(fIntervention);
         }
 
-        // GET: FInterventions/Create
-        public IActionResult Create(int CId)
+        // GET: FInterventions/Create/clientId
+        public IActionResult Create(int id)
         {
             var activitiesWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "activité").ToList();
             activitiesWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select an activity" });
             ViewData["IFkCategoryId"] = new SelectList(activitiesWithNull, "CaId", "CaName");
-            ViewData["FClient"] = _context.FClients.Include(c => c.CFkCity).FirstOrDefault(c => c.CId == CId);
+            ViewData["FClient"] = _context.FClients.Include(c => c.CFkCity).FirstOrDefault(c => c.CId == id);
 
             // Create a new instance of FIntervention and set default values
             var intervention = new FIntervention
@@ -65,8 +65,6 @@ namespace LittleFirmManagement.Controllers
                 IFkCategoryId = 8  // Set the default category ID
             };
             return View(intervention);
-
-            return View();
         }
 
         // POST: FInterventions/Create

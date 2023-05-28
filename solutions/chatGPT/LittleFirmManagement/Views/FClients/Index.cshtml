@@ -5,6 +5,9 @@
     var nameSearch = ViewData["NameSearch"];
     var firstnameSearch = ViewData["FirstnameSearch"];
     var citySearch = ViewData["CitySearch"];
+    var currentPage = ViewBag.CurrentPage;
+    var totalPages = ViewBag.TotalPages;
+    var pageSize = ViewBag.PageSize;
 }
 
 <h1>Index</h1>
@@ -13,82 +16,109 @@
 <div class="container">
     <div class="row">
         <div class="col-6">
-            <div class="mb-3">
-                <label for="nameSearch">Name:</label>
-                <input type="text" id="nameSearch" value="@nameSearch" class="form-control" />
-            </div>
-
-            <div class="mb-3">
-                <label for="firstnameSearch">Firstname:</label>
-                <input type="text" id="firstnameSearch" value="@firstnameSearch" class="form-control" />
-            </div>
-
-            <div class="mb-3">
-                <label for="citySearch">City:</label>
-                <input type="text" id="citySearch" value="@citySearch" class="form-control" />
-            </div>
-
-            <div class="mb-3">
-                <button id="searchButton" class="btn btn-primary">Search</button>
-            </div>
             <div class="table-responsive">
                 <table class="table">
                 <thead>
                     <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CFirstname)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CAddress)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CFkCity.CiName)
-                        </th>
+                        <th>@Html.DisplayNameFor(model => model.CName)</th>
+                        <th>@Html.DisplayNameFor(model => model.CFirstname)</th>
+                        <th>@Html.DisplayNameFor(model => model.CAddress)</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
+                        @foreach (FClient item in ViewBag.Clients)
                         {
-                            if (string.IsNullOrEmpty(ViewBag.NameSearch) || item.CName.IndexOf(ViewBag.NameSearch, StringComparison.OrdinalIgnoreCase) >= 0)
-                            {
-                                if (string.IsNullOrEmpty(ViewBag.FirstnameSearch) || item.CFirstname.IndexOf(ViewBag.FirstnameSearch, StringComparison.OrdinalIgnoreCase) >= 0)
-                                {
-                                    if (string.IsNullOrEmpty(ViewBag.CitySearch) || item.CFkCity.CiName.IndexOf(ViewBag.CitySearch, StringComparison.OrdinalIgnoreCase) >= 0)
-                                    {
-                                        <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.CName)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.CFirstname)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.CAddress)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.CFkCity.CiName)
-                                            </td>
-                                            <td>
-                                                <a asp-action="Edit" asp-route-id="@item.CId">Edit</a> |
-                                                <a asp-action="Details" asp-route-id="@item.CId">Details</a> |
-                                                <a asp-action="Delete" asp-route-id="@item.CId">Delete</a>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            }
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CFirstname)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CAddress)<br/>
+                                    @Html.DisplayFor(modelItem => item.CFkCity.CiName)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.CId">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.CId">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <a asp-controller="FInterventions" asp-action="Create" asp-route-id="@item.CId">
+                                        <i class="fa-solid fa-file-invoice"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.CId">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </td>
+
+                            </tr>
                         }
                     </tbody>
                 </table>
             </div>
+
+            <!-- Pagination controls -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    @if (currentPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="/FClients/Index?page=@(currentPage - 1)&nameSearch=@nameSearch&firstnameSearch=@firstnameSearch&citySearch=@citySearch">Previous</a>
+                        </li>
+                    }
+                    @for (var i = 1; i <= totalPages; i++)
+                    {
+                        <li class="page-item @(i == currentPage ? "active" : "")">
+                            <a class="page-link" href="/FClients/Index?page=@i&nameSearch=@nameSearch&firstnameSearch=@firstnameSearch&citySearch=@citySearch">@i</a>
+                        </li>
+                    }
+                    @if (currentPage < totalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="/FClients/Index?page=@(currentPage + 1)&nameSearch=@nameSearch&firstnameSearch=@firstnameSearch&citySearch=@citySearch">Next</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
         </div>
 
-        <!-- Column 2: Map -->
+        <!-- Column 2: Search and Map -->
         <div class="col-6">
+            <form action="/FClients/Index" method="post">
+                <div class="mb-3">
+                    <label for="nameSearch">Name:</label>
+                    <input type="text" id="nameSearch" name="nameSearch" value="@nameSearch" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="firstnameSearch">Firstname:</label>
+                    <input type="text" id="firstnameSearch" name="firstnameSearch" value="@firstnameSearch" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="citySearch">City:</label>
+                    <select id="citySearch" name="citySearch" class="form-control">
+                        <option value="">All</option>
+                        @foreach (FCity city in ViewBag.Cities)
+                        {
+                            @if (city.CiId == ViewBag.CitySearch) {
+                                <option value="@city.CiId" selected>@city.CiName</option>
+                            } else {
+                                <option value="@city.CiId">@city.CiName</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+
             <div id="mapid" style="height: 400px;"></div>
         </div>
     </div>
@@ -127,30 +157,12 @@
         var citySearch = document.getElementById('citySearch').value;
 
         // Loop through each client and apply the filter
-        @foreach (var c in Model)
+        @foreach (FClient c in ViewBag.Clients)
         {
             <text>
-                // Check if the client matches the search criteria
-                if ((nameSearch === '' || '@c.CName'.toLowerCase().includes(nameSearch.toLowerCase()))
-                && (firstnameSearch === '' || '@c.CFirstname'.toLowerCase().includes(firstnameSearch.toLowerCase()))
-                && (citySearch === '' || '@c.CFkCity.CiName'.toLowerCase().includes(citySearch.toLowerCase()))) {
-
-
                 var marker = L.marker([@c.CLocationLat, @c.CLocationLong], { icon: redIcon }).addTo(mymap);
-                    marker.bindPopup('<a href="/FInterventions/Create?CId=@c.CId">@c.CName</a>');
-                }
+                marker.bindPopup('<a href="/FInterventions/Create/@c.CId">@c.CName</a>');
             </text>
         }
-
-        document.getElementById("searchButton").addEventListener("click", function () {
-            var nameSearch = document.getElementById("nameSearch").value;
-            var firstnameSearch = document.getElementById("firstnameSearch").value;
-            var citySearch = document.getElementById("citySearch").value;
-
-            // Redirect to the search action with the provided search parameters
-                window.location.href = "/FClients/Index?nameSearch=" + encodeURIComponent(nameSearch)
-                + "&firstnameSearch=" + encodeURIComponent(firstnameSearch)
-                + "&citySearch=" + encodeURIComponent(citySearch);
-        });
     </script>
 }

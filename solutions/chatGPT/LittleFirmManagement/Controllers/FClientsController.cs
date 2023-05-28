@@ -9,6 +9,8 @@ using LittleFirmManagement.Models;
 using System.Numerics;
 using static LittleFirmManagement.Models.FClientUtility;
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace LittleFirmManagement.Controllers
 {
@@ -22,31 +24,46 @@ namespace LittleFirmManagement.Controllers
         }
 
         // GET: FClients
-        public async Task<IActionResult> Index(string nameSearch="", string firstnameSearch = "", string citySearch = "")
+        public async Task<IActionResult> Index(string nameSearch="", string firstnameSearch = "", int citySearch = -1, int page = 1, int pageSize = 10)
         {
-            var clientsCtx = _context.FClients.Include(f => f.CFkBirthCity).Include(f => f.CFkCity).Include(f => f.CFkMedia);
-            var clients = clientsCtx.AsQueryable();
+            var clients = _context.FClients.Include(f => f.CFkBirthCity).Include(f => f.CFkCity).Include(f => f.CFkMedia).AsQueryable();
 
             if (!string.IsNullOrEmpty(nameSearch))
             {
-                clients = clients.Where(c => c.CName.Contains(nameSearch));
+                clients = clients.Where(c => c.CName.ToLower().Contains(nameSearch.ToLower()));
             }
 
             if (!string.IsNullOrEmpty(firstnameSearch))
             {
-                clients = clients.Where(c => c.CFirstname.Contains(firstnameSearch));
+                clients = clients.Where(c => c.CFirstname.ToLower().Contains(firstnameSearch.ToLower()));
             }
 
-            if (!string.IsNullOrEmpty(citySearch))
+            if (0 < citySearch)
             {
-                clients = clients.Where(c => c.CFkCity.CiName.Contains(citySearch));
+                clients = clients.Where(c => c.CFkCity.CiId == citySearch);
             }
+
+
+            // Calculate pagination values
+            int totalClients = clients.Count();
+            int totalPages = (int)Math.Ceiling((double)totalClients / pageSize);
+
+            // Apply pagination
+            clients = clients.Skip((page - 1) * pageSize).Take(pageSize);
+
+            // Pass the paginated clients and pagination data to the view
+            ViewBag.Clients = clients.ToList();
+            ViewBag.TotalClients = totalClients;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
 
             ViewData["NameSearch"] = nameSearch;
             ViewData["FirstnameSearch"] = firstnameSearch;
             ViewData["CitySearch"] = citySearch;
+            ViewData["Cities"] = _context.FClients.Select(c => c.CFkCity).Distinct().ToList();
 
-            return View(clientsCtx);
+            return View();
         }
 
         // GET: FClients/Details/5
@@ -89,8 +106,6 @@ namespace LittleFirmManagement.Controllers
             viewModel.CPhoneCell = "9876543210";
             viewModel.CFkMediaId = mediasWithNull[2].CaId;
             return View(viewModel);
-
-            return View();
         }
 
         // POST: FClients/Create
