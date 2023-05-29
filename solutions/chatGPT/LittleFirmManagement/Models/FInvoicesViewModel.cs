@@ -9,6 +9,13 @@ namespace LittleFirmManagement.Models
     {
         public List<int> selectedInterventions { get; set; }
 
-        public FInvoice fInvoice;
+        public FInvoice fInvoice { get; set; }
+        public bool InIsEligibleDeferredTaxCredit { get; set; }
+
+        public FInvoicesViewModel()
+        {
+            fInvoice = new FInvoice();
+            selectedInterventions = new List<int>();
+        }
     }
 }

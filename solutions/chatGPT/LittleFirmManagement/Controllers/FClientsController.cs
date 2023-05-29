@@ -26,7 +26,7 @@ namespace LittleFirmManagement.Controllers
         // GET: FClients
         public async Task<IActionResult> Index(string nameSearch="", string firstnameSearch = "", int citySearch = -1, int page = 1, int pageSize = 10)
         {
-            var clients = _context.FClients.Include(f => f.CFkBirthCity).Include(f => f.CFkCity).Include(f => f.CFkMedia).AsQueryable();
+            var clients = _context.FClients.OrderBy(c=>c.CName).Include(f => f.CFkBirthCity).Include(f => f.CFkCity).Include(f => f.CFkMedia).AsQueryable();
 
             if (!string.IsNullOrEmpty(nameSearch))
             {
@@ -61,7 +61,7 @@ namespace LittleFirmManagement.Controllers
             ViewData["NameSearch"] = nameSearch;
             ViewData["FirstnameSearch"] = firstnameSearch;
             ViewData["CitySearch"] = citySearch;
-            ViewData["Cities"] = _context.FClients.Select(c => c.CFkCity).Distinct().ToList();
+            ViewData["Cities"] = _context.FClients.Select(c => c.CFkCity).Distinct().OrderBy(c=>c.CiName).ToList();
 
             return View();
         }
@@ -129,7 +129,7 @@ namespace LittleFirmManagement.Controllers
                 if (saveAndExit)
                     return RedirectToAction(nameof(Index));
                 else
-                    return RedirectToAction("Create", "FInterventions", new { CId = fClient.CId });
+                    return RedirectToAction("Create", "FInterventions", new { id = fClient.CId });
             }
             var citiesWithNull = _context.FCities.ToList();
             citiesWithNull.Insert(0, new FCity { CiId = -1, CiName = "Select a city" });

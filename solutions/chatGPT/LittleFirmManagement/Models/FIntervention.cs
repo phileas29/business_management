@@ -23,12 +23,7 @@ public partial class FIntervention
     public int IFkCategoryId { get; set; }
 
     [Column("i_date")]
-    public DateOnly IDate { get; set; }
-    // Additional property to bind the date value from the form
-    [NotMapped]
-    [Display(Name = "Date")]
-    [DataType(DataType.Date)]
-    public string DateString { get; set; }
+    public DateTime IDate { get; set; }
 
     [Column("i_description", TypeName = "character varying")]
     public string? IDescription { get; set; }

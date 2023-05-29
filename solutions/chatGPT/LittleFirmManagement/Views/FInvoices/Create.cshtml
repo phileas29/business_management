@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Create";
     var client = ViewData["FClient"] as LittleFirmManagement.Models.FClient;
-    var inters = ViewData["FIntervention"] as LittleFirmManagement.Models.FIntervention;
 }
 
 <div class="container">
@@ -12,7 +11,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Intervention</div>
+                    <div class="card-header">Invoice</div>
                     <div class="card-body">
                         <div class="form-group">
                             <label asp-for="fInvoice.InFkPaymentId" class="control-label"></label>
@@ -20,38 +19,33 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="fInvoice.InInvoiceId" class="control-label"></label>
-                            <input asp-for="fInvoice.InInvoiceId" class="form-control" />
+                            <input asp-for="fInvoice.InInvoiceId" type="number" class="form-control" readonly />
                             <span asp-validation-for="fInvoice.InInvoiceId" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="fInvoice.InInvoiceIdCorrected" class="control-label"></label>
-                            <input asp-for="fInvoice.InInvoiceIdCorrected" class="form-control" />
-                            <span asp-validation-for="fInvoice.InInvoiceIdCorrected" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
                             <label asp-for="fInvoice.InInvoiceDate" class="control-label"></label>
-                            <input asp-for="fInvoice.InInvoiceDate" class="form-control" />
+                            <input asp-for="fInvoice.InInvoiceDate" type="date" class="form-control" />
                             <span asp-validation-for="fInvoice.InInvoiceDate" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="fInvoice.InReceiptDate" class="control-label"></label>
-                            <input asp-for="fInvoice.InReceiptDate" class="form-control" />
+                            <input asp-for="fInvoice.InReceiptDate" type="date" class="form-control" />
                             <span asp-validation-for="fInvoice.InReceiptDate" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="fInvoice.InCreditDate" class="control-label"></label>
-                            <input asp-for="fInvoice.InCreditDate" class="form-control" />
+                            <input asp-for="fInvoice.InCreditDate" type="date" class="form-control" />
                             <span asp-validation-for="fInvoice.InCreditDate" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="fInvoice.InAmount" class="control-label"></label>
-                            <input asp-for="fInvoice.InAmount" class="form-control" />
+                            <input asp-for="fInvoice.InAmount" type="number" class="form-control" />
                             <span asp-validation-for="fInvoice.InAmount" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="fInvoice.InIsEligibleDeferredTaxCredit" class="control-label"></label>
-                            <input asp-for="fInvoice.InIsEligibleDeferredTaxCredit" class="form-control" />
-                            <span asp-validation-for="fInvoice.InIsEligibleDeferredTaxCredit" class="text-danger"></span>
+                            <label asp-for="InIsEligibleDeferredTaxCredit" class="form-check-label"></label>
+                            <input asp-for="InIsEligibleDeferredTaxCredit" type="checkbox" role="switch" class="form-check-input" />
+                            <span asp-validation-for="InIsEligibleDeferredTaxCredit" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="fInvoice.InUrssafPaymentRequestUuid" class="control-label"></label>
@@ -77,7 +71,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label">Select Interventions</label>
+                                    <label asp-for="selectedInterventions" class="control-label">Select Interventions</label>
                                     <select class="form-select" multiple asp-for="selectedInterventions" asp-items="@ViewBag.FIntervention"></select>
                                 </div>
                             </div>

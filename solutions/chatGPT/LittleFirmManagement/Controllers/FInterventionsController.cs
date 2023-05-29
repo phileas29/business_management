@@ -59,7 +59,7 @@ namespace LittleFirmManagement.Controllers
             // Create a new instance of FIntervention and set default values
             var intervention = new FIntervention
             {
-                IDate = DateOnly.FromDateTime(DateTime.Now),  // Set the default date to the current date
+                IDate = DateTime.UtcNow,  // Set the default date to the current date
                 IDescription = "Default description",  // Set a default description
                 INbRoundTrip = 1,  // Set the default number of round trips
                 IFkCategoryId = 8  // Set the default category ID
@@ -72,26 +72,26 @@ namespace LittleFirmManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IId,IFkClientId,IFkInvoiceId,IFkCategoryId,IDate,IDescription,INbRoundTrip")] FIntervention fIntervention, bool saveAndExit, int CId, string dateString)
+        public async Task<IActionResult> Create([Bind("IId,IFkClientId,IFkInvoiceId,IFkCategoryId,IDate,IDescription,INbRoundTrip")] FIntervention fIntervention, bool saveAndExit, int id)
         {
             ModelState.Remove("IFkClient");
             ModelState.Remove("IFkCategory");
-            ModelState.Remove("dateString");
             if (ModelState.IsValid)
             {
-                fIntervention.IDate = DateOnly.Parse(dateString);
-                fIntervention.IFkClientId = CId;
+                //fIntervention.IDate = DateTime.Today;
+                fIntervention.IDate = DateTime.SpecifyKind(fIntervention.IDate, DateTimeKind.Utc);
+                fIntervention.IFkClientId = id;
                 _context.Add(fIntervention);
                 await _context.SaveChangesAsync();
                 if (saveAndExit)
                     return RedirectToAction(nameof(Index));
                 else
-                    return RedirectToAction("Create", "FInvoices", new { CId = CId });
+                    return RedirectToAction("Create", "FInvoices", new { id = id });
             }
             var activitiesWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "activité").ToList();
             activitiesWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select an activity" });
             ViewData["IFkCategoryId"] = new SelectList(activitiesWithNull, "CaId", "CaName");
-            ViewData["FClient"] = _context.FClients.FirstOrDefault(c => c.CId == CId);
+            ViewData["FClient"] = _context.FClients.FirstOrDefault(c => c.CId == id);
             return View(fIntervention);
         }
 

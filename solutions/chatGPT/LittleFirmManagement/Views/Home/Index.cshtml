@@ -9,31 +9,23 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Column 1: List of buttons -->
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <div class="mb-3">
                     <h4>Que souhaitez-vous faire ?</h4>
                 </div>
                 <div>
-                    @{
-                        var controllers = typeof(Program).Assembly.GetExportedTypes()
-                        .Where(x => typeof(ControllerBase).IsAssignableFrom(x) && !x.IsAbstract);
-
-                        <ul class="list-group">
-                            @foreach (var controller in controllers)
-                            {
-                                var controllerName = controller.Name.Replace("Controller", "");
-                                <li class="list-group-item"><a class="nav-link" asp-controller="@controllerName" asp-action="Index">@controllerName</a></li>
-                            }
-                            <li class="list-group-item"><a class="nav-link" asp-controller="FClients" asp-action="Create">FClients>Create</a></li>
-                            <li class="list-group-item"><a class="nav-link" asp-controller="FInterventions" asp-action="Create">FInterventions>Create</a></li>
-                        </ul>
-                    }
+                    <ul class="list-group">
+                        <li class="list-group-item"><a class="nav-link" href="/SubMenus/Enter">Enter</a></li>
+                        <li class="list-group-item"><a class="nav-link" href="/SubMenus/Consult">Consult</a></li>
+                        <li class="list-group-item"><a class="nav-link" href="/SubMenus/Execute">Execute</a></li>
+                        <li class="list-group-item"><a class="nav-link" href="/SubMenus/Configure">Configure</a></li>
+                    </ul>
                 </div>
             </div>
 
             <!-- Column 2: Map -->
-            <div class="col-md-9">
-                <div id="mapid" style="height: 400px;"></div>
+            <div class="col-md-6">
+                <div id="mapid" style="height: 600px; width: 600px;"></div>
                 <p>Déjà @numClients client.e.s satisfait.e.s !!!</p>
             </div>
         </div>
@@ -52,7 +44,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
-        var mymap = L.map('mapid').setView([47.9375, -3.9585], 11);
+        var mymap = L.map('mapid').setView([47.9375, -4.0155], 11);
 
         var redIcon = L.icon({
             iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',

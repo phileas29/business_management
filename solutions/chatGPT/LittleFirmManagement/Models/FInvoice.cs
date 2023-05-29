@@ -24,19 +24,19 @@ public partial class FInvoice
     public int? InInvoiceIdCorrected { get; set; }
 
     [Column("in_invoice_date")]
-    public DateOnly InInvoiceDate { get; set; }
+    public DateTime InInvoiceDate { get; set; }
 
     [Column("in_receipt_date")]
-    public DateOnly? InReceiptDate { get; set; }
+    public DateTime? InReceiptDate { get; set; }
 
     [Column("in_credit_date")]
-    public DateOnly? InCreditDate { get; set; }
+    public DateTime? InCreditDate { get; set; }
 
     [Column("in_amount")]
     public int InAmount { get; set; }
 
-    [Column("in_is_eligible_deferred_tax_credit", TypeName = "bit(1)")]
-    public BitArray? InIsEligibleDeferredTaxCredit { get; set; }
+    [Column("in_is_eligible_deferred_tax_credit", TypeName = "boolean")]
+    public bool? InIsEligibleDeferredTaxCredit { get; set; }
 
     [Column("in_urssaf_payment_request_uuid", TypeName = "character varying")]
     public string? InUrssafPaymentRequestUuid { get; set; }

@@ -10,6 +10,8 @@ aware about "sequences" in the postgre sql database
 convert "bit(1)" to "boolean" in the postgre sql database
 > ALTER TABLE f_client ALTER COLUMN c_is_pro TYPE boolean USING c_is_pro::text::boolean;
 
+> ALTER TABLE f_invoice ALTER COLUMN in_is_eligible_deferred_tax_credit TYPE boolean USING in_is_eligible_deferred_tax_credit::text::boolean;
+
 
 ## c# code
 
@@ -48,6 +50,7 @@ add in program.cs
 using LittleFirmManagement.Models;
 using Microsoft.EntityFrameworkCore;
 builder.Services.AddDbContext<FirmContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 ```
 
 from ps1
@@ -66,6 +69,8 @@ from ps1
 > dotnet aspnet-codegenerator controller -dc FirmContext -name FCitiesController -m FCity --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries
 
 > dotnet aspnet-codegenerator controller -dc FirmContext -name FCategoryTypesController -m FCategoryType --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries
+
+replace `DateOnly` by `DateTime`
 
 copier dans `Views\Shared\_Layout.cshtml`
 ```

@@ -13,18 +13,9 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="navbar-collapse collapse d-md-inline-flex flex-md-row-reverse">
-                @{
-                    var controllers = typeof(Program).Assembly.GetExportedTypes()
-                    .Where(x => typeof(ControllerBase).IsAssignableFrom(x) && !x.IsAbstract);
-
-                    <ul class="navbar-nav mr-auto">
-                        @foreach (var controller in controllers)
-                        {
-                            var controllerName = controller.Name.Replace("Controller", "");
-                            <li class="nav-item"><a class="nav-link" asp-controller="@controllerName" asp-action="Index">@controllerName</a></li>
-                        }
-                    </ul>
-                }
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
+                </ul>
             </div>
 
         </nav>
