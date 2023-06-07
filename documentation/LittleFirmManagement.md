@@ -26,6 +26,10 @@ From ps1
 
 > dotnet add package Npgsql.EntityFrameworkCore.Tools
 
+complete `f_purchase` table
+
+> UPDATE f_purchase SET p_invoice_date = COALESCE(p_invoice_date, p_disbursement_date),p_debit_date = COALESCE(p_debit_date, p_disbursement_date) WHERE p_invoice_date IS NULL OR p_debit_date IS NULL;
+
 create appsettings
 
 `{
