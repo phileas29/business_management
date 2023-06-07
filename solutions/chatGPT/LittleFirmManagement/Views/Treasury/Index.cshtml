@@ -14,10 +14,10 @@
                     <thead>
                         <tr>
                             <th></th>
-                            @for (int month = 0; month < data.GetLength(1); month++)
+                            @for (int i = 0; i < data.GetLength(1); i++)
                             {
-                                DateTime startDate = ((DateTime)ViewData["Begin"]).AddMonths(month * (int)Math.Pow(2, selectedGranularity + 1));
-                                <th>@startDate.ToString("MMMM")</th>
+                                DateTime startDate = ((DateTime)ViewData["Begin"]).AddMonths(i * (int)Math.Pow(2, selectedGranularity + 1));
+                                <th>@startDate.ToString("MMMM yyyy")</th>
                             }
                         </tr>
                     </thead>
@@ -49,7 +49,7 @@
                     @foreach (KeyValuePair<int, string> g in ViewBag.GranularityMapping)
                     {
                         <li class="page-item @(g.Key == @selectedGranularity ? "active" : "")">
-                            <a class="page-link" href="/Treasury/Index?page=@(g.Key)">@(g.Value)</a>
+                            <a class="page-link" href="/Treasury/Index?selectedGranularity=@(g.Key)">@(g.Value)</a>
                         </li>
                     }
                 </ul>
