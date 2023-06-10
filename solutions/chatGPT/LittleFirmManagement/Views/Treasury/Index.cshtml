@@ -1,7 +1,9 @@
 ﻿@{
     int selectedGranularity = (int)ViewData["SelectedGranularity"];
+    int selectedDetails = (int)ViewData["SelectedDetails"];
     decimal[,] data = (decimal[,])ViewData["Data"];
-    List<string> labels = (List<string>)ViewData["Labels"];
+    var labels = ((IEnumerable<dynamic>)ViewData["Labels"]).ToList();
+    int n = (int)ViewData["N"];
 }
 <h1>Treasury</h1>
 
@@ -14,10 +16,11 @@
                     <thead>
                         <tr>
                             <th></th>
+                            @if(selectedDetails != 0) {<th></th>}
                             @for (int i = 0; i < data.GetLength(1); i++)
                             {
-                                DateTime startDate = ((DateTime)ViewData["Begin"]).AddMonths(i * (int)Math.Pow(2, selectedGranularity + 1));
-                                <th>@startDate.ToString("MMMM yyyy")</th>
+                                DateTime startDate = ((DateTime)ViewData["Begin"]).AddMonths(i * n - 1);
+                                <th>@startDate.ToString("yyyy")<br>@startDate.ToString("MMMM")</th>
                             }
                         </tr>
                     </thead>
@@ -25,7 +28,11 @@
                         @for (int row = 0; row < data.GetLength(0); row++)
                         {
                             <tr>
-                                <th>@labels[row]</th>
+                                <th>@labels[row].ct</th>
+                                @if (selectedDetails != 0)
+                                {
+                                    <th>@labels[row].c</th>
+                                }
                                 @for (int month = 0; month < data.GetLength(1); month++)
                                 {
                                     decimal amount = data[row,month];
@@ -42,14 +49,22 @@
                 </table>
             </div>
 
-
-            <!-- Pagination controls -->
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
                     @foreach (KeyValuePair<int, string> g in ViewBag.GranularityMapping)
                     {
                         <li class="page-item @(g.Key == @selectedGranularity ? "active" : "")">
-                            <a class="page-link" href="/Treasury/Index?selectedGranularity=@(g.Key)">@(g.Value)</a>
+                            <a class="page-link" href="/Treasury/Index?selectedGranularity=@(g.Key)&selectedDetails=@selectedDetails">@(g.Value)</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    @foreach (KeyValuePair<int, string> g in ViewBag.DetailsMapping)
+                    {
+                        <li class="page-item @(g.Key == @selectedDetails ? "active" : "")">
+                            <a class="page-link" href="/Treasury/Index?selectedGranularity=@selectedGranularity&selectedDetails=@(g.Key)">@(g.Value)</a>
                         </li>
                     }
                 </ul>
