@@ -49,10 +49,16 @@ namespace LittleFirmManagement.Controllers
             int totalPages = (int)Math.Ceiling((double)totalClients / pageSize);
 
             // Apply pagination
-            clients = clients.Skip((page - 1) * pageSize).Take(pageSize);
+            var clientsSelectedPage = clients.Skip((page - 1) * pageSize).Take(pageSize);
 
             // Pass the paginated clients and pagination data to the view
-            ViewBag.Clients = clients.ToList();
+            if (nameSearch != "" || firstnameSearch != "" || citySearch != -1)
+                ViewBag.ClientsGPS = clients.Except(clientsSelectedPage);
+            else
+                ViewBag.ClientsGPS = null;
+
+            //ViewBag.SearchEnabled = searchEnabled;
+            ViewBag.Clients = clientsSelectedPage.ToList();
             ViewBag.TotalClients = totalClients;
             ViewBag.TotalPages = totalPages;
             ViewBag.CurrentPage = page;
