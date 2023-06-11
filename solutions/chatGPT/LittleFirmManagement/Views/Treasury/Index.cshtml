@@ -40,7 +40,7 @@
                             @if(selectedDetails != 0) {<th></th>}
                             @for (int i = 0; i < data.GetLength(1); i++)
                             {
-                                DateTime startDate = ((DateTime)ViewData["Begin"]).AddMonths(i * n - 1);
+                                DateTime startDate = ((DateTime)ViewData["Begin"]).AddMonths(i * n);
                                 <th>@startDate.ToString("yyyy")<br>@startDate.ToString("MMMM")</th>
                             }
                         </tr>

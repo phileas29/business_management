@@ -27,6 +27,14 @@ namespace LittleFirmManagement.Controllers
             { 1, "Detailed" }
         };
 
+        private Dictionary<int, int> periodMapping = new Dictionary<int, int>
+        {
+            { 0,  1 },
+            { 1,  3 },
+            { 2,  6 },
+            { 3, 12 }
+        };
+
         public TreasuryController(FirmContext context)
         {
             _context = context;
@@ -41,16 +49,17 @@ namespace LittleFirmManagement.Controllers
 
             var cashflowIn = _context.FInvoices.Where(i => i.InCreditDate != null).Select(i => new { ct = new { id = -1, label = "overall sales" }, c = new { id = -1, label = "" }, i.InCreditDate, i.InAmount }).ToList();
             var cashflowOut = _context.FPurchases.Where(i => i.PDebitDate != null).Select(i => new { ct = new { i.PFkCategory.CaId, i.PFkCategory.CaName }, c = new { i.PFkSupplier.CaId, i.PFkSupplier.CaName }, i.PDebitDate, i.PAmount }).ToList();
+
             List<DateTime> beginDates = new List<DateTime>()
             {
                 cashflowIn.Select(c => c.InCreditDate)?.Min().Value ?? DateTime.MaxValue,
                 cashflowOut.Select(c => c.PDebitDate)?.Min().Value ?? DateTime.MaxValue
             };
-            ViewData["Begin"] = beginDates.Min();
             List<DateTime> endDates = new List<DateTime>() {
-                cashflowIn.Select(c => c.InCreditDate).Max().Value,
-                cashflowOut.Select(c => c.PDebitDate).Max().Value
+                cashflowIn.Select(c => c.InCreditDate)?.Max().Value ?? DateTime.MinValue,
+                cashflowOut.Select(c => c.PDebitDate)?.Max().Value ?? DateTime.MinValue
             };
+
             List<DateTime> limitDatesRaw = new List<DateTime>() {
                 beginDates.Min(),
                 endDates.Max()
@@ -60,39 +69,15 @@ namespace LittleFirmManagement.Controllers
             for(int i = 0; i < limitDatesRaw.Count; i++)
             {
                 DateTime roundedDate = new DateTime(limitDatesRaw[i].Year, limitDatesRaw[i].Month, 1, 0, 0, 0);
-                if (i == 1 && 1 < limitDatesRaw[i].Day)
-                    roundedDate = roundedDate.AddMonths(1);
                 limitDatesRounded.Add(roundedDate);
             }
 
+            int n = periodMapping.GetValueOrDefault(selectedGranularity,12);
             List<DateTime> limitDates = new List<DateTime>();
-            int n;
-            //alignment
-            switch (selectedGranularity)
-            {
-                case 0:
-                    n = 1;
-                    limitDates.Add(limitDatesRounded[0]);
-                    limitDates.Add(limitDatesRounded[1].AddMonths(1));
-                    break;
-                case 1:
-                    n = 3;
-                    limitDates.Add(limitDatesRounded[0].AddMonths(-((limitDatesRounded[0].Month - 1) % 3)));
-                    limitDates.Add(limitDatesRounded[1].AddMonths((limitDatesRounded[1].Month - 1) % 3));
-                    break;
-                case 2:
-                    n = 6;
-                    limitDates.Add(limitDatesRounded[0].AddMonths(-((limitDatesRounded[0].Month - 1) % 6)));
-                    limitDates.Add(limitDatesRounded[1].AddMonths((limitDatesRounded[1].Month - 1) % 6));
-                    break;
-                default:
-                    n = 12;
-                    limitDates.Add(limitDatesRounded[0].AddMonths(-(limitDatesRounded[0].Month - 1)));
-                    limitDates.Add(limitDatesRounded[1].AddYears(1 < limitDatesRounded[1].Month ? 1 : 0));
-                    break;
-            }
+            limitDates.Add(limitDatesRounded[0].AddMonths(-((limitDatesRounded[0].Month - 1) % n)));
+            limitDates.Add(limitDatesRounded[1]);
 
-            int N = (int)Math.Ceiling( ( ((limitDates[1].Year - limitDates[0].Year) * 12) + limitDates[1].Month - limitDates[0].Month ) / (decimal)n);
+            int N = (int)Math.Ceiling(((limitDates[1].Year - limitDates[0].Year) * 12 + limitDates[1].Month - limitDates[0].Month + 1) / (decimal)n);
 
             int numRows =
                 cashflowIn
@@ -146,6 +131,7 @@ namespace LittleFirmManagement.Controllers
                 }
             }
 
+            ViewData["Begin"] = limitDates[0];
             ViewData["N"] = n;
             ViewData["Data"] = array;
             ViewData["Labels"] =
