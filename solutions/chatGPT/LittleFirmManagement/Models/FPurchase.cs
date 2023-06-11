@@ -23,13 +23,13 @@ public partial class FPurchase
     public int PFkSupplierId { get; set; }
 
     [Column("p_invoice_date")]
-    public DateOnly? PInvoiceDate { get; set; }
+    public DateTime? PInvoiceDate { get; set; }
 
     [Column("p_disbursement_date")]
-    public DateOnly PDisbursementDate { get; set; }
+    public DateTime PDisbursementDate { get; set; }
 
     [Column("p_debit_date")]
-    public DateOnly? PDebitDate { get; set; }
+    public DateTime? PDebitDate { get; set; }
 
     [Column("p_description", TypeName = "character varying")]
     public string? PDescription { get; set; }

@@ -76,6 +76,8 @@ namespace LittleFirmManagement.Controllers
         {
             ModelState.Remove("IFkClient");
             ModelState.Remove("IFkCategory");
+            if (fIntervention.IFkCategoryId == -1)
+                ModelState.AddModelError("IFkCategoryId", "Please select a category.");
             if (ModelState.IsValid)
             {
                 //fIntervention.IDate = DateTime.Today;
@@ -91,7 +93,7 @@ namespace LittleFirmManagement.Controllers
             var activitiesWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "activité").ToList();
             activitiesWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select an activity" });
             ViewData["IFkCategoryId"] = new SelectList(activitiesWithNull, "CaId", "CaName");
-            ViewData["FClient"] = _context.FClients.FirstOrDefault(c => c.CId == id);
+            ViewData["FClient"] = _context.FClients.Include(c => c.CFkCity).FirstOrDefault(c => c.CId == id);
             return View(fIntervention);
         }
 

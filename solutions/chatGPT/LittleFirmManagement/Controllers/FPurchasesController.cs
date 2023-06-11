@@ -49,9 +49,16 @@ namespace LittleFirmManagement.Controllers
         // GET: FPurchases/Create
         public IActionResult Create()
         {
-            ViewData["PFkCategoryId"] = new SelectList(_context.FCategories, "CaId", "CaId");
-            ViewData["PFkPaymentId"] = new SelectList(_context.FCategories, "CaId", "CaId");
-            ViewData["PFkSupplierId"] = new SelectList(_context.FCategories, "CaId", "CaId");
+            var categoriesWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "achat").ToList();
+            categoriesWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a category" });
+            var paymentsWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "paiement").ToList();
+            paymentsWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a payment" });
+            var suppliersWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "fournisseur").OrderBy(p=>p.CaName).ToList();
+            suppliersWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a supplier" });
+
+            ViewData["PFkCategoryId"] = new SelectList(categoriesWithNull, "CaId", "CaName");
+            ViewData["PFkPaymentId"] = new SelectList(paymentsWithNull, "CaId", "CaName");
+            ViewData["PFkSupplierId"] = new SelectList(suppliersWithNull, "CaId", "CaName");
             return View();
         }
 
@@ -62,15 +69,36 @@ namespace LittleFirmManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PId,PFkPaymentId,PFkCategoryId,PFkSupplierId,PInvoiceDate,PDisbursementDate,PDebitDate,PDescription,PAmount")] FPurchase fPurchase)
         {
+            ModelState.Remove("PFkCategory");
+            ModelState.Remove("PFkPayment");
+            ModelState.Remove("PFkSupplier");
+            if (fPurchase.PFkCategoryId == -1)
+                ModelState.AddModelError("PFkCategoryId", "Please select a category.");
+            if (fPurchase.PFkPaymentId == -1)
+                ModelState.AddModelError("PFkPaymentId", "Please select a payment.");
+            if (fPurchase.PFkSupplierId == -1)
+                ModelState.AddModelError("PFkSupplierId", "Please select a supplier.");
             if (ModelState.IsValid)
             {
+                fPurchase.PDisbursementDate = DateTime.SpecifyKind(fPurchase.PDisbursementDate, DateTimeKind.Utc);
+                if (fPurchase.PDebitDate.HasValue)
+                    fPurchase.PDebitDate = DateTime.SpecifyKind(fPurchase.PDebitDate.Value, DateTimeKind.Utc);
+                if (fPurchase.PInvoiceDate.HasValue)
+                    fPurchase.PInvoiceDate = DateTime.SpecifyKind(fPurchase.PInvoiceDate.Value, DateTimeKind.Utc);
                 _context.Add(fPurchase);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PFkCategoryId"] = new SelectList(_context.FCategories, "CaId", "CaId", fPurchase.PFkCategoryId);
-            ViewData["PFkPaymentId"] = new SelectList(_context.FCategories, "CaId", "CaId", fPurchase.PFkPaymentId);
-            ViewData["PFkSupplierId"] = new SelectList(_context.FCategories, "CaId", "CaId", fPurchase.PFkSupplierId);
+            var categoriesWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "achat").ToList();
+            categoriesWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a category" });
+            var paymentsWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "paiement").ToList();
+            paymentsWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a payment" });
+            var suppliersWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "fournisseur").OrderBy(p => p.CaName).ToList();
+            suppliersWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a supplier" });
+
+            ViewData["PFkCategoryId"] = new SelectList(categoriesWithNull, "CaId", "CaName");
+            ViewData["PFkPaymentId"] = new SelectList(paymentsWithNull, "CaId", "CaName");
+            ViewData["PFkSupplierId"] = new SelectList(suppliersWithNull, "CaId", "CaName");
             return View(fPurchase);
         }
 

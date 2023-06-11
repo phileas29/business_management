@@ -36,6 +36,7 @@
                         <div class="mb-3">
                             <label asp-for="CFkMediaId" class="form-label"></label>
                             <select asp-for="CFkMediaId" class="form-control" asp-items="ViewBag.CFkMediaId"></select>
+                            <span asp-validation-for="CFkMediaId" class="text-danger"></span>
                         </div>
                         <div class="card mt-3">
                             <div class="card-header">
@@ -251,6 +252,10 @@
             document.getElementById("lon").value = "";
             document.getElementById("distance").value = "";
             document.getElementById("travel_time").value = "";
+            if (polyline) {
+                // Remove the existing polyline from the map
+                map.removeLayer(polyline);
+            }
         });
 
         document.addEventListener('DOMContentLoaded', function () {

@@ -44,12 +44,12 @@ namespace LittleFirmManagement.Controllers
             List<DateTime> beginDates = new List<DateTime>()
             {
                 cashflowIn.Select(c => c.InCreditDate)?.Min().Value ?? DateTime.MaxValue,
-                cashflowOut.Select(c => c.PDebitDate)?.Min().Value.ToDateTime(new TimeOnly(0, 0)) ?? DateTime.MaxValue
+                cashflowOut.Select(c => c.PDebitDate)?.Min().Value ?? DateTime.MaxValue
             };
             ViewData["Begin"] = beginDates.Min();
             List<DateTime> endDates = new List<DateTime>() {
                 cashflowIn.Select(c => c.InCreditDate).Max().Value,
-                cashflowOut.Select(c => c.PDebitDate).Max().Value.ToDateTime(new TimeOnly(0, 0))
+                cashflowOut.Select(c => c.PDebitDate).Max().Value
             };
             List<DateTime> limitDatesRaw = new List<DateTime>() {
                 beginDates.Min(),
@@ -139,7 +139,7 @@ namespace LittleFirmManagement.Controllers
                     DateTime endDate = startDate.AddMonths(n);
 
                     decimal totalAmount = cashflowOut
-                            .Where(p => p.ct.CaId == distinctCouples[r].ct && ( selectedDetails == 0 || p.c.CaId == distinctCouples[r].c ) && p.PDebitDate?.ToDateTime(new TimeOnly(0, 0)) >= startDate && p.PDebitDate?.ToDateTime(new TimeOnly(0, 0)) < endDate)
+                            .Where(p => p.ct.CaId == distinctCouples[r].ct && ( selectedDetails == 0 || p.c.CaId == distinctCouples[r].c ) && p.PDebitDate >= startDate && p.PDebitDate < endDate)
                             .Sum(p => p.PAmount);
 
                     array[offset+r, k] = totalAmount;

@@ -52,10 +52,10 @@ namespace LittleFirmManagement.Controllers
             var clientsSelectedPage = clients.Skip((page - 1) * pageSize).Take(pageSize);
 
             // Pass the paginated clients and pagination data to the view
-            if (nameSearch != "" || firstnameSearch != "" || citySearch != -1)
-                ViewBag.ClientsGPS = clients.Except(clientsSelectedPage);
-            else
+            if ((nameSearch == null || nameSearch == "") && (firstnameSearch == null || firstnameSearch == "") && citySearch == -1)
                 ViewBag.ClientsGPS = null;
+            else
+                ViewBag.ClientsGPS = clients.Except(clientsSelectedPage);
 
             //ViewBag.SearchEnabled = searchEnabled;
             ViewBag.Clients = clientsSelectedPage.ToList();
