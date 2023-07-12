@@ -65,17 +65,16 @@ namespace LittleFirmManagement.Controllers
                 endDates.Max()
             };
 
-            List<DateTime> limitDatesRounded = new List<DateTime>();
-            for(int i = 0; i < limitDatesRaw.Count; i++)
-            {
-                DateTime roundedDate = new DateTime(limitDatesRaw[i].Year, limitDatesRaw[i].Month, 1, 0, 0, 0);
-                limitDatesRounded.Add(roundedDate);
-            }
+            List<DateTime> limitDatesRounded = new();
+            foreach(DateTime limitDate in limitDatesRaw)
+                limitDatesRounded.Add(new DateTime(limitDate.Year, limitDate.Month, 1, 0, 0, 0));
 
             int n = periodMapping.GetValueOrDefault(selectedGranularity,12);
-            List<DateTime> limitDates = new List<DateTime>();
-            limitDates.Add(limitDatesRounded[0].AddMonths(-((limitDatesRounded[0].Month - 1) % n)));
-            limitDates.Add(limitDatesRounded[1]);
+            List<DateTime> limitDates = new List<DateTime>
+            {
+                limitDatesRounded[0].AddMonths(-((limitDatesRounded[0].Month - 1) % n)),
+                limitDatesRounded[1]
+            };
 
             int N = (int)Math.Ceiling(((limitDates[1].Year - limitDates[0].Year) * 12 + limitDates[1].Month - limitDates[0].Month + 1) / (decimal)n);
 
