@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using LittleFirmManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace LittleFirmManagement.Controllers
 {
@@ -16,26 +15,52 @@ namespace LittleFirmManagement.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        private void PrepareViewData()
         {
-            var outstandingInvoices = _context.FInterventions.Where(i=> i.IFkInvoice != null && i.IFkInvoice.InCreditDate == null).OrderByDescending(i=>i.IFkInvoiceId).Select(i=> new { no = i.IFkInvoice.InInvoiceId, i.IFkClient.CName, i.IDate, i.IFkInvoice.InInvoiceDate, i.IFkInvoice.InReceiptDate, i.IFkInvoice.InCreditDate, i.IDescription, i.IFkInvoice.InAmount }).ToList();
+            var outstandingInvoices = _context.FInterventions
+                .Where(i => i.IFkInvoice != null && i.IFkInvoice.InCreditDate == null)
+                .OrderByDescending(i => i.IFkInvoiceId)
+                .Select(i => new
+                {
+                    i.IFkInvoice.InInvoiceId,
+                    i.IFkClient.CName,
+                    i.IDate,
+                    i.IFkInvoice.InInvoiceDate,
+                    i.IFkInvoice.InReceiptDate,
+                    i.IFkInvoice.InCreditDate,
+                    i.IDescription,
+                    i.IFkInvoice.InFkPayment.CaName,
+                    i.IFkInvoice.InAmount
+                })
+                .ToList();
 
-            var paymentsWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "paiement").ToList();
-            paymentsWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a payment" });
-
-            List<object> subjectsWithNull = new List<object>
+            List<SelectListItem> subjectsWithNull = new List<SelectListItem>
+        {
+            new SelectListItem
             {
-                new FCategory { CaId = -1, CaName = "Select a payment" },
-                new FCategory { CaId = 0, CaName = "reception" },
-                new FCategory { CaId = 1, CaName = "credit" }
-            };
-
-            ViewData["PaymentId"] = new SelectList(paymentsWithNull, "CaId", "CaName");
-            ViewData["SubjectId"] = new SelectList(subjectsWithNull, "CaId", "CaName");
-
+                Text = "Select a subject",
+                Value = "",
+                Selected = true
+            },
+            new SelectListItem
+            {
+                Text = "reception",
+                Value = "0"
+            },
+            new SelectListItem
+            {
+                Text = "credit",
+                Value = "1"
+            }
+        };
 
             ViewData["Data"] = outstandingInvoices;
+            ViewData["SubjectId"] = new SelectList(subjectsWithNull, "Value", "Text", "");
+        }
 
+        public IActionResult Index()
+        {
+            PrepareViewData();
 
             return View();
         }
@@ -49,26 +74,41 @@ namespace LittleFirmManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                List<FInvoice> invoices = _context.FInvoices.Where(i => outstandingInvoicesViewModel.InvoicesSelected.Contains(i.InInvoiceId??-1)).ToList();
+                if (invoices != null)
+                {
+                    foreach (var invoice in invoices)
+                    {
+                        if (outstandingInvoicesViewModel.SubjectId == 0)
+                        {
+                            if (outstandingInvoicesViewModel.ActionDate < invoice.InInvoiceDate)
+                                ModelState.AddModelError("ActionDate", "Please enter a receipt date greater than invoice date");
+                        }
+                        else if (outstandingInvoicesViewModel.SubjectId == 1)
+                        {
+                            if (outstandingInvoicesViewModel.ActionDate < invoice.InReceiptDate)
+                                ModelState.AddModelError("ActionDate", "Please enter a credit date greater than receipt date");
+                            if (invoice.InReceiptDate==null)
+                                ModelState.AddModelError("ActionDate", "You can't enter a credit date if no receipt date is set");
+                        }
+                    }
+                    if (ModelState.IsValid)
+                    {
+                        foreach (var invoice in invoices)
+                        {
+                            if (outstandingInvoicesViewModel.SubjectId == 0)
+                                invoice.InReceiptDate ??= outstandingInvoicesViewModel.ActionDate;
+                            else if (outstandingInvoicesViewModel.SubjectId == 1)
+                                invoice.InCreditDate ??= outstandingInvoicesViewModel.ActionDate;
+                        }
+                        _context.UpdateRange(invoices);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
             }
-            var outstandingInvoices = _context.FInterventions.Where(i => i.IFkInvoice != null && i.IFkInvoice.InCreditDate == null).OrderByDescending(i => i.IFkInvoiceId).Select(i => new { no = i.IFkInvoice.InInvoiceId, i.IFkClient.CName, i.IDate, i.IFkInvoice.InInvoiceDate, i.IFkInvoice.InReceiptDate, i.IFkInvoice.InCreditDate, i.IDescription }).ToList();
 
-            var paymentsWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "paiement").ToList();
-            paymentsWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a payment" });
-
-            List<object> subjectsWithNull = new List<object>
-            {
-                new FCategory { CaId = -1, CaName = "Select a payment" },
-                new FCategory { CaId = 0, CaName = "reception" },
-                new FCategory { CaId = 1, CaName = "credit" }
-            };
-
-            ViewData["PaymentId"] = new SelectList(paymentsWithNull, "CaId", "CaName");
-            ViewData["SubjectId"] = new SelectList(subjectsWithNull, "CaId", "CaName");
-
-
-            ViewData["Data"] = outstandingInvoices;
+            PrepareViewData();
             return View();
         }
     }

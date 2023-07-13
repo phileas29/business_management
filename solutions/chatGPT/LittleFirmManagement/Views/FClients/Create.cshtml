@@ -3,7 +3,7 @@
 <div class="container">
     <form asp-action="Create" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">Identity</div>
@@ -90,47 +90,54 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Location</div>
                     <div class="card-body">
-                        <div class="mb-3">
-                            <label asp-for="Town" class="form-label">Town</label>
-                            <input asp-for="Town" class="form-control" name="Town" placeholder="Enter town name" id="town"></input>
-                            <span asp-validation-for="Town" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Town" class="form-label">Town</label>
+                                    <input asp-for="Town" class="form-control" name="Town" placeholder="Enter town name" id="town"></input>
+                                    <span asp-validation-for="Town" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="CAddress" class="form-label"></label>
+                                    <input asp-for="CAddress" class="form-control" id="address" />
+                                    <span asp-validation-for="CAddress" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="CLocationLong" class="form-label"></label>
+                                    <input asp-for="CLocationLong" class="form-control" id="lon" />
+                                    <span asp-validation-for="CLocationLong" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="CLocationLat" class="form-label"></label>
+                                    <input asp-for="CLocationLat" class="form-control" id="lat" />
+                                    <span asp-validation-for="CLocationLat" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="CDistance" class="form-label"></label>
+                                    <input asp-for="CDistance" class="form-control" id="distance" />
+                                    <span asp-validation-for="CDistance" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="CTravelTime" class="form-label"></label>
+                                    <input asp-for="CTravelTime" class="form-control" id="travel_time" />
+                                    <span asp-validation-for="CTravelTime" class="text-danger"></span>
+                                </div>
+                            </div>
+							<div class="col-md-6">
+								<div id="map" style="height: 400px;" class="mb-3"></div>
+                                <button type="button" class="btn btn-danger" id="clear">Clear Map</button>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label asp-for="CAddress" class="form-label"></label>
-                            <input asp-for="CAddress" class="form-control" id="address" />
-                            <span asp-validation-for="CAddress" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="CLocationLong" class="form-label"></label>
-                            <input asp-for="CLocationLong" class="form-control" id="lon" />
-                            <span asp-validation-for="CLocationLong" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="CLocationLat" class="form-label"></label>
-                            <input asp-for="CLocationLat" class="form-control" id="lat" />
-                            <span asp-validation-for="CLocationLat" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="CDistance" class="form-label"></label>
-                            <input asp-for="CDistance" class="form-control" id="distance" />
-                            <span asp-validation-for="CDistance" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="CTravelTime" class="form-label"></label>
-                            <input asp-for="CTravelTime" class="form-control" id="travel_time" />
-                            <span asp-validation-for="CTravelTime" class="text-danger"></span>
-                        </div>
-                        <div id="map" style="height: 400px;" class="mb-3"></div>
-                        <button type="button" class="btn btn-danger" id="clear">Clear Map</button>
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-4 d-flex flex-column align-items-end">
+        </div>
+        <div class="row">
+            <div class="col-md-12 d-flex flex-column align-items-end">
                 <button name="saveAndExit" value="false" asp-controller="FClients" asp-action="Create" class="btn btn-primary mb-4">Save and record an intervention</button>
                 <button name="saveAndExit" value="true" asp-controller="FClients" asp-action="Create" class="btn btn-primary mb-4">Save and exit</button>
                 <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>

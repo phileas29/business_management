@@ -3,13 +3,12 @@
 @{
     var data = ((IEnumerable<dynamic>)ViewData["Data"]).ToList();
 }
-<h1>Oustanding invoices</h1>
+<h1>Outstanding invoices</h1>
 
 
 <div class="container">
     <form asp-action="Index">
         <div class="row">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="col-3">
                 <div class="form-group">
                     <label asp-for="SubjectId" class="control-label"></label>
@@ -20,11 +19,6 @@
                     <label asp-for="ActionDate" class="control-label"></label>
                     <input asp-for="ActionDate" type="date" class="form-control" />
                     <span asp-validation-for="ActionDate" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="PaymentId" class="control-label"></label>
-                    <select asp-for="PaymentId" class="form-control" asp-items="ViewBag.PaymentId"></select>
-                    <span asp-validation-for="PaymentId" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-9">
@@ -39,25 +33,34 @@
                                 <th>date rec</th>
                                 <th>date credit</th>
                                 <th>description</th>
+                                <th>payment mode</th>
                                 <th>amount</th>
-                                <th>select</th>
+                                <th>
+                                    <span asp-validation-for="InvoicesSelected" class="text-danger"></span>
+                                    select
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach(var row in data)
+                            @for (int i = 0; i < data.Count; i++)
                             {
                                 <tr>
-                                    <th>@row.no</th>
-                                    <th>@row.CName</th>
-                                    <th>@row.IDate</th>
-                                    <th>@row.InInvoiceDate</th>
-                                    <th>@row.InReceiptDate</th>
-                                    <th>@row.InCreditDate</th>
-                                    <th>@row.IDescription</th>
-                                    <th>@row.InAmount</th>
+                                    <th>@data[i].InInvoiceId</th>
+                                    <th>@data[i].CName</th>
+                                    <th>@data[i].IDate</th>
+                                    <th>@data[i].InInvoiceDate</th>
+                                    <th>@data[i].InReceiptDate</th>
+                                    <th>@data[i].InCreditDate</th>
+                                    <th>@data[i].IDescription</th>
+                                    <th>@data[i].CaName</th>
+                                    <th>@data[i].InAmount</th>
+                                    <th>
+                                        <div class="mb-3">
+                                            <input name="InvoicesSelected" type="checkbox" value="@data[i].InInvoiceId" class="form-check-input" />
+                                        </div>
+                                    </th>
                                 </tr>
                             }
-                            <tr></tr>
                         </tbody>
                     </table>
                 </div>
