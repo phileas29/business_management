@@ -35,24 +35,24 @@ namespace LittleFirmManagement.Controllers
                 .ToList();
 
             List<SelectListItem> subjectsWithNull = new List<SelectListItem>
-        {
-            new SelectListItem
             {
-                Text = "Select a subject",
-                Value = "",
-                Selected = true
-            },
-            new SelectListItem
-            {
-                Text = "reception",
-                Value = "0"
-            },
-            new SelectListItem
-            {
-                Text = "credit",
-                Value = "1"
-            }
-        };
+                new SelectListItem
+                {
+                    Text = "Select a subject",
+                    Value = "",
+                    Selected = true
+                },
+                new SelectListItem
+                {
+                    Text = "reception",
+                    Value = "0"
+                },
+                new SelectListItem
+                {
+                    Text = "credit",
+                    Value = "1"
+                }
+            };
 
             ViewData["Data"] = outstandingInvoices;
             ViewData["SubjectId"] = new SelectList(subjectsWithNull, "Value", "Text", "");

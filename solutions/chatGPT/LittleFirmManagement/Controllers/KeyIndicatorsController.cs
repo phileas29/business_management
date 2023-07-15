@@ -1,16 +1,11 @@
-﻿using LittleFirmManagement.Models;
+﻿using System.Linq;
+using LittleFirmManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Packaging;
-using NuGet.Packaging.Rules;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 
 namespace LittleFirmManagement.Controllers
 {
-    public class TreasuryController : Controller
+    public class KeyIndicatorsController : Controller
     {
         private readonly FirmContext _context;
 
@@ -37,40 +32,72 @@ namespace LittleFirmManagement.Controllers
             { 3, 12 }
         };
 
-        public TreasuryController(FirmContext context)
+        public KeyIndicatorsController(FirmContext context)
         {
             _context = context;
-        }
+		}
 
-        public IActionResult Index(int selectedGranularity = 3, int selectedDetails = 0)
-        {
-            ViewData["GranularityMapping"] = granularityMapping;
-            ViewData["DetailsMapping"] = detailsMapping;
-            ViewData["SelectedGranularity"] = selectedGranularity;
-            ViewData["SelectedDetails"] = selectedDetails;
+		public IActionResult Index(int selectedGranularity = 3, int selectedDetails = 0)
+		{
+			ViewData["GranularityMapping"] = granularityMapping;
+			ViewData["DetailsMapping"] = detailsMapping;
+			ViewData["SelectedGranularity"] = selectedGranularity;
+			ViewData["SelectedDetails"] = selectedDetails;
 
             var cashflowIn = _context.FInvoices
-                .Where(i => i.InCreditDate != null)
+                .Where(i => i.InReceiptDate != null)
                 .Select(i => new {
-                    ct = new { id = -1, label = "overall sales" },
+                    ct = new { id = -10, label = "overall sales" },
                     c = new { id = i.FInterventions.First().IFkCategory.CaId, label = i.FInterventions.First().IFkCategory.CaName },
-                    date = i.InCreditDate.Value,
+                    date = i.InReceiptDate.Value,
                     quantity = (decimal)i.InAmount
                 })
                 .ToList();
 
-            var cashflowOut = _context.FPurchases
-                .Where(i => i.PDebitDate != null)
+            var mileageExpenses = _context.FInterventions
                 .Select(i => new {
-                    ct = new { id = i.PFkCategory.CaId, label = i.PFkCategory.CaName },
-                    c = new { id = i.PFkSupplier.CaId, label = i.PFkSupplier.CaName },
-                    date = i.PDebitDate.Value,
-                    quantity = i.PAmount
+                    ct = new { id = -9, label = "overall mileage expenses" },
+                    c = new { id = i.IFkCategory.CaId, label = i.IFkCategory.CaName },
+                    date = i.IDate,
+                    quantity = ( i.IFkClient.CDistance ?? 0m ) * 0.1m * 2 * i.INbRoundTrip
                 })
                 .ToList();
 
+            var hoursBilled = _context.FInterventions
+                .Where(i => i.IFkInvoice != null)
+                .Select(i => new {
+                    ct = new { id = -8, label = "overall hours billed" },
+                    c = new { id = i.IFkCategory.CaId, label = i.IFkCategory.CaName },
+                    date = i.IDate,
+                    quantity = (decimal)(i.IFkInvoice.InAmount / (i.IFkCategory.CaName == "assistance informatique" ? 60 : 40))
+                })
+                .ToList();
+
+            var kilometersTravelled = _context.FInterventions
+                .Select(i => new {
+                    ct = new { id = -7, label = "overall kilometers travelled" },
+                    c = new { id = i.IFkCategory.CaId, label = i.IFkCategory.CaName },
+                    date = i.IDate,
+                    quantity = (i.IFkClient.CDistance ?? 0m) * 2m * i.INbRoundTrip
+                })
+                .ToList();
+
+            var numberOfInvoicedCustomers = _context.FInterventions
+                .Where(i => i.IFkInvoice != null)
+                .Select(i => new {
+                    ct = new { id = -6, label = "overall number of invoiced customers" },
+                    c = new { id = i.IFkCategory.CaId, label = i.IFkCategory.CaName },
+                    date = i.IFkInvoice.InInvoiceDate,
+                    quantity = 1m
+                })
+                .ToList();
+
+
             var data = cashflowIn
-                .Concat(cashflowOut)
+                .Concat(mileageExpenses)
+                .Concat(hoursBilled)
+                .Concat(kilometersTravelled)
+                .Concat(numberOfInvoicedCustomers)
                 .ToList();
 
             List<DateTime> limitDatesRaw = new List<DateTime>() {
@@ -126,5 +153,5 @@ namespace LittleFirmManagement.Controllers
 
             return View();
         }
-    }
+	}
 }
