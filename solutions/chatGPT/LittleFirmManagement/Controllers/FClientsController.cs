@@ -84,24 +84,34 @@ namespace LittleFirmManagement.Controllers
             return View(fClient);
         }
 
+        private void PrepareViewData()
+        {
+            List<SelectListItem> mediasWithNull = _context.FCategories
+                .Where(c => c.CaFkCategoryType.CtName == "média")
+                .Select(c => new SelectListItem
+                {
+                    Text = c.CaName,
+                    Value = c.CaId.ToString()
+                })
+                .ToList();
+            mediasWithNull.Add(new SelectListItem { Text = "Select a media", Value = "", Selected = true });
+            ViewData["CFkMediaId"] = new SelectList(mediasWithNull, "Value", "Text", "");
+        }
+
         // GET: FClients/Create
         public IActionResult Create()
         {
-            var citiesWithNull = _context.FCities.ToList();
-            citiesWithNull.Insert(0, new FCity { CiId = -1, CiName = "Select a city" });
-            var mediasWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "média").ToList();
-            mediasWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a media" });
-
-            ViewData["CFkBirthCityId"] = new SelectList(citiesWithNull, "CiId", "CiName");
-            ViewData["CFkMediaId"] = new SelectList(mediasWithNull, "CaId", "CaName");
-
-            var viewModel = new FClientsViewModel();
-            viewModel.CName = "Default Name";
-            viewModel.CFirstname = "Default Firstname";
-            viewModel.CEmail = "default@example.com";
-            viewModel.CPhoneFixed = "1234567890";
-            viewModel.CPhoneCell = "9876543210";
-            viewModel.CFkMediaId = mediasWithNull[2].CaId;
+            PrepareViewData();
+            var viewModel = new FClientsViewModel
+            {
+                CName = "Default Name",
+                CFirstname = "Default Firstname",
+                CEmail = "default@example.com",
+                CPhoneFixed = "1234567890",
+                CPhoneCell = "9876543210",
+                CFkMediaId = _context.FCategories
+                .Where(c => c.CaFkCategoryType.CtName == "média" && c.CaName == "journal").Select(m => m.CaId).First()
+            };
             return View(viewModel);
         }
 
@@ -114,10 +124,6 @@ namespace LittleFirmManagement.Controllers
         {
             ModelState.Remove("CFkCity");
             ModelState.Remove("CFkBirthCityId");
-            if (vClient.CFkMediaId == -1)
-                ModelState.AddModelError("CFkMediaId", "Please select a media.");
-            if (vClient.CFkBirthCityId == -1)
-                vClient.CFkBirthCityId = null;
             if (ModelState.IsValid)
             {
                 FClient fClient = FClientUtility.ValidateClient(vClient, _context).Result;
@@ -128,13 +134,7 @@ namespace LittleFirmManagement.Controllers
                 else
                     return RedirectToAction("Create", "FInterventions", new { id = fClient.CId });
             }
-            var citiesWithNull = _context.FCities.ToList();
-            citiesWithNull.Insert(0, new FCity { CiId = -1, CiName = "Select a city" });
-            var mediasWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "média").ToList();
-            mediasWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a media" });
-
-            ViewData["CFkBirthCityId"] = new SelectList(citiesWithNull, "CiId", "CiName");
-            ViewData["CFkMediaId"] = new SelectList(mediasWithNull, "CaId", "CaName");
+            PrepareViewData();
             return View(vClient);
         }
 

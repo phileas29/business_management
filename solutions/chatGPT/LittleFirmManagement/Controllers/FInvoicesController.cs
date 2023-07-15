@@ -46,19 +46,27 @@ namespace LittleFirmManagement.Controllers
             return View(fInvoice);
         }
 
-        // GET: FInvoices/Create
-        public IActionResult Create(int id, int IId)
+        private void PrepareViewData(int id)
         {
-            var paymentsWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "paiement").ToList();
-            paymentsWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a payment mode" });
-            ViewData["InFkPaymentId"] = new SelectList(paymentsWithNull, "CaId", "CaName");
+            List<SelectListItem> paymentsWithNull = _context.FCategories
+                .Where(c => c.CaFkCategoryType.CtName == "paiement")
+                .Select(c => new SelectListItem
+                {
+                    Text = c.CaName,
+                    Value = c.CaId.ToString()
+                })
+                .ToList();
+            paymentsWithNull.Add(new SelectListItem { Text = "Select a payment", Value = "", Selected = true });
+            ViewData["InFkPaymentId"] = new SelectList(paymentsWithNull, "Value", "Text", "");
             ViewData["FClient"] = _context.FClients.FirstOrDefault(c => c.CId == id);
 
-            ViewBag.FIntervention = new MultiSelectList(_context.FInterventions.Where(i => i.IFkClientId == id && i.IFkInvoiceId == null ).OrderByDescending(i=>i.IDate), "IId", "CombinedDateAndDescription");
+            ViewBag.FIntervention = new MultiSelectList(_context.FInterventions.Where(i => i.IFkClientId == id && i.IFkInvoiceId == null).OrderByDescending(i => i.IDate), "IId", "CombinedDateAndDescription");
+        }
 
-            //var inters = _context.FInterventions.Where(i => i.IFkClientId == CId);
-            //ViewData["FIntervention"] = new SelectList(_context.FInterventions.Where(i => i.IFkClientId == CId), "IId", "IDescription");
-
+        // GET: FInvoices/Create
+        public IActionResult Create(int id)
+        {
+            PrepareViewData(id);
             // Create a new instance of FIntervention and set default values
             var invoicesViewModel = new FInvoicesViewModel { 
                 fInvoice = new FInvoice { 
@@ -75,19 +83,17 @@ namespace LittleFirmManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(FInvoicesViewModel fInvoicesViewModel, int CId)
+        public async Task<IActionResult> Create(FInvoicesViewModel fInvoicesViewModel, int id)
         {
-            ModelState.Remove("CId");
+            ModelState.Remove("id");
             ModelState.Remove("fInvoice.InFkPayment");
             if (ModelState.IsValid)
             {
                 fInvoicesViewModel.fInvoice.InIsEligibleDeferredTaxCredit = fInvoicesViewModel.InIsEligibleDeferredTaxCredit;
                 fInvoicesViewModel.fInvoice.InInvoiceDate = DateTime.SpecifyKind(fInvoicesViewModel.fInvoice.InInvoiceDate, DateTimeKind.Utc);
                 if (fInvoicesViewModel.fInvoice.InReceiptDate.HasValue)
-                    //fInvoicesViewModel.fInvoice.InReceiptDate = fInvoicesViewModel.fInvoice.InReceiptDate.Value.Date + TimeSpan.Zero;
                     fInvoicesViewModel.fInvoice.InReceiptDate = DateTime.SpecifyKind(fInvoicesViewModel.fInvoice.InReceiptDate.Value, DateTimeKind.Utc);
                 if (fInvoicesViewModel.fInvoice.InCreditDate.HasValue)
-                    //fInvoicesViewModel.fInvoice.InCreditDate = fInvoicesViewModel.fInvoice.InCreditDate.Value.Date + TimeSpan.Zero;
                     fInvoicesViewModel.fInvoice.InCreditDate = DateTime.SpecifyKind(fInvoicesViewModel.fInvoice.InCreditDate.Value, DateTimeKind.Utc);
                 _context.Add(fInvoicesViewModel.fInvoice);
                 await _context.SaveChangesAsync();
@@ -100,12 +106,7 @@ namespace LittleFirmManagement.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            var paymentsWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "paiement").ToList();
-            paymentsWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a payment mode" });
-            ViewData["InFkPaymentId"] = new SelectList(paymentsWithNull, "CaId", "CaName");
-            ViewData["FClient"] = _context.FClients.FirstOrDefault(c => c.CId == CId);
-
-            ViewBag.FIntervention = new MultiSelectList(_context.FInterventions.Where(i => i.IFkClientId == CId), "IId", "CombinedDateAndDescription");
+            PrepareViewData(id);
             FInvoicesViewModel fInvoiceViewModel = new FInvoicesViewModel
             {
                 selectedInterventions = fInvoicesViewModel.selectedInterventions,

@@ -48,13 +48,25 @@ namespace LittleFirmManagement.Controllers
             return View(fIntervention);
         }
 
+        private void PrepareViewData(int id)
+        {
+            List<SelectListItem> activitiesWithNull = _context.FCategories
+                .Where(c => c.CaFkCategoryType.CtName == "activité")
+                .Select(c => new SelectListItem
+                {
+                    Text = c.CaName,
+                    Value = c.CaId.ToString()
+                })
+                .ToList();
+            activitiesWithNull.Add(new SelectListItem { Text = "Select a media", Value = "", Selected = true });
+            ViewData["IFkCategoryId"] = new SelectList(activitiesWithNull, "Value", "Text");
+            ViewData["FClient"] = _context.FClients.Include(c => c.CFkCity).FirstOrDefault(c => c.CId == id);
+        }
+
         // GET: FInterventions/Create/clientId
         public IActionResult Create(int id)
         {
-            var activitiesWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "activité").ToList();
-            activitiesWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select an activity" });
-            ViewData["IFkCategoryId"] = new SelectList(activitiesWithNull, "CaId", "CaName");
-            ViewData["FClient"] = _context.FClients.Include(c => c.CFkCity).FirstOrDefault(c => c.CId == id);
+            PrepareViewData(id);
 
             // Create a new instance of FIntervention and set default values
             var intervention = new FIntervention
@@ -76,11 +88,8 @@ namespace LittleFirmManagement.Controllers
         {
             ModelState.Remove("IFkClient");
             ModelState.Remove("IFkCategory");
-            if (fIntervention.IFkCategoryId == -1)
-                ModelState.AddModelError("IFkCategoryId", "Please select a category.");
             if (ModelState.IsValid)
             {
-                //fIntervention.IDate = DateTime.Today;
                 fIntervention.IDate = DateTime.SpecifyKind(fIntervention.IDate, DateTimeKind.Utc);
                 fIntervention.IFkClientId = id;
                 _context.Add(fIntervention);
@@ -88,12 +97,9 @@ namespace LittleFirmManagement.Controllers
                 if (saveAndExit)
                     return RedirectToAction(nameof(Index));
                 else
-                    return RedirectToAction("Create", "FInvoices", new { id = id });
+                    return RedirectToAction("Create", "FInvoices", new { id });
             }
-            var activitiesWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "activité").ToList();
-            activitiesWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select an activity" });
-            ViewData["IFkCategoryId"] = new SelectList(activitiesWithNull, "CaId", "CaName");
-            ViewData["FClient"] = _context.FClients.Include(c => c.CFkCity).FirstOrDefault(c => c.CId == id);
+            PrepareViewData(id);
             return View(fIntervention);
         }
 

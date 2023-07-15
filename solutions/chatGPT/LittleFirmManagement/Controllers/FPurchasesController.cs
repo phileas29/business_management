@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -46,19 +42,47 @@ namespace LittleFirmManagement.Controllers
             return View(fPurchase);
         }
 
-        // GET: FPurchases/Create
+        private void PrepareViewData()
+        {
+            List<SelectListItem> categoriesWithNull = _context.FCategories
+                .Where(c => c.CaFkCategoryType.CtName == "achat")
+                .Select(c => new SelectListItem
+                {
+                    Text = c.CaName,
+                    Value = c.CaId.ToString()
+                })
+                .ToList();
+            categoriesWithNull.Add(new SelectListItem { Text = "Select a category", Value = "", Selected = true });
+
+            List<SelectListItem> paymentsWithNull = _context.FCategories
+                .Where(c => c.CaFkCategoryType.CtName == "paiement")
+                .Select(c => new SelectListItem
+                {
+                    Text = c.CaName,
+                    Value = c.CaId.ToString()
+                })
+                .ToList();
+            paymentsWithNull.Add(new SelectListItem { Text = "Select a payment", Value = "", Selected = true });
+
+            List<SelectListItem> suppliersWithNull = _context.FCategories
+                .Where(c => c.CaFkCategoryType.CtName == "fournisseur")
+                .Select(c => new SelectListItem
+                {
+                    Text = c.CaName,
+                    Value = c.CaId.ToString()
+                })
+                .ToList();
+            suppliersWithNull.Add(new SelectListItem { Text = "Select a supplier", Value = "", Selected = true });
+
+            ViewData["PFkCategoryId"] = new SelectList(categoriesWithNull, "Value", "Text", "");
+            ViewData["PFkPaymentId"] = new SelectList(paymentsWithNull, "Value", "Text", "");
+            ViewData["PFkSupplierId"] = new SelectList(suppliersWithNull, "Value", "Text", "");
+        }
+
+            // GET: FPurchases/Create
         public IActionResult Create()
         {
-            var categoriesWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "achat").ToList();
-            categoriesWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a category" });
-            var paymentsWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "paiement").ToList();
-            paymentsWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a payment" });
-            var suppliersWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "fournisseur").OrderBy(p=>p.CaName).ToList();
-            suppliersWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a supplier" });
-
-            ViewData["PFkCategoryId"] = new SelectList(categoriesWithNull, "CaId", "CaName");
-            ViewData["PFkPaymentId"] = new SelectList(paymentsWithNull, "CaId", "CaName");
-            ViewData["PFkSupplierId"] = new SelectList(suppliersWithNull, "CaId", "CaName");
+            PrepareViewData();
             return View();
         }
 
@@ -72,12 +96,6 @@ namespace LittleFirmManagement.Controllers
             ModelState.Remove("PFkCategory");
             ModelState.Remove("PFkPayment");
             ModelState.Remove("PFkSupplier");
-            if (fPurchase.PFkCategoryId == -1)
-                ModelState.AddModelError("PFkCategoryId", "Please select a category.");
-            if (fPurchase.PFkPaymentId == -1)
-                ModelState.AddModelError("PFkPaymentId", "Please select a payment.");
-            if (fPurchase.PFkSupplierId == -1)
-                ModelState.AddModelError("PFkSupplierId", "Please select a supplier.");
             if (ModelState.IsValid)
             {
                 fPurchase.PDisbursementDate = DateTime.SpecifyKind(fPurchase.PDisbursementDate, DateTimeKind.Utc);
@@ -89,16 +107,8 @@ namespace LittleFirmManagement.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            var categoriesWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "achat").ToList();
-            categoriesWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a category" });
-            var paymentsWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "paiement").ToList();
-            paymentsWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a payment" });
-            var suppliersWithNull = _context.FCategories.Where(c => c.CaFkCategoryType.CtName == "fournisseur").OrderBy(p => p.CaName).ToList();
-            suppliersWithNull.Insert(0, new FCategory { CaId = -1, CaName = "Select a supplier" });
 
-            ViewData["PFkCategoryId"] = new SelectList(categoriesWithNull, "CaId", "CaName");
-            ViewData["PFkPaymentId"] = new SelectList(paymentsWithNull, "CaId", "CaName");
-            ViewData["PFkSupplierId"] = new SelectList(suppliersWithNull, "CaId", "CaName");
+            PrepareViewData();
             return View(fPurchase);
         }
 

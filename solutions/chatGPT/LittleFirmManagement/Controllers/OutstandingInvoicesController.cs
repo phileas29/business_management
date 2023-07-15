@@ -1,8 +1,6 @@
-﻿using System.Linq;
-using LittleFirmManagement.Models;
+﻿using LittleFirmManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace LittleFirmManagement.Controllers
 {
