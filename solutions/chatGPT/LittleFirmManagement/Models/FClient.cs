@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
-using LittleFirmManagement.Controllers;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static LittleFirmManagement.Models.FClientUtility;
 
 namespace LittleFirmManagement.Models;
 
@@ -128,9 +122,9 @@ public class FClientUtility
     }
     public async static Task<FClient> ValidateClient(FClientsViewModel viewModel, FirmContext _context)
     {
-        FClientUtility.City city;
+        City city;
 
-        if (FClientUtility.ValidateCity(viewModel.Town, out city))
+        if (ValidateCity(viewModel.Town, out city))
         {
             FCity cityDb = _context.FCities.Where(c => c.CiInseeCode == Int32.Parse(city.Code)).FirstOrDefault();
             if (cityDb == null)
@@ -144,7 +138,7 @@ public class FClientUtility
             _context.SaveChanges();
         }
 
-        if (FClientUtility.ValidateCity(viewModel.BirthCityInput, out city))
+        if (ValidateCity(viewModel.BirthCityInput, out city))
         {
             FCity cityDb = _context.FCities.Where(c => c.CiInseeCode == Int32.Parse(city.Code)).FirstOrDefault();
             if (cityDb == null)

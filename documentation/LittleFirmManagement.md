@@ -2,16 +2,30 @@
 
 ## postgre sql database
 
-just after migration of the data in  the postgre sql database
+create database
 
-aware about "sequences" in the postgre sql database
-> SELECT setval('f_client_c_id_seq', (SELECT MAX(c_id) FROM f_client));
+```
+CREATE DATABASE firm
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    CONNECTION LIMIT = -1;
+```
 
-convert "bit(1)" to "boolean" in the postgre sql database
-> ALTER TABLE f_client ALTER COLUMN c_is_pro TYPE boolean USING c_is_pro::text::boolean;
+create tables :
+> firm_database.sql
 
-> ALTER TABLE f_invoice ALTER COLUMN in_is_eligible_deferred_tax_credit TYPE boolean USING in_is_eligible_deferred_tax_credit::text::boolean;
+migration of the data : 
 
+```
+COPY f_city
+FROM 'C:\...\migration\f_city.csv'
+DELIMITER ';' NULL AS 'null'
+CSV Header;
+```
+
+update sequences :
+> SELECT setval('f_city_ci_id_seq', (SELECT MAX(ci_id) FROM f_city));
 
 ## c# code
 

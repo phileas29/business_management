@@ -58,8 +58,8 @@ namespace LittleFirmManagement.Controllers
                     Value = c.CaId.ToString()
                 })
                 .ToList();
-            activitiesWithNull.Add(new SelectListItem { Text = "Select a media", Value = "", Selected = true });
-            ViewData["IFkCategoryId"] = new SelectList(activitiesWithNull, "Value", "Text");
+            activitiesWithNull.Insert(0,new SelectListItem { Text = "Select an activity", Value = "", Selected = true });
+            ViewData["IFkCategoryId"] = new SelectList(activitiesWithNull, "Value", "Text", "");
             ViewData["FClient"] = _context.FClients.Include(c => c.CFkCity).FirstOrDefault(c => c.CId == id);
         }
 
@@ -72,9 +72,9 @@ namespace LittleFirmManagement.Controllers
             var intervention = new FIntervention
             {
                 IDate = DateTime.UtcNow,  // Set the default date to the current date
-                IDescription = "Default description",  // Set a default description
+                //IDescription = "Default description",  // Set a default description
                 INbRoundTrip = 1,  // Set the default number of round trips
-                IFkCategoryId = 8  // Set the default category ID
+                //IFkCategoryId = 8  // Set the default category ID
             };
             return View(intervention);
         }

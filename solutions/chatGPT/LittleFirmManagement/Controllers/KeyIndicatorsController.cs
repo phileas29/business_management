@@ -45,7 +45,7 @@ namespace LittleFirmManagement.Controllers
 			ViewData["SelectedDetails"] = selectedDetails;
 
             var cashflowIn = _context.FInvoices
-                .Where(i => i.InReceiptDate != null)
+                .Where(i => i.InReceiptDate.HasValue && i.FInterventions.Count != 0)
                 .Select(i => new {
                     ct = new { id = -10, label = "overall sales" },
                     c = new { id = i.FInterventions.First().IFkCategory.CaId, label = i.FInterventions.First().IFkCategory.CaName },
@@ -82,22 +82,32 @@ namespace LittleFirmManagement.Controllers
                 })
                 .ToList();
 
-            var numberOfInvoicedCustomers = _context.FInterventions
+            var numberOfInvoices = _context.FInterventions
                 .Where(i => i.IFkInvoice != null)
                 .Select(i => new {
-                    ct = new { id = -6, label = "overall number of invoiced customers" },
+                    ct = new { id = -6, label = "overall number of invoices" },
                     c = new { id = i.IFkCategory.CaId, label = i.IFkCategory.CaName },
                     date = i.IFkInvoice.InInvoiceDate,
                     quantity = 1m
                 })
                 .ToList();
 
+            var numberOfSeparateInvoicedCustomers = _context.FInterventions
+                .Where(i => i.IFkInvoice != null)
+                .Select(i => new {
+                    ct = new { id = -5, label = "overall of separate invoiced customers" },
+                    c = new { id = i.IFkCategory.CaId, label = i.IFkCategory.CaName },
+                    date = i.IFkInvoice.InInvoiceDate,
+                    quantity = (decimal)i.IFkClientId
+                })
+                .ToList();
 
             var data = cashflowIn
                 .Concat(mileageExpenses)
                 .Concat(hoursBilled)
                 .Concat(kilometersTravelled)
-                .Concat(numberOfInvoicedCustomers)
+                .Concat(numberOfInvoices)
+                .Concat(numberOfSeparateInvoicedCustomers)
                 .ToList();
 
             List<DateTime> limitDatesRaw = new List<DateTime>() {
@@ -135,9 +145,17 @@ namespace LittleFirmManagement.Controllers
                 {
                     startDate = limitDates[0].AddMonths(n * k);
                     endDate = startDate.AddMonths(n);
-                    totalAmount = data
-                        .Where(i => i.ct.id == rows[r].ct.id && (selectedDetails == 0 || i.c.id == rows[r].c.id) && startDate <= i.date && i.date < endDate)
-                        .Sum(i => i.quantity);
+
+                    if (rows[r].ct.id==-5)
+                        totalAmount = data
+                            .Where(i => i.ct.id == rows[r].ct.id && (selectedDetails == 0 || i.c.id == rows[r].c.id) && startDate <= i.date && i.date < endDate)
+                            .Select(i => i.quantity)
+                            .Distinct()
+                            .Count();
+                    else
+                        totalAmount = data
+                            .Where(i => i.ct.id == rows[r].ct.id && (selectedDetails == 0 || i.c.id == rows[r].c.id) && startDate <= i.date && i.date < endDate)
+                            .Sum(i => i.quantity);
 
                     array[r, k] = totalAmount;
                 }

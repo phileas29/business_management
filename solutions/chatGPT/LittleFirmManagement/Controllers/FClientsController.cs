@@ -102,17 +102,17 @@ namespace LittleFirmManagement.Controllers
         public IActionResult Create()
         {
             PrepareViewData();
-            var viewModel = new FClientsViewModel
-            {
-                CName = "Default Name",
-                CFirstname = "Default Firstname",
-                CEmail = "default@example.com",
-                CPhoneFixed = "1234567890",
-                CPhoneCell = "9876543210",
-                CFkMediaId = _context.FCategories
-                .Where(c => c.CaFkCategoryType.CtName == "média" && c.CaName == "journal").Select(m => m.CaId).First()
-            };
-            return View(viewModel);
+            //var viewModel = new FClientsViewModel
+            //{
+            //    CName = "Default Name",
+            //    CFirstname = "Default Firstname",
+            //    CEmail = "default@example.com",
+            //    CPhoneFixed = "1234567890",
+            //    CPhoneCell = "9876543210",
+            //    CFkMediaId = _context.FCategories
+            //    .Where(c => c.CaFkCategoryType.CtName == "média" && c.CaName == "journal").Select(m => m.CaId).First()
+            //};
+            return View();
         }
 
         // POST: FClients/Create
