@@ -2,16 +2,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LittleFirmManagement.Models;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 
 namespace LittleFirmManagement.Controllers
 {
     public class FClientsController : Controller
     {
         private readonly FirmContext _context;
+        private readonly IConverter _converter;
 
-        public FClientsController(FirmContext context)
+        public FClientsController(FirmContext context, IConverter converter)
         {
             _context = context;
+            _converter = converter;
         }
 
         // GET: FClients
@@ -236,10 +240,129 @@ namespace LittleFirmManagement.Controllers
             return Json(FClientUtility.GetMatchingCities(input));
         }
 
-        public void GenerateTaxCertificates()
+        public IActionResult GenerateTaxCertificates()
         {
+            List<SelectListItem> clientsWithNull = _context.FInterventions
+                .Where(i => i.IFkInvoice != null)
+                .Select(c => new SelectListItem
+                {
+                    Text = c.IFkClient.CName,
+                    Value = c.IFkClient.CId.ToString()
+                })
+                .ToList();
+            clientsWithNull.Add(new SelectListItem { Text = "Select a client", Value = "", Selected = true });
 
+
+            List<SelectListItem> yearsWithNull = _context.FInvoices
+                .Select(i => i.InInvoiceDate.Year.ToString()).Distinct()
+                .Select(c => new SelectListItem
+                {
+                    Text = c.ToString(),
+                    Value = c.ToString(),
+                })
+                .ToList();
+            yearsWithNull.Add(new SelectListItem { Text = "Select a year", Value = "", Selected = true });
+
+
+
+            ViewData["IFkInvoice"] = new SelectList(clientsWithNull, "Value", "Text", "");
+            ViewData["Year"] = new SelectList(yearsWithNull, "Value", "Text", "");
+
+
+            return View();
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult GenerateTaxCertificates(int clientId, int civilYear)
+        {
+            if (ModelState.IsValid)
+            {
+                var client = _context.FClients.Include(f => f.CFkCity).Where(c=>c.CId==clientId).First();
+
+                if (client == null)
+                {
+                    return NotFound();
+                }
+
+                var pdfBytes = GenerateInvoicePdf(client, civilYear);
+
+                return File(pdfBytes, "application/pdf", $"summary_{civilYear}_invoices_for_client_{client.CName}_no_{client.CId}.pdf");
+            }
+            return View();
+        }
+        private byte[] GenerateInvoicePdf(FClient client, int civilYear)
+        {
+            var invoices = _context.FInterventions
+                .Where(i=>i.IFkClient == client && i.IFkInvoice != null && i.IFkInvoice.InInvoiceDate.Year == civilYear)
+                .Select(i=>i.IFkInvoice)
+                .ToList();
+
+            var htmlContent = GetHtmlContent(client, invoices);
+
+            var doc = new HtmlToPdfDocument()
+            {
+                GlobalSettings = {
+                    PaperSize = PaperKind.A4,
+                    Margins = new MarginSettings { Top = 10, Bottom = 10, Left = 10, Right = 10 }
+                },
+                Objects = {
+                    new ObjectSettings()
+                    {
+                        HtmlContent = htmlContent
+                    }
+                }
+            };
+
+            return _converter.Convert(doc);
+        }
+
+        private string GetHtmlContent(FClient client, List<FInvoice> invoices)
+        {
+            var html = @"
+                <h1>Client Information</h1>
+                <p><strong>c_id:</strong> @Model.ClientId</p>
+                <p><strong>c_name:</strong> @Model.ClientName</p>
+                <p><strong>ci_name:</strong> @Model.CityName</p>
+                <h1>Invoices</h1>
+                <table>
+                    <tr>
+                        <th>in_invoice_id</th>
+                        <th>in_invoice_date</th>
+                        <th>in_amount</th>
+                    </tr>
+                    @foreach (var invoice in Model.Invoices)
+                    {
+                        <tr>
+                            <td>@invoice.InInvoiceId</td>
+                            <td>@invoice.InInvoiceDate</td>
+                            <td>@invoice.InAmount</td>
+                        </tr>
+                    }
+                </table>
+            ";
+
+            html = html.Replace("@Model.ClientId", client.CId.ToString());
+            html = html.Replace("@Model.ClientName", client.CName);
+            html = html.Replace("@Model.CityName", client.CFkCity.CiName);
+
+            var invoiceRows = "";
+            foreach (var invoice in invoices)
+            {
+                invoiceRows += $@"
+                    <tr>
+                        <td>{invoice.InInvoiceId}</td>
+                        <td>{invoice.InInvoiceDate}</td>
+                        <td>{invoice.InAmount}</td>
+                    </tr>
+                ";
+            }
+
+            html = html.Replace("@foreach (var invoice in Model.Invoices)", invoiceRows);
+
+            return html;
+        }
     }
+
 }
