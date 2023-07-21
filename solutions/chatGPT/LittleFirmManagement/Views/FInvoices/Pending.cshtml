@@ -1,13 +1,13 @@
-﻿@model LittleFirmManagement.Models.OutstandingInvoicesViewModel
+@model LittleFirmManagement.Models.PendingInvoicesViewModel
 
 @{
     var data = ((IEnumerable<dynamic>)ViewData["Data"]).ToList();
 }
-<h1>Outstanding invoices</h1>
+<h1>Pending invoices</h1>
 
 
 <div class="container">
-    <form asp-action="Index">
+    <form asp-action="Pending">
         <div class="row">
             <div class="col-3">
                 <div class="form-group">
@@ -68,7 +68,7 @@
         </div>
         <div class="row">
             <div class="col-md-4 d-flex flex-column align-items-end">
-                <button asp-controller="OutstandingInvoices" asp-action="Index" class="btn btn-primary mb-4">Save</button>
+                <button asp-controller="FInvoices" asp-action="Pending" class="btn btn-primary mb-4">Save</button>
                 <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
             </div>
         </div>

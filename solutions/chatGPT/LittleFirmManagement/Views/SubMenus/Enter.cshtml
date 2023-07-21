@@ -6,10 +6,11 @@
 <div class="text-center">
     <div class="container-fluid">
         <div class="row">
-            <ul class="list-group">
+			<ul class="list-group">
+				<li class="list-group-item"><a class="nav-link" asp-controller="FPurchases" asp-action="Create">Enter a purchase</a></li>
                 <li class="list-group-item"><a class="nav-link" asp-controller="FClients" asp-action="Create">Enter a customer</a></li>
-                <li class="list-group-item"><a class="nav-link" asp-controller="FPurchases" asp-action="Create">Enter a purchase</a></li>
-                <li class="list-group-item"><a class="nav-link" asp-controller="OutstandingInvoices" asp-action="Index">Outstanding invoices</a></li>
+				<li class="list-group-item"><a class="nav-link" asp-controller="FInterventions" asp-action="Pending">Pending interventions</a></li>
+                <li class="list-group-item"><a class="nav-link" asp-controller="FInvoices" asp-action="Pending">Pending invoices</a></li>
             </ul>
         </div>
     </div>

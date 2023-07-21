@@ -1,6 +1,6 @@
 ﻿namespace LittleFirmManagement.Models
 {
-    public class OutstandingInvoicesViewModel
+    public class PendingInvoicesViewModel
     {
         public int SubjectId { get; set; }
         public DateTime ActionDate { get; set; }

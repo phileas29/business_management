@@ -1,0 +1,51 @@
+@{
+    var data = ((IEnumerable<dynamic>)ViewData["Data"]).ToList();
+}
+<h1>Pending interventions</h1>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>client</th>
+                            <th>date inter</th>
+                            <th>description</th>
+                            <th>category</th>
+                            <th>
+                                delete this intervention
+                            </th>
+                            <th>
+                                record an invoice
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < data.Count; i++)
+                        {
+                            <tr>
+                                <th>@data[i].CName</th>
+                                <th>@data[i].IDate</th>
+                                <th>@data[i].IDescription</th>
+                                <th>@data[i].CaName</th>
+                                <th>
+                                    <a asp-controller="FInterventions" asp-action="Delete" asp-route-id="@data[i].IId">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a asp-controller="FInvoices" asp-action="Create" asp-route-id="@data[i].IFkClientId">
+                                        <i class="fa-solid fa-file-invoice"></i>
+                                    </a>
+                                </th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -236,5 +236,10 @@ namespace LittleFirmManagement.Controllers
             return Json(FClientUtility.GetMatchingCities(input));
         }
 
+        public void GenerateTaxCertificates()
+        {
+
+        }
+
     }
 }

@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LittleFirmManagement.Models;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Http;
 
 namespace LittleFirmManagement.Controllers
 {
@@ -18,6 +12,32 @@ namespace LittleFirmManagement.Controllers
         public FInterventionsController(FirmContext context)
         {
             _context = context;
+        }
+
+        private void PrepareViewData()
+        {
+            var pendingInvoices = _context.FInterventions
+                .Where(i => i.IFkInvoice == null && DateTime.Now.AddDays(-180) < i.IDate)
+                .OrderByDescending(i => i.IDate)
+                .Select(i => new
+                {
+                    i.IId,
+                    i.IFkClientId,
+                    i.IFkClient.CName,
+                    i.IDate,
+                    i.IDescription,
+                    i.IFkCategory.CaName
+                })
+                .ToList();
+
+            ViewData["Data"] = pendingInvoices;
+        }
+
+        public IActionResult Pending()
+        {
+            PrepareViewData();
+
+            return View();
         }
 
         // GET: FInterventions
