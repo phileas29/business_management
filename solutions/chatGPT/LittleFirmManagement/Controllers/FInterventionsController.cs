@@ -24,7 +24,7 @@ namespace LittleFirmManagement.Controllers
                     i.IId,
                     i.IFkClientId,
                     i.IFkClient.CName,
-                    i.IDate,
+                    IDate = i.IDate.ToShortDateString(),
                     i.IDescription,
                     i.IFkCategory.CaName
                 })

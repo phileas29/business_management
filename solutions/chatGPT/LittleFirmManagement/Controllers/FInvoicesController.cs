@@ -23,10 +23,10 @@ namespace LittleFirmManagement.Controllers
                 {
                     i.IFkInvoice.InInvoiceId,
                     i.IFkClient.CName,
-                    i.IDate,
-                    i.IFkInvoice.InInvoiceDate,
-                    i.IFkInvoice.InReceiptDate,
-                    i.IFkInvoice.InCreditDate,
+                    IDate = i.IDate.ToShortDateString(),
+                    InInvoiceDate = i.IFkInvoice.InInvoiceDate.ToShortDateString(),
+                    InReceiptDate = i.IFkInvoice.InReceiptDate.Value.ToShortDateString(),
+                    InCreditDate = i.IFkInvoice.InCreditDate.Value.ToShortDateString(),
                     i.IDescription,
                     i.IFkInvoice.InFkPayment.CaName,
                     i.IFkInvoice.InAmount
