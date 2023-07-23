@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Globalization;
-using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -107,19 +105,10 @@ public partial class FClient
     public virtual ICollection<FIntervention> FInterventions { get; set; } = new List<FIntervention>();
 }
 
-
-public class InvoiceViewModel
-{
-    public DateTime Date { get; set; }
-    public decimal Duration { get; set; }
-    public int HourlyRate { get; set; }
-    public int Amount { get; set; }
-}
-
 public class FClientUtility
 {
-    private static List<City> Cities = new List<City>();
-    public static bool ValidateCity(string town, out City city)
+    private static List<FClientCreateCityBusinessModel> Cities = new List<FClientCreateCityBusinessModel>();
+    public static bool ValidateCity(string town, out FClientCreateCityBusinessModel city)
     {
         LoadCitiesFromJson();
         // Find the city with the matching name
@@ -130,9 +119,9 @@ public class FClientUtility
         else
             return false;
     }
-    public async static Task<FClient> ValidateClient(FClientsViewModel viewModel, FirmContext _context)
+    public async static Task<FClient> ValidateClient(FClientCreateViewModel viewModel, FirmContext _context)
     {
-        City city;
+        FClientCreateCityBusinessModel city;
 
         if (ValidateCity(viewModel.Town, out city))
         {
@@ -198,35 +187,12 @@ public class FClientUtility
         };
         // Load and deserialize the "towns.json" file into a list of City objects
         var json = File.ReadAllText("towns.json");
-        Cities = JsonSerializer.Deserialize<List<City>>(json, options);
+        Cities = JsonSerializer.Deserialize<List<FClientCreateCityBusinessModel>>(json, options);
     }
-
-    private static string RemoveDiacritics(string text)
+    public static List<FClientCreateCityBusinessModel> GetMatchingCities(string input)
     {
-        var normalizedString = text.Normalize(NormalizationForm.FormD);
-        var stringBuilder = new StringBuilder();
-
-        foreach (var c in normalizedString)
-        {
-            var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
-            if (unicodeCategory != UnicodeCategory.NonSpacingMark)
-                stringBuilder.Append(c);
-        }
-
-        return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
-    }
-
-    public class City
-    {
-        public string Nom { get; set; }
-        public string Code { get; set; }
-        public string CodeDepartement { get; set; }
-        public List<string> CodesPostaux { get; set; }
-    }
-    public static List<City> GetMatchingCities(string input)
-    {
-        FClientUtility.LoadCitiesFromJson();
-        List<City> matchingCities = FClientUtility.Cities
+        LoadCitiesFromJson();
+        List<FClientCreateCityBusinessModel> matchingCities = Cities
             .Where(city => city.Nom.StartsWith(input, StringComparison.OrdinalIgnoreCase))
             .Take(10) // Limit the number of suggestions
             .ToList();
@@ -236,7 +202,15 @@ public class FClientUtility
 
 
 }
-public class FClientsIndexViewModel
+
+public class FClientCreateCityBusinessModel
+{
+    public string Nom { get; set; }
+    public string Code { get; set; }
+    public string CodeDepartement { get; set; }
+    public List<string> CodesPostaux { get; set; }
+}
+public class FClientIndexViewModel
 {
     public string? NameSearch { get; set; }
     public string? FirstnameSearch { get; set; }
@@ -248,4 +222,63 @@ public class FClientsIndexViewModel
     public int TotalPages { get; set; }
     public int PageSize { get; set; } = 10;
     public int Page { get; set; } = 1;
+}
+
+
+public class FClientCreateViewModel
+{
+    public int? CFkMediaId { get; set; }
+    public int CFkCityId { get; set; }
+    public int? CFkBirthCityId { get; set; }
+    [StringLength(100)]
+    public string CName { get; set; } = "";
+    [StringLength(100)]
+    public string CFirstname { get; set; } = "";
+    [StringLength(100)]
+    public string? CAddress { get; set; }
+    [EmailAddress]
+    public string? CEmail { get; set; }
+    [Phone]
+    public string? CPhoneFixed { get; set; }
+    [Phone]
+    public string? CPhoneCell { get; set; }
+    public bool CIsPro { get; set; }
+    public decimal? CLocationLong { get; set; }
+    public decimal? CLocationLat { get; set; }
+    [StringLength(100)]
+    public string Town { get; set; } = "";
+    public decimal? CDistance { get; set; }
+    public int? CTravelTime { get; set; }
+    [StringLength(100)]
+    public string? CUrssafUuid { get; set; }
+    public bool? CIsMan { get; set; }
+    public bool IsMan
+    {
+        get { return CIsMan ?? false; }
+        set { CIsMan = value; }
+    }
+    [StringLength(100)]
+    public string? CBirthName { get; set; }
+    public DateOnly? CBirthDate { get; set; }
+    [StringLength(100)]
+    public string? BirthCityInput { get; set; }
+    [StringLength(100)]
+    public string? CBic { get; set; }
+    [StringLength(100)]
+    public string? CIban { get; set; }
+    [StringLength(100)]
+    public string? CAccountHolder { get; set; }
+    public IEnumerable<SelectListItem>? Medias { get; set; }
+}
+public class FClientGenerateTaxCertificatesViewModel
+{
+    public IEnumerable<SelectListItem>? CivilYear { get; set; }
+    public int CivilYearId { get; set; }
+}
+public class FClientGenerateTaxCertificatesBusinessModel
+{
+    public DateTime Date { get; set; }
+    public decimal Duration { get; set; }
+    public int HourlyRate { get; set; }
+    public int Amount { get; set; }
 }

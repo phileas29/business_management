@@ -1,4 +1,4 @@
-@model LittleFirmManagement.Models.FClientsViewModel
+@model LittleFirmManagement.Models.FClientCreateViewModel
 <h1>Record a new customer</h1>
 
 <div class="container">
@@ -36,7 +36,7 @@
                         </div>
                         <div class="mb-3">
                             <label asp-for="CFkMediaId" class="form-label"></label>
-                            <select asp-for="CFkMediaId" class="form-control" asp-items="ViewBag.CFkMediaId"></select>
+                            <select asp-for="CFkMediaId" class="form-control" asp-items="Model.Medias"></select>
                             <span asp-validation-for="CFkMediaId" class="text-danger"></span>
                         </div>
                         <div class="mb-3">

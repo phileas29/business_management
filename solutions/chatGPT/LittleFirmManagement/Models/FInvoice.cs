@@ -48,3 +48,23 @@ public partial class FInvoice
     [InverseProperty("FInvoices")]
     public virtual FCategory InFkPayment { get; set; } = null!;
 }
+public class FInvoiceCreateViewModel
+{
+    public List<int> selectedInterventions { get; set; }
+
+    public FInvoice fInvoice { get; set; }
+    public bool InIsEligibleDeferredTaxCredit { get; set; }
+
+    public FInvoiceCreateViewModel()
+    {
+        fInvoice = new FInvoice();
+        selectedInterventions = new List<int>();
+    }
+}
+public class PendingInvoicesViewModel
+{
+    public int SubjectId { get; set; }
+    public DateTime ActionDate { get; set; }
+    public List<int> InvoicesSelected { get; set; }
+
+}

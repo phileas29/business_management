@@ -167,7 +167,7 @@ namespace LittleFirmManagement.Controllers
         {
             PrepareViewData(id);
             // Create a new instance of FIntervention and set default values
-            var invoicesViewModel = new FInvoicesViewModel { 
+            var invoicesViewModel = new FInvoiceCreateViewModel { 
                 fInvoice = new FInvoice { 
                     InInvoiceId = _context.FInvoices.Max(i => i.InInvoiceId) + 1,
                     InInvoiceDate = DateTime.UtcNow,
@@ -182,7 +182,7 @@ namespace LittleFirmManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(FInvoicesViewModel fInvoicesViewModel, int id)
+        public async Task<IActionResult> Create(FInvoiceCreateViewModel fInvoicesViewModel, int id)
         {
             ModelState.Remove("id");
             ModelState.Remove("fInvoice.InFkPayment");
@@ -206,7 +206,7 @@ namespace LittleFirmManagement.Controllers
                 return RedirectToAction(nameof(Index));
             }
             PrepareViewData(id);
-            FInvoicesViewModel fInvoiceViewModel = new FInvoicesViewModel
+            FInvoiceCreateViewModel fInvoiceViewModel = new FInvoiceCreateViewModel
             {
                 selectedInterventions = fInvoicesViewModel.selectedInterventions,
                 fInvoice = fInvoicesViewModel.fInvoice

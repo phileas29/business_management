@@ -41,3 +41,9 @@ public partial class FCategory
     [InverseProperty("PFkSupplier")]
     public virtual ICollection<FPurchase> FPurchasePFkSuppliers { get; set; } = new List<FPurchase>();
 }
+
+public class FCategoryIndexViewModel
+{
+    public List<FCategoryType> CategoryTypes { get; set; }
+    public Dictionary<int, List<FCategory>> CategoriesByType { get; set; }
+}

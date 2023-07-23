@@ -20,7 +20,7 @@ namespace LittleFirmManagement.Controllers
             var categoryTypes = await _context.FCategoryTypes.ToListAsync();
             var categories = await _context.FCategories.ToListAsync();
 
-            var viewModel = new FCategoriesViewModel
+            var viewModel = new FCategoryIndexViewModel
             {
                 CategoryTypes = categoryTypes,
                 CategoriesByType = categories

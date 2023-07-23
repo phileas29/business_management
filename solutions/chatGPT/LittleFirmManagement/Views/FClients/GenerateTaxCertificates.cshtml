@@ -1,4 +1,4 @@
-@model LittleFirmManagement.Models.GenerateTaxCertificatesViewModel
+@model LittleFirmManagement.Models.FClientGenerateTaxCertificatesViewModel
 
 <h1>Generate tax certificates</h1>
 
@@ -8,9 +8,9 @@
         <div class="row">
             <div class="col-3">
                 <div class="form-group">
-                    <label asp-for="CivilYear" class="control-label"></label>
-                    <select asp-for="CivilYear" class="form-control" asp-items="ViewBag.Year"></select>
-                    <span asp-validation-for="CivilYear" class="text-danger"></span>
+                    <label asp-for="CivilYearId" class="control-label"></label>
+                    <select asp-for="CivilYearId" class="form-control" asp-items="Model.CivilYear"></select>
+                    <span asp-validation-for="CivilYearId" class="text-danger"></span>
                 </div>
             </div>
         <div class="row">

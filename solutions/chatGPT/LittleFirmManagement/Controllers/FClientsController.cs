@@ -4,10 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using LittleFirmManagement.Models;
 using DinkToPdf;
 using DinkToPdf.Contracts;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Build.Framework;
-using iText.Html2pdf;
-using NuGet.Protocol;
 
 namespace LittleFirmManagement.Controllers
 {
@@ -25,7 +21,7 @@ namespace LittleFirmManagement.Controllers
         }
 
         // GET: FClients
-        public async Task<IActionResult> Index(FClientsIndexViewModel model)
+        public async Task<IActionResult> Index(FClientIndexViewModel model)
         {
             var clients = _context.FClients
                 .OrderBy(c=>c.CName)
@@ -96,7 +92,7 @@ namespace LittleFirmManagement.Controllers
             return View(fClient);
         }
 
-        private void PrepareViewData()
+        private void PrepareViewData(FClientCreateViewModel model)
         {
             List<SelectListItem> mediasWithNull = _context.FCategories
                 .Where(c => c.CaFkCategoryType.CtName == "média")
@@ -107,13 +103,15 @@ namespace LittleFirmManagement.Controllers
                 })
                 .ToList();
             mediasWithNull.Add(new SelectListItem { Text = "Select a media", Value = "", Selected = true });
-            ViewData["CFkMediaId"] = new SelectList(mediasWithNull, "Value", "Text", "");
+            model.Medias = new SelectList(mediasWithNull, "Value", "Text", "");
         }
 
         // GET: FClients/Create
         public IActionResult Create()
         {
-            PrepareViewData();
+            FClientCreateViewModel model = new();
+
+            PrepareViewData(model);
             //var viewModel = new FClientsViewModel
             //{
             //    CName = "Default Name",
@@ -124,7 +122,7 @@ namespace LittleFirmManagement.Controllers
             //    CFkMediaId = _context.FCategories
             //    .Where(c => c.CaFkCategoryType.CtName == "média" && c.CaName == "journal").Select(m => m.CaId).First()
             //};
-            return View();
+            return View(model);
         }
 
         // POST: FClients/Create
@@ -132,13 +130,11 @@ namespace LittleFirmManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CFkMediaId,CName,CFirstname,CAddress,CEmail,CPhoneFixed,CPhoneCell,CIsPro,CLocationLong,CLocationLat,CDistance,CTravelTime,CUrssafUuid,CIsMan,CBirthName,CBirthCountryCode,CBirthDate,CBic,CIban,CAccountHolder,Town,BirthCityInput")] FClientsViewModel vClient, bool saveAndExit)
+        public async Task<IActionResult> Create([Bind("CFkMediaId,CName,CFirstname,CAddress,CEmail,CPhoneFixed,CPhoneCell,CIsPro,CLocationLong,CLocationLat,CDistance,CTravelTime,CUrssafUuid,CIsMan,CBirthName,CBirthCountryCode,CBirthDate,CBic,CIban,CAccountHolder,Town,BirthCityInput")] FClientCreateViewModel model, bool saveAndExit)
         {
-            ModelState.Remove("CFkCity");
-            ModelState.Remove("CFkBirthCityId");
             if (ModelState.IsValid)
             {
-                FClient fClient = FClientUtility.ValidateClient(vClient, _context).Result;
+                FClient fClient = FClientUtility.ValidateClient(model, _context).Result;
                 _context.Add(fClient);
                 await _context.SaveChangesAsync();
                 if (saveAndExit)
@@ -146,8 +142,8 @@ namespace LittleFirmManagement.Controllers
                 else
                     return RedirectToAction("Create", "FInterventions", new { id = fClient.CId });
             }
-            PrepareViewData();
-            return View(vClient);
+            PrepareViewData(model);
+            return View(model);
         }
 
         // GET: FClients/Edit/5
@@ -247,7 +243,7 @@ namespace LittleFirmManagement.Controllers
         {
             return Json(FClientUtility.GetMatchingCities(input));
         }
-        public void PrepareViewDataGenerateTaxCertificates()
+        public void PrepareViewDataGenerateTaxCertificates(FClientGenerateTaxCertificatesViewModel model)
         {
             List<SelectListItem> yearsWithNull = _context.FInvoices
                 .Select(i => i.InInvoiceDate.Year.ToString())
@@ -255,30 +251,36 @@ namespace LittleFirmManagement.Controllers
                 .Select(c => new SelectListItem
                 {
                     Text = c.ToString(),
-                    Value = c.ToString(),
+                    Value = c.ToString()
                 })
                 .ToList();
             yearsWithNull.Insert(0, new SelectListItem { Text = "Select a year", Value = "", Selected = true });
 
-            ViewData["Year"] = new SelectList(yearsWithNull, "Value", "Text", "");
+            model.CivilYear = new SelectList(yearsWithNull, "Value", "Text", "");
 
         }
 
         public IActionResult GenerateTaxCertificates()
         {
-            PrepareViewDataGenerateTaxCertificates();
+            FClientGenerateTaxCertificatesViewModel model = new();
 
-            return View();
+            PrepareViewDataGenerateTaxCertificates(model);
+
+            return View(model);
         }
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult GenerateTaxCertificates(int civilYear)
+        public IActionResult GenerateTaxCertificates(FClientGenerateTaxCertificatesViewModel model)
         {
+            int civilYear = model.CivilYearId;
             if (ModelState.IsValid)
             {
-                List<FClient> clients = _context.FInterventions.Include(i => i.IFkClient.CFkCity).Where(i=>i.IFkInvoice!=null&&i.IFkInvoice.InInvoiceDate.Year==civilYear).Select(i=>i.IFkClient).ToList();
+                List<FClient> clients = _context.FInterventions
+                    .Include(i => i.IFkClient.CFkCity)
+                    .Where(i=>i.IFkInvoice!=null&&i.IFkInvoice.InInvoiceDate.Year==civilYear)
+                    .Select(i=>i.IFkClient)
+                    .ToList();
 
                 foreach (FClient client in clients)
                 {
@@ -298,15 +300,15 @@ namespace LittleFirmManagement.Controllers
                 }
                 return RedirectToAction("Index", "Home");
             }
-            PrepareViewDataGenerateTaxCertificates();
-            return View();
+            PrepareViewDataGenerateTaxCertificates(model);
+            return View(model);
         }
         private byte[] GenerateInvoicePdf(FClient client, int civilYear)
         {
-            List<InvoiceViewModel> invoices = _context.FInterventions
+            List<FClientGenerateTaxCertificatesBusinessModel> invoices = _context.FInterventions
                 .Where(i => i.IFkClient == client && i.IFkInvoice != null && i.IFkInvoice.InInvoiceDate.Year == civilYear)
                 .Select(i => 
-                new InvoiceViewModel
+                new FClientGenerateTaxCertificatesBusinessModel
                 {
                     Date = i.IFkInvoice.InInvoiceDate,
                     Duration = Math.Round(i.IFkCategory.CaName == "assistance informatique" ? i.IFkInvoice.InAmount / 60m : i.IFkInvoice.InAmount / 40m,2),
@@ -341,7 +343,7 @@ namespace LittleFirmManagement.Controllers
             return _converter.Convert(doc);
         }
 
-        private string GetHtmlContent(FClient client, List<InvoiceViewModel> invoices, int civilYear)
+        private string GetHtmlContent(FClient client, List<FClientGenerateTaxCertificatesBusinessModel> invoices, int civilYear)
         {
             var html = @"<!DOCTYPE html>
                 <html lang=""en"">

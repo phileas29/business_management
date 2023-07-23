@@ -68,7 +68,7 @@ namespace LittleFirmManagement.Controllers
             return View(fIntervention);
         }
 
-        private void PrepareViewData(int id)
+        private void PrepareViewData(FIntervention model, int id)
         {
             List<SelectListItem> activitiesWithNull = _context.FCategories
                 .Where(c => c.CaFkCategoryType.CtName == "activité")
@@ -86,17 +86,19 @@ namespace LittleFirmManagement.Controllers
         // GET: FInterventions/Create/clientId
         public IActionResult Create(int id)
         {
-            PrepareViewData(id);
+            FIntervention model = new();
+
+            PrepareViewData(model,id);
 
             // Create a new instance of FIntervention and set default values
-            var intervention = new FIntervention
+            model = new FIntervention
             {
                 IDate = DateTime.UtcNow,  // Set the default date to the current date
                 //IDescription = "Default description",  // Set a default description
                 INbRoundTrip = 1,  // Set the default number of round trips
                 //IFkCategoryId = 8  // Set the default category ID
             };
-            return View(intervention);
+            return View(model);
         }
 
         // POST: FInterventions/Create
@@ -104,23 +106,23 @@ namespace LittleFirmManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IId,IFkClientId,IFkInvoiceId,IFkCategoryId,IDate,IDescription,INbRoundTrip")] FIntervention fIntervention, bool saveAndExit, int id)
+        public async Task<IActionResult> Create([Bind("IId,IFkClientId,IFkInvoiceId,IFkCategoryId,IDate,IDescription,INbRoundTrip")] FIntervention model, bool saveAndExit, int id)
         {
             ModelState.Remove("IFkClient");
             ModelState.Remove("IFkCategory");
             if (ModelState.IsValid)
             {
-                fIntervention.IDate = DateTime.SpecifyKind(fIntervention.IDate, DateTimeKind.Utc);
-                fIntervention.IFkClientId = id;
-                _context.Add(fIntervention);
+                model.IDate = DateTime.SpecifyKind(model.IDate, DateTimeKind.Utc);
+                model.IFkClientId = id;
+                _context.Add(model);
                 await _context.SaveChangesAsync();
                 if (saveAndExit)
                     return RedirectToAction(nameof(Index));
                 else
                     return RedirectToAction("Create", "FInvoices", new { id });
             }
-            PrepareViewData(id);
-            return View(fIntervention);
+            PrepareViewData(model, id);
+            return View(model);
         }
 
         // GET: FInterventions/Edit/5

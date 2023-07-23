@@ -9,9 +9,6 @@
   <ItemGroup>
     <PackageReference Include="DinkToPdf" Version="1.0.8" />
     <PackageReference Include="DinkToPdfCopyDependencies" Version="1.0.8" />
-    <PackageReference Include="IronPDF" Version="2023.7.4" />
-    <PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.0" />
-    <PackageReference Include="itext7.pdfhtml" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
