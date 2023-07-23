@@ -6,6 +6,8 @@ using DinkToPdf;
 using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Build.Framework;
+using iText.Html2pdf;
+using NuGet.Protocol;
 
 namespace LittleFirmManagement.Controllers
 {
@@ -23,52 +25,54 @@ namespace LittleFirmManagement.Controllers
         }
 
         // GET: FClients
-        public async Task<IActionResult> Index(string nameSearch="", string firstnameSearch = "", int citySearch = -1, int page = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(FClientsIndexViewModel model)
         {
-            var clients = _context.FClients.OrderBy(c=>c.CName).Include(f => f.CFkBirthCity).Include(f => f.CFkCity).Include(f => f.CFkMedia).AsQueryable();
+            var clients = _context.FClients
+                .OrderBy(c=>c.CName)
+                .Include(f => f.CFkBirthCity)
+                .Include(f => f.CFkCity)
+                .Include(f => f.CFkMedia)
+                .AsQueryable();
 
-            if (!string.IsNullOrEmpty(nameSearch))
-            {
-                clients = clients.Where(c => c.CName.ToLower().Contains(nameSearch.ToLower()));
-            }
+            if (!string.IsNullOrEmpty(model.NameSearch))
+                clients = clients.Where(c => c.CName.ToLower().Contains(model.NameSearch.ToLower()));
 
-            if (!string.IsNullOrEmpty(firstnameSearch))
-            {
-                clients = clients.Where(c => c.CFirstname.ToLower().Contains(firstnameSearch.ToLower()));
-            }
+            if (!string.IsNullOrEmpty(model.FirstnameSearch))
+                clients = clients.Where(c => c.CFirstname.ToLower().Contains(model.FirstnameSearch.ToLower()));
 
-            if (0 < citySearch)
-            {
-                clients = clients.Where(c => c.CFkCity.CiId == citySearch);
-            }
-
+            if (0 < model.CitySearch)
+                clients = clients.Where(c => c.CFkCity.CiId == model.CitySearch);
 
             // Calculate pagination values
             int totalClients = clients.Count();
-            int totalPages = (int)Math.Ceiling((double)totalClients / pageSize);
+            int totalPages = (int)Math.Ceiling((double)totalClients / model.PageSize);
 
             // Apply pagination
-            var clientsSelectedPage = clients.Skip((page - 1) * pageSize).Take(pageSize);
+            var clientsSelectedPage = clients.Skip((model.Page - 1) * model.PageSize).Take(model.PageSize);
 
             // Pass the paginated clients and pagination data to the view
-            if ((nameSearch == null || nameSearch == "") && (firstnameSearch == null || firstnameSearch == "") && citySearch == -1)
-                ViewBag.ClientsGPS = null;
+            if (model.NameSearch == null && model.FirstnameSearch == null && model.CitySearch == null)
+                model.ClientsGPS = null;
             else
-                ViewBag.ClientsGPS = clients.Except(clientsSelectedPage);
+                model.ClientsGPS = clients.Except(clientsSelectedPage);
 
-            //ViewBag.SearchEnabled = searchEnabled;
-            ViewBag.Clients = clientsSelectedPage.ToList();
-            ViewBag.TotalClients = totalClients;
-            ViewBag.TotalPages = totalPages;
-            ViewBag.CurrentPage = page;
-            ViewBag.PageSize = pageSize;
+            model.Clients = clientsSelectedPage.ToList();
+            model.TotalClients = totalClients;
+            model.TotalPages = totalPages;
 
-            ViewData["NameSearch"] = nameSearch;
-            ViewData["FirstnameSearch"] = firstnameSearch;
-            ViewData["CitySearch"] = citySearch;
-            ViewData["Cities"] = _context.FClients.Select(c => c.CFkCity).Distinct().OrderBy(c=>c.CiName).ToList();
+            List<SelectListItem> citiesWithNull = _context.FClients
+                .Select(c => new SelectListItem
+                {
+                    Text = c.CFkCity.CiName,
+                    Value = c.CFkCityId.ToString()
+                })
+                .Distinct()
+                .OrderBy(c => c.Text)
+                .ToList();
+            citiesWithNull.Insert(0,new SelectListItem { Text = "Select a city", Value = "", Selected = true });
+            model.CFkCity = new SelectList(citiesWithNull, "Value", "Text", "");
 
-            return View();
+            return View(model);
         }
 
         // GET: FClients/Details/5
@@ -243,23 +247,8 @@ namespace LittleFirmManagement.Controllers
         {
             return Json(FClientUtility.GetMatchingCities(input));
         }
-
-        public IActionResult GenerateTaxCertificates()
+        public void PrepareViewDataGenerateTaxCertificates()
         {
-            List<SelectListItem> clientsWithNull = _context.FInterventions
-                .Where(i => i.IFkInvoice != null)
-                .Select(c => c.IFkClient) // Flatten the collection of IFkClient objects
-                .Select(c => new SelectListItem
-                {
-                    Text = c.CName + " " + c.CFirstname,
-                    Value = c.CId.ToString()
-                })
-                .Distinct()
-                .OrderBy(i => i.Text)
-                .ToList();
-            clientsWithNull.Insert(0,new SelectListItem { Text = "Select a client", Value = "", Selected = true });
-
-
             List<SelectListItem> yearsWithNull = _context.FInvoices
                 .Select(i => i.InInvoiceDate.Year.ToString())
                 .Distinct()
@@ -271,11 +260,13 @@ namespace LittleFirmManagement.Controllers
                 .ToList();
             yearsWithNull.Insert(0, new SelectListItem { Text = "Select a year", Value = "", Selected = true });
 
-
-
-            ViewData["IFkInvoice"] = new SelectList(clientsWithNull, "Value", "Text", "");
             ViewData["Year"] = new SelectList(yearsWithNull, "Value", "Text", "");
 
+        }
+
+        public IActionResult GenerateTaxCertificates()
+        {
+            PrepareViewDataGenerateTaxCertificates();
 
             return View();
         }
@@ -291,20 +282,24 @@ namespace LittleFirmManagement.Controllers
 
                 foreach (FClient client in clients)
                 {
-                    var pdfBytes = GenerateInvoicePdf(client, civilYear);
-                    System.IO.File.WriteAllBytes($@"{_webHostEnvironment.WebRootPath}\\pdf\\attestation_fiscale_{civilYear}_PHILEAS_INFORMATIQUE_de_M-ME_{client.CName}_{client.CFirstname}.pdf", pdfBytes);
+                    var doc = GenerateInvoicePdf(client, civilYear);
+                    string dest = $@"{_webHostEnvironment.WebRootPath}\\pdf\\attestation_fiscale_{civilYear}_PHILEAS_INFORMATIQUE_de_M-ME_{client.CName}_{client.CFirstname}.pdf";
+
+                    System.IO.File.WriteAllBytes(dest, doc);
+
+
+                    //doc.SaveAs(dest);
+
+                    //using (FileStream pdfDest = new FileStream(dest, FileMode.Create))
+                    //{
+                    //    ConverterProperties converterProperties = new ConverterProperties();
+                    //    HtmlConverter.ConvertToPdf(doc, pdfDest, converterProperties);
+                    //}
                 }
                 return RedirectToAction("Index", "Home");
             }
+            PrepareViewDataGenerateTaxCertificates();
             return View();
-        }
-
-        public class InvoiceViewModel
-        {
-            public DateTime Date { get; set; }
-            public decimal Duration { get; set; }
-            public int HourlyRate { get; set; }
-            public int Amount { get; set; }
         }
         private byte[] GenerateInvoicePdf(FClient client, int civilYear)
         {
@@ -321,6 +316,13 @@ namespace LittleFirmManagement.Controllers
                 .ToList();
 
             var htmlContent = GetHtmlContent(client, invoices, civilYear);
+
+
+            //var renderer = new HtmlToPdf();
+            //var res = renderer.RenderHtmlAsPdf(htmlContent);
+            //return res;
+
+            //return htmlContent;
 
             var doc = new HtmlToPdfDocument()
             {
@@ -351,60 +353,22 @@ namespace LittleFirmManagement.Controllers
                     <title>Attestation fiscale _YYYY PHILEAS INFORMATIQUE de M-ME NAME FIRSTNAME</title>
                     <link href=""https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"" rel=""stylesheet""
                         integrity=""sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"" crossorigin=""anonymous"">
-                    <style>
-                        /* Custom CSS */
-                        body-custom {
-                            font-family: Arial, sans-serif;
-                            margin: 0;
-                            padding: 0;
-                        }
-
-                        .container-custom {
-                            width: 100%;
-                            max-width: 1200px;
-                            margin: 0 auto;
-                            padding: 10px;
-                        }
-
-                        .row-custom {
-                            margin: -10px; /* Negative margin to offset padding from columns */
-                            overflow: hidden; /* Clearfix for the floated columns */
-                        }
-
-                        .col-6-custom {
-                            float: left;
-                            width: 50%;
-                            padding: 10px;
-                        }
-
-                        /* Add your custom styles for other classes as needed */
-
-                        /* Example custom styles for specific elements */
-                        .h-100-custom {
-                            height: 100%;
-                        }
-
-                        .img-fluid-custom {
-                            max-width: 100%;
-                            height: auto;
-                        }
-                    </style>
                 </head>
 
                 <body>
-                    <div class=""container-custom"">
-                        <div class=""row-custom"">
-                            <div class=""col-6-custom h-100-custom"">
-                                <img class=""img-fluid-custom h-100-custom"" src=""_IMG_PATH/logo_.jpg"" alt="""">
+                    <div class=""container"">
+                        <div class=""row"" style=""height: 150px;"">
+                            <div class=""col-6 h-100"">
+                                <img class=""img-fluid h-100"" src=""_IMG_PATH/logo_.jpg"" alt="""">
                             </div>
-                            <div class=""col-6-custom"">
+                            <div class=""col-6"">
                                 <h1>Attestation fiscale portant sur les dépenses de _YYYY</h1>
                             </div>
                         </div>
-                        <div class=""row-custom"">
-                            <div class=""col-6-custom d-flex"">
+                        <div class=""row"">
+                            <div class=""col-6 d-flex flex-column"">
                                 <p class=""mb-0"">Émetteur :</p>
-                                <div class=""bg-secondary p-3 text-white h-100-custom"">
+                                <div class=""bg-secondary p-3 text-white h-100"">
                                     <p class=""m-0"">Philéas informatique</p>
                                     <p class=""m-0"">29 chemin de lesquidic-nevez</p>
                                     <p class=""mb-2"">29950 GOUESNAC'H</p>
@@ -414,9 +378,9 @@ namespace LittleFirmManagement.Controllers
                                     <p class=""m-0"">Siret: 881 585 939 00013</p>
                                 </div>
                             </div>
-                            <div class=""col-6-custom d-flex"">
+                            <div class=""col-6 d-flex flex-column"">
                                 <p class=""mb-0"">Adressé à :</p>
-                                <div class=""border border-secondary p-3 h-100-custom"">
+                                <div class=""border border-secondary p-3 h-100"">
                                     <p class=""m-0"">_NAME _FIRSTNAME</p>
                                     <p class=""m-0"">_ADDRESS</p>
                                     <p class=""mb-2"">_CITY</p>
@@ -434,7 +398,7 @@ namespace LittleFirmManagement.Controllers
                         <div class=""row"">
                             <div class=""col"">
                                 <p class=""mb-0"">Montants exprimés en Euros</p>
-                                <table class=""table table-bordered"">
+                                <table class=""table table-bordered border border-5"">
                                     <thead>
                                         <tr>
                                             <th scope=""col"">Date</th>

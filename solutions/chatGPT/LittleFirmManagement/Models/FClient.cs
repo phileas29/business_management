@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace LittleFirmManagement.Models;
@@ -104,6 +105,15 @@ public partial class FClient
 
     [InverseProperty("IFkClient")]
     public virtual ICollection<FIntervention> FInterventions { get; set; } = new List<FIntervention>();
+}
+
+
+public class InvoiceViewModel
+{
+    public DateTime Date { get; set; }
+    public decimal Duration { get; set; }
+    public int HourlyRate { get; set; }
+    public int Amount { get; set; }
 }
 
 public class FClientUtility
@@ -225,4 +235,17 @@ public class FClientUtility
     }
 
 
+}
+public class FClientsIndexViewModel
+{
+    public string? NameSearch { get; set; }
+    public string? FirstnameSearch { get; set; }
+    public int? CitySearch { get; set; }
+    public IEnumerable<SelectListItem> CFkCity { get; set; }
+    public IQueryable<FClient> ClientsGPS { get; set; }
+    public List<FClient> Clients { get; set; }
+    public int TotalClients { get; set; }
+    public int TotalPages { get; set; }
+    public int PageSize { get; set; } = 10;
+    public int Page { get; set; } = 1;
 }

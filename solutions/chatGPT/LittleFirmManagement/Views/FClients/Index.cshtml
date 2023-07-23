@@ -1,14 +1,4 @@
-@model IEnumerable<LittleFirmManagement.Models.FClient>
-
-@{
-    ViewData["Title"] = "Index";
-    var nameSearch = ViewData["NameSearch"];
-    var firstnameSearch = ViewData["FirstnameSearch"];
-    var citySearch = ViewData["CitySearch"];
-    var currentPage = ViewBag.CurrentPage;
-    var totalPages = ViewBag.TotalPages;
-    var pageSize = ViewBag.PageSize;
-}
+@model LittleFirmManagement.Models.FClientsIndexViewModel
 
 <h1>List of the customers</h1>
 
@@ -20,14 +10,14 @@
                 <table class="table">
                 <thead>
                     <tr>
-                        <th>@Html.DisplayNameFor(model => model.CName)</th>
-                        <th>@Html.DisplayNameFor(model => model.CFirstname)</th>
-                        <th>@Html.DisplayNameFor(model => model.CAddress)</th>
+                        <th>CName</th>
+                        <th>CFirstname</th>
+                        <th>CAddress</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                        @foreach (FClient item in ViewBag.Clients)
+                        @foreach (FClient item in Model.Clients)
                         {
                             <tr>
                                 <td>
@@ -64,22 +54,22 @@
             <!-- Pagination controls -->
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
-                    @if (currentPage > 1)
+                    @if (Model.Page > 1)
                     {
                         <li class="page-item">
-                            <a class="page-link" href="/FClients/Index?page=@(currentPage - 1)&nameSearch=@nameSearch&firstnameSearch=@firstnameSearch&citySearch=@citySearch">Previous</a>
+                            <a class="page-link" href="/FClients/Index?page=@(Model.Page - 1)&nameSearch=@Model.NameSearch&firstnameSearch=@Model.FirstnameSearch&citySearch=@Model.CitySearch">Previous</a>
                         </li>
                     }
-                    @for (var i = 1; i <= totalPages; i++)
+                    @for (var i = 1; i <= Model.TotalPages; i++)
                     {
-                        <li class="page-item @(i == currentPage ? "active" : "")">
-                            <a class="page-link" href="/FClients/Index?page=@i&nameSearch=@nameSearch&firstnameSearch=@firstnameSearch&citySearch=@citySearch">@i</a>
+                        <li class="page-item @(i == Model.Page ? "active" : "")">
+                            <a class="page-link" href="/FClients/Index?page=@i&nameSearch=@Model.NameSearch&firstnameSearch=@Model.FirstnameSearch&citySearch=@Model.CitySearch">@i</a>
                         </li>
                     }
-                    @if (currentPage < totalPages)
+                    @if (Model.Page < Model.TotalPages)
                     {
                         <li class="page-item">
-                            <a class="page-link" href="/FClients/Index?page=@(currentPage + 1)&nameSearch=@nameSearch&firstnameSearch=@firstnameSearch&citySearch=@citySearch">Next</a>
+                            <a class="page-link" href="/FClients/Index?page=@(Model.Page + 1)&nameSearch=@Model.NameSearch&firstnameSearch=@Model.FirstnameSearch&citySearch=@Model.CitySearch">Next</a>
                         </li>
                     }
                 </ul>
@@ -90,28 +80,18 @@
         <div class="col-6">
             <form action="/FClients/Index" method="post">
                 <div class="mb-3">
-                    <label for="nameSearch">Name:</label>
-                    <input type="text" id="nameSearch" name="nameSearch" value="@nameSearch" class="form-control" />
+                    <label asp-for="NameSearch" class="form-label"></label>
+                    <input asp-for="NameSearch" type="text" class="form-control" />
                 </div>
 
                 <div class="mb-3">
-                    <label for="firstnameSearch">Firstname:</label>
-                    <input type="text" id="firstnameSearch" name="firstnameSearch" value="@firstnameSearch" class="form-control" />
+                    <label asp-for="FirstnameSearch" class="form-label"></label>
+                    <input asp-for="FirstnameSearch" type="text" class="form-control" />
                 </div>
 
                 <div class="mb-3">
-                    <label for="citySearch">City:</label>
-                    <select id="citySearch" name="citySearch" class="form-control">
-                        <option value="">All</option>
-                        @foreach (FCity city in ViewBag.Cities)
-                        {
-                            @if (city.CiId == ViewBag.CitySearch) {
-                                <option value="@city.CiId" selected>@city.CiName</option>
-                            } else {
-                                <option value="@city.CiId">@city.CiName</option>
-                            }
-                        }
-                    </select>
+                    <label asp-for="CitySearch" class="form-label"></label>
+                    <select asp-for="CitySearch" class="form-control" asp-items="Model.CFkCity"></select>
                 </div>
 
                 <div class="mb-3">
@@ -161,25 +141,26 @@
         }).addTo(mymap);
 
         // Retrieve the search input values
-        var nameSearch = document.getElementById('nameSearch').value;
-        var firstnameSearch = document.getElementById('firstnameSearch').value;
-        var citySearch = document.getElementById('citySearch').value;
+        var nameSearch = document.getElementById('NameSearch').value;
+        var firstnameSearch = document.getElementById('FirstnameSearch').value;
+        var citySearch = document.getElementById('CitySearch').value;
 
         // Loop through each client and apply the filter
-        @foreach (FClient c in ViewBag.Clients)
+        @foreach (FClient c in Model.Clients)
         {
             <text>
                 var marker = L.marker([@c.CLocationLat, @c.CLocationLong], { icon: redIcon }).addTo(mymap);
-                marker.bindPopup('<a href="/FInterventions/Create/@c.CId">@c.CName</a>');
+                marker.bindPopup('<a href="/FClients/Details/@c.CId">@c.CName</a>');
             </text>
         }
 
-        @if (ViewBag.ClientsGPS != null) {
-            @foreach (FClient c in ViewBag.ClientsGPS)
+        @if (Model.ClientsGPS != null)
+        {
+            @foreach (FClient c in Model.ClientsGPS)
             {
                 <text>
                     var marker = L.marker([@c.CLocationLat, @c.CLocationLong], { icon: greyIcon }).addTo(mymap);
-                    marker.bindPopup('<a href="/FInterventions/Create/@c.CId">@c.CName</a>');
+                    marker.bindPopup('<a href="/FClients/Details/@c.CId">@c.CName</a>');
                 </text>
             }
         }

@@ -14,7 +14,7 @@
                     <div class="container">
                         <div class="row" style="height: 150px;">
                             <div class="col-6 h-100">
-                                <img class="img-fluid h-100" src="logo_.jpg" alt="">
+                                <img class="img-fluid h-100" src="_IMG_PATH/logo_.jpg" alt="">
                             </div>
                             <div class="col-6">
                                 <h1>Attestation fiscale portant sur les dépenses de _YYYY</h1>
@@ -53,7 +53,7 @@
                         <div class="row">
                             <div class="col">
                                 <p class="mb-0">Montants exprimés en Euros</p>
-                                <table class="table table-bordered">
+                                <table class="table table-bordered border border-5">
                                     <thead>
                                         <tr>
                                             <th scope="col">Date</th>
@@ -65,16 +65,16 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>{invoice.Date.ToShortDateString()}</td>
-                                            <td>Philéas PERON</td>
-                                            <td>{invoice.Duration} h</td>
-                                            <td>{invoice.HourlyRate} €/h</td>
-                                            <td>{invoice.Amount} €</td>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">Intervenant</th>
+                                            <th scope="col">Durée</th>
+                                            <th scope="col">Taux horaire</th>
+                                            <th scope="col">Total</th>
                                         </tr>
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th colspan="4" scope="row">Montant éligible 2022</th>
+                                            <th colspan="4" scope="row">Montant éligible _YYYY</th>
                                             <td>_TOTAL_AMOUNT</td>
                                         </tr>
                                     </tfoot>
@@ -89,15 +89,15 @@
                         </div>
                         <div class="row">
                             <div class="col text-end">
-                                <p>Le 01/01/_YYYY</p>
-                                <img src="signature.png" alt="">
+                                <p>Le 01/01/_+1YYYY</p>
+                                <img src="_IMG_PATH/signature.png" alt="">
                             </div>
                         </div>
 
 
                         <div class="row">
                             <div class="col">
-                                <p>"Philéas informatique" est une micro-entreprise agréée pour les services à la personne par arrêté
+                                <p style="font-size: 0.8rem;text-align: center;">"Philéas informatique" est une micro-entreprise agréée pour les services à la personne par arrêté
                                     préfectoral n° SAP881585939 en date du 03/11/2020</p>
                             </div>
                         </div>
