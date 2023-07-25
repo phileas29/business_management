@@ -1,0 +1,49 @@
+@model List<FInterventionPendingViewModel>
+
+<h1>Pending interventions</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>client</th>
+                            <th>date inter</th>
+                            <th>description</th>
+                            <th>category</th>
+                            <th>
+                                delete this intervention
+                            </th>
+                            <th>
+                                record an invoice
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ToList())
+                        {
+                            <tr>
+                                <th>@item.ClientName</th>
+                                <th>@item.InterventionDate</th>
+                                <th>@item.Description</th>
+                                <th>@item.Category</th>
+                                <th>
+                                    <a asp-controller="FInterventions" asp-action="Delete" asp-route-id="@item.InterventionId">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a asp-controller="FInvoices" asp-action="Create" asp-route-id="@item.ClientId">
+                                        <i class="fa-solid fa-file-invoice"></i>
+                                    </a>
+                                </th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

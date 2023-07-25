@@ -1,0 +1,72 @@
+@model LittleFirmManagement.Models.FInterventionCreateViewModel
+
+<h1>Record a new intervention</h1>
+
+<div class="container">
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Intervention</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="Intervention.IDate" class="control-label"></label>
+                            <input asp-for="Intervention.IDate" type="date" class="form-control" />
+                            <span asp-validation-for="Intervention.IDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Intervention.IDescription" class="control-label"></label>
+                            <textarea asp-for="Intervention.IDescription" class="form-control"></textarea>
+                            <span asp-validation-for="Intervention.IDescription" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Intervention.INbRoundTrip" class="control-label"></label>
+                            <input asp-for="Intervention.INbRoundTrip" class="form-control" />
+                            <span asp-validation-for="Intervention.INbRoundTrip" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Intervention.IFkCategoryId" class="control-label"></label>
+                            <select asp-for="Intervention.IFkCategoryId" class="form-control" asp-items="Model.Activities"></select>
+                            <span asp-validation-for="Intervention.IFkCategoryId" class="text-danger"></span>
+                        </div>
+                        <div class="card mt-3">
+                            <div class="card-header">Client</div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Name : @Model.Client.CName</label>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Firstname : @Model.Client.CFirstname</label>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Address : @Model.Client.CAddress</label>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">City : @Model.Client.CFkCity.CiName</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" asp-for="ActivityId" />
+            <input type="hidden" asp-for="ClientId" />
+
+            <div class="col-md-4 d-flex flex-column align-items-end">
+                <button name="Choice" value="0" asp-controller="FInterventions" asp-action="Create" class="btn btn-primary mb-4">Save and record an invoice</button>
+                <button name="Choice" value="1" asp-controller="FInterventions" asp-action="Create" class="btn btn-primary mb-4">Save and exit</button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
