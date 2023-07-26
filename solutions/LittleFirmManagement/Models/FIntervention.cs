@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Build.Framework;
 
 namespace LittleFirmManagement.Models;
 
@@ -55,9 +56,6 @@ public class FInterventionPendingViewModel
 public class FInterventionCreateViewModel
 {
     public IEnumerable<SelectListItem> Activities { get; set; }
-    public int ActivityId { get; set; }
-    public FClient Client { get; set; }
-    public int ClientId { get; set; }
     public FIntervention Intervention { get; set; }
     public int Choice { get; set; }
 }

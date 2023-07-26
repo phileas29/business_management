@@ -30,29 +30,27 @@
                             <select asp-for="Intervention.IFkCategoryId" class="form-control" asp-items="Model.Activities"></select>
                             <span asp-validation-for="Intervention.IFkCategoryId" class="text-danger"></span>
                         </div>
+                        <input type="hidden" asp-for="Intervention.IFkClientId" />
                         <div class="card mt-3">
                             <div class="card-header">Client</div>
                             <div class="card-body">
                                 <div class="mb-3">
-                                    <label class="form-label">Name : @Model.Client.CName</label>
+                                    <label class="form-label">Name : @Model.Intervention.IFkClient.CName</label>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Firstname : @Model.Client.CFirstname</label>
+                                    <label class="form-label">Firstname : @Model.Intervention.IFkClient.CFirstname</label>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Address : @Model.Client.CAddress</label>
+                                    <label class="form-label">Address : @Model.Intervention.IFkClient.CAddress</label>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">City : @Model.Client.CFkCity.CiName</label>
+                                    <label class="form-label">City : @Model.Intervention.IFkClient.CFkCity.CiName</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <input type="hidden" asp-for="ActivityId" />
-            <input type="hidden" asp-for="ClientId" />
 
             <div class="col-md-4 d-flex flex-column align-items-end">
                 <button name="Choice" value="0" asp-controller="FInterventions" asp-action="Create" class="btn btn-primary mb-4">Save and record an invoice</button>

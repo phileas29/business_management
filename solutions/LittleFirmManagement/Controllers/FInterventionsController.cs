@@ -69,12 +69,10 @@ namespace LittleFirmManagement.Controllers
             return View(fIntervention);
         }
 
-        private void PrepareViewData(FInterventionCreateViewModel model, int id)
+        private void PrepareViewData(ref FInterventionCreateViewModel model, int id)
         {
-            model.ActivityId = _context.FCategoryTypes.Where(c => c.CtName == "activité").Select(c => c.CtId).First();
-            model.ClientId = id;
             List <SelectListItem> activitiesWithNull = _context.FCategories
-                .Where(c => c.CaFkCategoryType.CtId == model.ActivityId)
+                .Where(c => c.CaFkCategoryType.CtName == "activité")
                 .Select(c => new SelectListItem
                 {
                     Text = c.CaName,
@@ -83,16 +81,15 @@ namespace LittleFirmManagement.Controllers
                 .ToList();
             activitiesWithNull.Insert(0,new SelectListItem { Text = "Select an activity", Value = "", Selected = true });
             model.Activities = new SelectList(activitiesWithNull, "Value", "Text", "");
-            model.Client = _context.FClients.Include(c => c.CFkCity).FirstOrDefault(c => c.CId == id);
 
             // Create a new instance of FIntervention and set default values
             model.Intervention ??= new FIntervention
             {
-                IDate = DateTime.UtcNow,  // Set the default date to the current date
-                //IDescription = "Default description",  // Set a default description
-                INbRoundTrip = 1,  // Set the default number of round trips
-                //IFkCategoryId = 8  // Set the default category ID
+                IDate = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+                INbRoundTrip = 1,
+                IFkClientId = id,
             };
+            model.Intervention.IFkClient ??= _context.FClients.Include(c => c.CFkCity).First(c => c.CId == id);
         }
 
         // GET: FInterventions/Create/clientId
@@ -100,7 +97,7 @@ namespace LittleFirmManagement.Controllers
         {
             FInterventionCreateViewModel model = new();
 
-            PrepareViewData(model,id);
+            PrepareViewData(ref model,id);
             return View(model);
         }
 
@@ -108,20 +105,23 @@ namespace LittleFirmManagement.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create(FInterventionCreateViewModel model, int id)
+        public async Task<IActionResult> Create(FInterventionCreateViewModel model)
         {
+            ModelState.Remove("Activities");
+            ModelState.Remove("Intervention.Client");
+            ModelState.Remove("Intervention.IFkClient");
+            ModelState.Remove("Intervention.Category");
+            ModelState.Remove("Intervention.IFkCategory");
             if (ModelState.IsValid)
             {
-                model.Intervention.IDate = DateTime.SpecifyKind(model.Intervention.IDate, DateTimeKind.Utc);
-                model.Intervention.IFkClientId = id;
                 _context.Add(model.Intervention);
                 await _context.SaveChangesAsync();
                 if (model.Choice==1)
                     return RedirectToAction(nameof(Index));
                 else
-                    return RedirectToAction("Create", "FInvoices", new { id });
+                    return RedirectToAction("Create", "FInvoices", new { id = model.Intervention.IFkClientId });
             }
-            PrepareViewData(model, id);
+            PrepareViewData(ref model, model.Intervention.IFkClientId);
             return View(model);
         }
 
