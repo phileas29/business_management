@@ -1,8 +1,4 @@
-@model LittleFirmManagement.Models.FPurchase
-
-@{
-    ViewData["Title"] = "Create";
-}
+@model LittleFirmManagement.Models.FPurchaseCreateViewModel
 
 <h1>Enter a purchase</h1>
 
@@ -12,44 +8,44 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="PFkPaymentId" class="control-label"></label>
-                <select asp-for="PFkPaymentId" class="form-control" asp-items="ViewBag.PFkPaymentId"></select>
-                <span asp-validation-for="PFkPaymentId" class="text-danger"></span>
+                <label asp-for="Purchase.PFkPaymentId" class="control-label"></label>
+                <select asp-for="Purchase.PFkPaymentId" class="form-control" asp-items="Model.Payments"></select>
+                <span asp-validation-for="Purchase.PFkPaymentId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PFkCategoryId" class="control-label"></label>
-                <select asp-for="PFkCategoryId" class="form-control" asp-items="ViewBag.PFkCategoryId"></select>
-                <span asp-validation-for="PFkCategoryId" class="text-danger"></span>
+                <label asp-for="Purchase.PFkCategoryId" class="control-label"></label>
+                <select asp-for="Purchase.PFkCategoryId" class="form-control" asp-items="Model.Categories"></select>
+                <span asp-validation-for="Purchase.PFkCategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PFkSupplierId" class="control-label"></label>
-                <select asp-for="PFkSupplierId" class="form-control" asp-items="ViewBag.PFkSupplierId"></select>
-                <span asp-validation-for="PFkSupplierId" class="text-danger"></span>
+                <label asp-for="Purchase.PFkSupplierId" class="control-label"></label>
+                <select asp-for="Purchase.PFkSupplierId" class="form-control" asp-items="Model.Suppliers"></select>
+                <span asp-validation-for="Purchase.PFkSupplierId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PInvoiceDate" class="control-label"></label>
-                <input asp-for="PInvoiceDate" type="date" class="form-control" />
-                <span asp-validation-for="PInvoiceDate" class="text-danger"></span>
+                <label asp-for="Purchase.PInvoiceDate" class="control-label"></label>
+                <input asp-for="Purchase.PInvoiceDate" type="date" class="form-control" />
+                <span asp-validation-for="Purchase.PInvoiceDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PDisbursementDate" class="control-label"></label>
-                <input asp-for="PDisbursementDate" type="date" class="form-control" />
-                <span asp-validation-for="PDisbursementDate" class="text-danger"></span>
+                <label asp-for="Purchase.PDisbursementDate" class="control-label"></label>
+                <input asp-for="Purchase.PDisbursementDate" type="date" class="form-control" />
+                <span asp-validation-for="Purchase.PDisbursementDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PDebitDate" class="control-label"></label>
-                <input asp-for="PDebitDate" type="date" class="form-control" />
-                <span asp-validation-for="PDebitDate" class="text-danger"></span>
+                <label asp-for="Purchase.PDebitDate" class="control-label"></label>
+                <input asp-for="Purchase.PDebitDate" type="date" class="form-control" />
+                <span asp-validation-for="Purchase.PDebitDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PDescription" class="control-label"></label>
-                <textarea asp-for="PDescription" class="form-control" ></textarea>
-                <span asp-validation-for="PDescription" class="text-danger"></span>
+                <label asp-for="Purchase.PDescription" class="control-label"></label>
+                <textarea asp-for="Purchase.PDescription" class="form-control"></textarea>
+                <span asp-validation-for="Purchase.PDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PAmount" class="control-label"></label>
-                <input asp-for="PAmount" type="number" class="form-control" />
-                <span asp-validation-for="PAmount" class="text-danger"></span>
+                <label asp-for="Purchase.PAmount" class="control-label"></label>
+                <input asp-for="Purchase.PAmount" type="number" class="form-control" />
+                <span asp-validation-for="Purchase.PAmount" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

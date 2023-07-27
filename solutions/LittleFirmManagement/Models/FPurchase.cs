@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace LittleFirmManagement.Models;
@@ -49,4 +50,12 @@ public partial class FPurchase
     [ForeignKey("PFkSupplierId")]
     [InverseProperty("FPurchasePFkSuppliers")]
     public virtual FCategory PFkSupplier { get; set; } = null!;
+}
+
+public class FPurchaseCreateViewModel
+{
+    public FPurchase Purchase { get; set; }
+    public IEnumerable<SelectListItem> Categories { get; set; }
+    public IEnumerable<SelectListItem> Payments { get; set; }
+    public IEnumerable<SelectListItem> Suppliers { get; set; }
 }

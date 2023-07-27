@@ -42,7 +42,7 @@ namespace LittleFirmManagement.Controllers
             return View(fPurchase);
         }
 
-        private void PrepareViewData()
+        private void PrepareViewData(ref FPurchaseCreateViewModel model)
         {
             List<SelectListItem> categoriesWithNull = _context.FCategories
                 .Where(c => c.CaFkCategoryType.CtName == "achat")
@@ -74,42 +74,43 @@ namespace LittleFirmManagement.Controllers
                 .ToList();
             suppliersWithNull.Add(new SelectListItem { Text = "Select a supplier", Value = "", Selected = true });
 
-            ViewData["PFkCategoryId"] = new SelectList(categoriesWithNull, "Value", "Text", "");
-            ViewData["PFkPaymentId"] = new SelectList(paymentsWithNull, "Value", "Text", "");
-            ViewData["PFkSupplierId"] = new SelectList(suppliersWithNull, "Value", "Text", "");
+            model.Categories = new SelectList(categoriesWithNull, "Value", "Text", "");
+            model.Payments = new SelectList(paymentsWithNull, "Value", "Text", "");
+            model.Suppliers = new SelectList(suppliersWithNull, "Value", "Text", "");
         }
 
             // GET: FPurchases/Create
         public IActionResult Create()
         {
-            PrepareViewData();
-            return View();
+            FPurchaseCreateViewModel model = new();
+            PrepareViewData(ref model);
+            return View(model);
         }
 
         // POST: FPurchases/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PId,PFkPaymentId,PFkCategoryId,PFkSupplierId,PInvoiceDate,PDisbursementDate,PDebitDate,PDescription,PAmount")] FPurchase fPurchase)
+        public async Task<IActionResult> Create(FPurchaseCreateViewModel model)
         {
-            ModelState.Remove("PFkCategory");
-            ModelState.Remove("PFkPayment");
-            ModelState.Remove("PFkSupplier");
+            ModelState.Remove("Categories");
+            ModelState.Remove("Payments");
+            ModelState.Remove("Suppliers");
+            ModelState.Remove("Purchase.PFkCategory");
+            ModelState.Remove("Purchase.PFkPayment");
+            ModelState.Remove("Purchase.PFkSupplier");
             if (ModelState.IsValid)
             {
-                fPurchase.PDisbursementDate = DateTime.SpecifyKind(fPurchase.PDisbursementDate, DateTimeKind.Utc);
-                if (fPurchase.PDebitDate.HasValue)
-                    fPurchase.PDebitDate = DateTime.SpecifyKind(fPurchase.PDebitDate.Value, DateTimeKind.Utc);
-                if (fPurchase.PInvoiceDate.HasValue)
-                    fPurchase.PInvoiceDate = DateTime.SpecifyKind(fPurchase.PInvoiceDate.Value, DateTimeKind.Utc);
-                _context.Add(fPurchase);
+                model.Purchase.PDisbursementDate = DateTime.SpecifyKind(model.Purchase.PDisbursementDate, DateTimeKind.Utc);
+                model.Purchase.PDebitDate = model.Purchase.PDebitDate.HasValue ? DateTime.SpecifyKind(model.Purchase.PDebitDate.Value, DateTimeKind.Utc) : null;
+                model.Purchase.PInvoiceDate = model.Purchase.PInvoiceDate.HasValue ? DateTime.SpecifyKind(model.Purchase.PInvoiceDate.Value, DateTimeKind.Utc) : null;
+                _context.Add(model.Purchase);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            PrepareViewData();
-            return View(fPurchase);
+            PrepareViewData(ref model);
+            return View(model);
         }
 
         // GET: FPurchases/Edit/5
