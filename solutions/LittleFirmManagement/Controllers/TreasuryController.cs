@@ -1,12 +1,6 @@
 ﻿using LittleFirmManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Packaging;
-using NuGet.Packaging.Rules;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 
 namespace LittleFirmManagement.Controllers
 {
@@ -44,11 +38,6 @@ namespace LittleFirmManagement.Controllers
 
         public IActionResult Index(int selectedGranularity = 3, int selectedDetails = 0)
         {
-            ViewData["GranularityMapping"] = granularityMapping;
-            ViewData["DetailsMapping"] = detailsMapping;
-            ViewData["SelectedGranularity"] = selectedGranularity;
-            ViewData["SelectedDetails"] = selectedDetails;
-
             var cashflowIn = _context.FInvoices
                 .Where(i => i.InCreditDate != null)
                 .Select(i => new {
@@ -116,15 +105,21 @@ namespace LittleFirmManagement.Controllers
                 }
             }
 
-            ViewData["Begin"] = limitDates[0];
-            ViewData["N"] = n;
-            ViewData["Data"] = array;
-            ViewData["Labels"] =
-                rows
-                .Select(p => new { ct = p.ct.label, c = p.c.label })
-                .ToList();
+            TreasuryIndexViewModel model = new()
+            {
+                Data = array,
+                N = n,
+                Begin = limitDates[0],
+                Labels = rows
+                    .Select(p => new List<string> { p.ct.label, p.c.label })
+                    .ToList(),
+                SelectedGranularity = selectedGranularity,
+                SelectedDetails = selectedDetails,
+                DetailsMapping = detailsMapping,
+                GranularityMapping = granularityMapping
+            };
 
-            return View();
+            return View(model);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using LittleFirmManagement.Models;
+﻿using LittleFirmManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +7,6 @@ namespace LittleFirmManagement.Controllers
     public class KeyIndicatorsController : Controller
     {
         private readonly FirmContext _context;
-
 
         private Dictionary<int, string> granularityMapping = new Dictionary<int, string>
         {
@@ -162,8 +160,8 @@ namespace LittleFirmManagement.Controllers
                 N = n,
                 Begin = limitDates[0],
                 Labels = rows
-                .Select(p => new List<string> { p.ct.label, p.c.label })
-                .ToList(),
+                    .Select(p => new List<string> { p.ct.label, p.c.label })
+                    .ToList(),
                 SelectedGranularity = selectedGranularity,
                 SelectedDetails = selectedDetails,
                 DetailsMapping = detailsMapping,
