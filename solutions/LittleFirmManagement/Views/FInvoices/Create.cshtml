@@ -1,9 +1,5 @@
 @model LittleFirmManagement.Models.FInvoiceCreateViewModel
 
-@{
-    ViewData["Title"] = "Create";
-    var client = ViewData["FClient"] as LittleFirmManagement.Models.FClient;
-}
 <h1>Record a new invoice</h1>
 
 <div class="container">
@@ -15,33 +11,32 @@
                     <div class="card-header">Invoice</div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label asp-for="fInvoice.InFkPaymentId" class="control-label"></label>
-                            <select asp-for="fInvoice.InFkPaymentId" class="form-control" asp-items="ViewBag.InFkPaymentId"></select>
+                            <label asp-for="Invoice.InFkPaymentId" class="control-label"></label>
+                            <select asp-for="Invoice.InFkPaymentId" class="form-control" asp-items="Model.Payments"></select>
                         </div>
                         <div class="form-group">
-                            <label asp-for="fInvoice.InInvoiceId" class="control-label"></label>
-                            <input asp-for="fInvoice.InInvoiceId" type="number" class="form-control" readonly />
-                            <span asp-validation-for="fInvoice.InInvoiceId" class="text-danger"></span>
+                            <label asp-for="Invoice.InInvoiceId" class="control-label"></label>
+                            <input asp-for="Invoice.InInvoiceId" type="number" class="form-control" readonly />
                         </div>
                         <div class="form-group">
-                            <label asp-for="fInvoice.InInvoiceDate" class="control-label"></label>
-                            <input asp-for="fInvoice.InInvoiceDate" type="date" class="form-control" />
-                            <span asp-validation-for="fInvoice.InInvoiceDate" class="text-danger"></span>
+                            <label asp-for="Invoice.InInvoiceDate" class="control-label"></label>
+                            <input asp-for="Invoice.InInvoiceDate" type="date" class="form-control" />
+                            <span asp-validation-for="Invoice.InInvoiceDate" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="fInvoice.InReceiptDate" class="control-label"></label>
-                            <input asp-for="fInvoice.InReceiptDate" type="date" class="form-control" />
-                            <span asp-validation-for="fInvoice.InReceiptDate" class="text-danger"></span>
+                            <label asp-for="Invoice.InReceiptDate" class="control-label"></label>
+                            <input asp-for="Invoice.InReceiptDate" type="date" class="form-control" />
+                            <span asp-validation-for="Invoice.InReceiptDate" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="fInvoice.InCreditDate" class="control-label"></label>
-                            <input asp-for="fInvoice.InCreditDate" type="date" class="form-control" />
-                            <span asp-validation-for="fInvoice.InCreditDate" class="text-danger"></span>
+                            <label asp-for="Invoice.InCreditDate" class="control-label"></label>
+                            <input asp-for="Invoice.InCreditDate" type="date" class="form-control" />
+                            <span asp-validation-for="Invoice.InCreditDate" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="fInvoice.InAmount" class="control-label"></label>
-                            <input asp-for="fInvoice.InAmount" type="number" class="form-control" />
-                            <span asp-validation-for="fInvoice.InAmount" class="text-danger"></span>
+                            <label asp-for="Invoice.InAmount" class="control-label"></label>
+                            <input asp-for="Invoice.InAmount" type="number" class="form-control" />
+                            <span asp-validation-for="Invoice.InAmount" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="InIsEligibleDeferredTaxCredit" class="form-check-label"></label>
@@ -49,9 +44,9 @@
                             <span asp-validation-for="InIsEligibleDeferredTaxCredit" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="fInvoice.InUrssafPaymentRequestUuid" class="control-label"></label>
-                            <input asp-for="fInvoice.InUrssafPaymentRequestUuid" type="text" class="form-control" />
-                            <span asp-validation-for="fInvoice.InUrssafPaymentRequestUuid" class="text-danger"></span>
+                            <label asp-for="Invoice.InUrssafPaymentRequestUuid" class="control-label"></label>
+                            <input asp-for="Invoice.InUrssafPaymentRequestUuid" type="text" class="form-control" />
+                            <span asp-validation-for="Invoice.InUrssafPaymentRequestUuid" class="text-danger"></span>
                         </div>
                         <div class="card mt-3">
                             <div class="card-header">Associated interventions</div>
@@ -59,21 +54,21 @@
                                 <div class="card mt-3">
                                     <div class="card-header">Client</div>
                                     <div class="card-body">
-                                        <input type="hidden" name="id" value="@client.CId" />
+                                        <input type="hidden" asp-for="ClientId" />
                                         <div class="mb-3">
-                                            <label class="form-label">Name : @client.CName</label>
+                                            <label class="form-label">Name : @Model.Client.CName</label>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">Firstname : @client.CFirstname</label>
+                                            <label class="form-label">Firstname : @Model.Client.CFirstname</label>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">Address : @client.CAddress</label>
+                                            <label class="form-label">Address : @Model.Client.CAddress</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="selectedInterventions" class="control-label">Select Interventions</label>
-                                    <select class="form-select" multiple asp-for="selectedInterventions" asp-items="@ViewBag.FIntervention"></select>
+                                    <label asp-for="SelectedInterventions" class="control-label">Select Interventions</label>
+                                    <select class="form-select" multiple asp-for="SelectedInterventions" asp-items="Model.Interventions"></select>
                                 </div>
                             </div>
                         </div>

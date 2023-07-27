@@ -117,7 +117,7 @@ namespace LittleFirmManagement.Controllers
                 _context.Add(model.Intervention);
                 await _context.SaveChangesAsync();
                 if (model.Choice==1)
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Index", "Home");
                 else
                     return RedirectToAction("Create", "FInvoices", new { id = model.Intervention.IFkClientId });
             }

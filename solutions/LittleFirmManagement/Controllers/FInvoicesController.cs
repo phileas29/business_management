@@ -137,8 +137,15 @@ namespace LittleFirmManagement.Controllers
             return View(fInvoice);
         }
 
-        private void PrepareViewData(int id)
+        private void PrepareViewData(ref FInvoiceCreateViewModel model, int id)
         {
+            // Create a new instance of FIntervention and set default values
+            model.Invoice ??= new FInvoice()
+            {
+                InInvoiceId = _context.FInvoices.Max(i => i.InInvoiceId).GetValueOrDefault(-1) + 1,
+                InInvoiceDate = DateTime.UtcNow,
+                InReceiptDate = DateTime.UtcNow
+            };
             List<SelectListItem> paymentsWithNull = _context.FCategories
                 .Where(c => c.CaFkCategoryType.CtName == "paiement")
                 .Select(c => new SelectListItem
@@ -148,70 +155,68 @@ namespace LittleFirmManagement.Controllers
                 })
                 .ToList();
             paymentsWithNull.Insert(0,new SelectListItem { Text = "Select a payment", Value = "", Selected = true });
-            ViewData["InFkPaymentId"] = new SelectList(paymentsWithNull, "Value", "Text", "");
-            ViewData["FClient"] = _context.FClients.FirstOrDefault(c => c.CId == id);
+            model.Payments ??= new SelectList(paymentsWithNull, "Value", "Text", "");
+            int clientId = id;
+            model.ClientId = id;
+            model.Client ??= _context.FClients
+                .First(c => c.CId == clientId);
 
-            ViewBag.FIntervention = new MultiSelectList(
+            model.Interventions ??= new MultiSelectList(
                 _context.FInterventions
-                .Where(i => i.IFkClientId == id && i.IFkInvoiceId == null)
+                .Where(i => i.IFkClientId == clientId && i.IFkInvoiceId == null)
                 .OrderByDescending(i => i.IDate),
                 "IId",
                 "CombinedDateAndDescription",
-                new[] { _context.FInterventions
-                .Where(i => i.IFkClientId == id && i.IFkInvoiceId == null)
-                .OrderByDescending(i => i.IDate).Select(i=>i.IId).First().ToString() });
+                new[] { 
+                    _context.FInterventions
+                    .Where(i => i.IFkClientId == clientId && i.IFkInvoiceId == null)
+                    .OrderByDescending(i => i.IDate)
+                    .Select(i=>i.IId)
+                    .First()
+                    .ToString()
+                }
+            );
         }
 
         // GET: FInvoices/Create
         public IActionResult Create(int id, List<int> iids)
         {
-            PrepareViewData(id);
-            // Create a new instance of FIntervention and set default values
-            var invoicesViewModel = new FInvoiceCreateViewModel { 
-                fInvoice = new FInvoice { 
-                    InInvoiceId = _context.FInvoices.Max(i => i.InInvoiceId) + 1,
-                    InInvoiceDate = DateTime.UtcNow,
-                    InReceiptDate = DateTime.UtcNow
-                }
-            };
-            return View();
+            FInvoiceCreateViewModel model = new();
+            PrepareViewData(ref model, id);
+            return View(model);
         }
 
         // POST: FInvoices/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(FInvoiceCreateViewModel fInvoicesViewModel, int id)
+        public async Task<IActionResult> Create(FInvoiceCreateViewModel model)
         {
-            ModelState.Remove("id");
-            ModelState.Remove("fInvoice.InFkPayment");
+            ModelState.Remove("Payments");
+            ModelState.Remove("Interventions");
+            ModelState.Remove("Client");
+            ModelState.Remove("Invoice.InFkPayment");
             if (ModelState.IsValid)
             {
-                fInvoicesViewModel.fInvoice.InIsEligibleDeferredTaxCredit = fInvoicesViewModel.InIsEligibleDeferredTaxCredit;
-                fInvoicesViewModel.fInvoice.InInvoiceDate = DateTime.SpecifyKind(fInvoicesViewModel.fInvoice.InInvoiceDate, DateTimeKind.Utc);
-                if (fInvoicesViewModel.fInvoice.InReceiptDate.HasValue)
-                    fInvoicesViewModel.fInvoice.InReceiptDate = DateTime.SpecifyKind(fInvoicesViewModel.fInvoice.InReceiptDate.Value, DateTimeKind.Utc);
-                if (fInvoicesViewModel.fInvoice.InCreditDate.HasValue)
-                    fInvoicesViewModel.fInvoice.InCreditDate = DateTime.SpecifyKind(fInvoicesViewModel.fInvoice.InCreditDate.Value, DateTimeKind.Utc);
-                _context.Add(fInvoicesViewModel.fInvoice);
+                model.Invoice.InIsEligibleDeferredTaxCredit = model.InIsEligibleDeferredTaxCredit;
+                model.Invoice.InInvoiceDate = DateTime.SpecifyKind(model.Invoice.InInvoiceDate, DateTimeKind.Utc);
+                model.Invoice.InReceiptDate = model.Invoice.InReceiptDate.HasValue ? DateTime.SpecifyKind(model.Invoice.InReceiptDate.Value, DateTimeKind.Utc) : null;
+                model.Invoice.InCreditDate = model.Invoice.InCreditDate.HasValue ? DateTime.SpecifyKind(model.Invoice.InCreditDate.Value, DateTimeKind.Utc) : null;
+                _context.Add(model.Invoice);
                 await _context.SaveChangesAsync();
 
-                List<FIntervention> fInterventions = _context.FInterventions.Where(i => fInvoicesViewModel.selectedInterventions.Contains(i.IId)).ToList();
+                List<FIntervention> fInterventions = _context.FInterventions
+                    .Where(i => model.SelectedInterventions
+                    .Contains(i.IId))
+                    .ToList();
                 foreach (FIntervention inter in fInterventions)
-                    inter.IFkInvoiceId = fInvoicesViewModel.fInvoice.InId;
-
+                    inter.IFkInvoiceId = model.Invoice.InId;
                 _context.UpdateRange(fInterventions);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
-            PrepareViewData(id);
-            FInvoiceCreateViewModel fInvoiceViewModel = new FInvoiceCreateViewModel
-            {
-                selectedInterventions = fInvoicesViewModel.selectedInterventions,
-                fInvoice = fInvoicesViewModel.fInvoice
-            };
-            return View(fInvoiceViewModel);
+            PrepareViewData(ref model, model.ClientId);
+            return View(model);
         }
 
         // GET: FInvoices/Edit/5

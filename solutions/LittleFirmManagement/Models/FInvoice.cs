@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace LittleFirmManagement.Models;
@@ -50,16 +51,13 @@ public partial class FInvoice
 }
 public class FInvoiceCreateViewModel
 {
-    public List<int> selectedInterventions { get; set; }
-
-    public FInvoice fInvoice { get; set; }
+    public IEnumerable<SelectListItem> Payments { get; set; }
+    public List<int> SelectedInterventions { get; set; }
+    public int ClientId { get; set; }
+    public FClient Client { get; set; }
+    public FInvoice Invoice { get; set; }
     public bool InIsEligibleDeferredTaxCredit { get; set; }
-
-    public FInvoiceCreateViewModel()
-    {
-        fInvoice = new FInvoice();
-        selectedInterventions = new List<int>();
-    }
+    public MultiSelectList Interventions { get; set; }
 }
 public class PendingInvoicesViewModel
 {
