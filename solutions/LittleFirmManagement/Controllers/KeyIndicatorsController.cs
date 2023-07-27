@@ -39,11 +39,6 @@ namespace LittleFirmManagement.Controllers
 
 		public IActionResult Index(int selectedGranularity = 3, int selectedDetails = 0)
 		{
-			ViewData["GranularityMapping"] = granularityMapping;
-			ViewData["DetailsMapping"] = detailsMapping;
-			ViewData["SelectedGranularity"] = selectedGranularity;
-			ViewData["SelectedDetails"] = selectedDetails;
-
             var cashflowIn = _context.FInvoices
                 .Where(i => i.InReceiptDate.HasValue && i.FInterventions.Count != 0)
                 .Select(i => new {
@@ -161,15 +156,21 @@ namespace LittleFirmManagement.Controllers
                 }
             }
 
-            ViewData["Begin"] = limitDates[0];
-            ViewData["N"] = n;
-            ViewData["Data"] = array;
-            ViewData["Labels"] =
-                rows
-                .Select(p => new { ct = p.ct.label, c = p.c.label })
-                .ToList();
+            KeyIndicatorsIndexViewModel model = new()
+            {
+                Data = array,
+                N = n,
+                Begin = limitDates[0],
+                Labels = rows
+                .Select(p => new List<string> { p.ct.label, p.c.label })
+                .ToList(),
+                SelectedGranularity = selectedGranularity,
+                SelectedDetails = selectedDetails,
+                DetailsMapping = detailsMapping,
+                GranularityMapping = granularityMapping
+            };
 
-            return View();
+            return View(model);
         }
 	}
 }

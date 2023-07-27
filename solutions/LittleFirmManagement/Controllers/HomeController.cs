@@ -18,8 +18,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var firmContext = _context.FClients;
-        return View(await firmContext.ToListAsync());
+        return View(await _context.FClients.ToListAsync());
     }
 
     public IActionResult Privacy()

@@ -59,7 +59,7 @@ public class FInvoiceCreateViewModel
     public bool InIsEligibleDeferredTaxCredit { get; set; }
     public MultiSelectList Interventions { get; set; }
 }
-public class PendingInvoicesViewModel
+public class FInvoicePendingViewModel
 {
     public int SubjectId { get; set; }
     public DateTime ActionDate { get; set; }

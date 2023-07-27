@@ -69,7 +69,7 @@ namespace LittleFirmManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Pending(PendingInvoicesViewModel pendingInvoicesViewModel)
+        public async Task<IActionResult> Pending(FInvoicePendingViewModel pendingInvoicesViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -102,7 +102,7 @@ namespace LittleFirmManagement.Controllers
                         }
                         _context.UpdateRange(invoices);
                         await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
+                        return RedirectToAction("Pending");
                     }
                 }
             }
