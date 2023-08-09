@@ -54,6 +54,7 @@ public class FInvoiceCreateViewModel
     public IEnumerable<SelectListItem> Payments { get; set; }
     public List<int> SelectedInterventions { get; set; }
     public int ClientId { get; set; }
+    public int InterventionId { get; set; }
     public FClient Client { get; set; }
     public FInvoice Invoice { get; set; }
     public bool InIsEligibleDeferredTaxCredit { get; set; }

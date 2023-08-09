@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LittleFirmManagement.Models;
+using System.Security.Cryptography;
 
 namespace LittleFirmManagement.Controllers
 {
@@ -137,7 +138,7 @@ namespace LittleFirmManagement.Controllers
             return View(fInvoice);
         }
 
-        private void PrepareViewData(ref FInvoiceCreateViewModel model, int id)
+        private void PrepareViewData(ref FInvoiceCreateViewModel model, int id, int iid = 0)
         {
             // Create a new instance of FIntervention and set default values
             model.Invoice ??= new FInvoice()
@@ -167,10 +168,11 @@ namespace LittleFirmManagement.Controllers
                 .OrderByDescending(i => i.IDate),
                 "IId",
                 "CombinedDateAndDescription",
-                new[] { 
+                iid == 0 ? Array.Empty<string>() : new[] { 
                     _context.FInterventions
-                    .Where(i => i.IFkClientId == clientId && i.IFkInvoiceId == null)
-                    .OrderByDescending(i => i.IDate)
+                    .Where(i => i.IId == iid)
+                    //.Where(i => i.IFkClientId == clientId && i.IFkInvoiceId == null)
+                    //.OrderByDescending(i => i.IDate)
                     .Select(i=>i.IId)
                     .First()
                     .ToString()
@@ -179,10 +181,10 @@ namespace LittleFirmManagement.Controllers
         }
 
         // GET: FInvoices/Create
-        public IActionResult Create(int id, List<int> iids)
+        public IActionResult Create(int id, int iid)
         {
             FInvoiceCreateViewModel model = new();
-            PrepareViewData(ref model, id);
+            PrepareViewData(ref model, id, iid);
             return View(model);
         }
 

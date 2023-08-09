@@ -70,6 +70,7 @@
                                 <div class="form-group">
                                     <label asp-for="SelectedInterventions" class="control-label">Select Interventions</label>
                                     <select class="form-select" multiple asp-for="SelectedInterventions" asp-items="Model.Interventions"></select>
+                                    <span asp-validation-for="SelectedInterventions" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>

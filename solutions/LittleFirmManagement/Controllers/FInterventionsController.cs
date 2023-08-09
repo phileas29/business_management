@@ -119,7 +119,7 @@ namespace LittleFirmManagement.Controllers
                 if (model.Choice==1)
                     return RedirectToAction("Index", "Home");
                 else
-                    return RedirectToAction("Create", "FInvoices", new { id = model.Intervention.IFkClientId });
+                    return RedirectToAction("Create", "FInvoices", new { id = model.Intervention.IFkClientId, iid = model.Intervention.IId });
             }
             PrepareViewData(ref model, model.Intervention.IFkClientId);
             return View(model);
