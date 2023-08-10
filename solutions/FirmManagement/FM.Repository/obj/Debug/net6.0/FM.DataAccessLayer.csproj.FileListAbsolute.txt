@@ -1,0 +1,15 @@
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.DataAccessLayer\bin\Debug\net6.0\FM.DataAccessLayer.deps.json
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.DataAccessLayer\bin\Debug\net6.0\FM.DataAccessLayer.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.DataAccessLayer\bin\Debug\net6.0\FM.DataAccessLayer.pdb
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.DataAccessLayer\bin\Debug\net6.0\FM.BusinessObjectLayer.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.DataAccessLayer\bin\Debug\net6.0\FM.BusinessObjectLayer.pdb
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.DataAccessLayer\obj\Debug\net6.0\FM.DataAccessLayer.csproj.AssemblyReference.cache
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.DataAccessLayer\obj\Debug\net6.0\FM.DataAccessLayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.DataAccessLayer\obj\Debug\net6.0\FM.DataAccessLayer.AssemblyInfoInputs.cache
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.DataAccessLayer\obj\Debug\net6.0\FM.DataAccessLayer.AssemblyInfo.cs
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.DataAccessLayer\obj\Debug\net6.0\FM.DataAccessLayer.csproj.CoreCompileInputs.cache
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.DataAccessLayer\obj\Debug\net6.0\FM.DataAccessLayer.csproj.CopyComplete
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.DataAccessLayer\obj\Debug\net6.0\FM.DataAccessLayer.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.DataAccessLayer\obj\Debug\net6.0\refint\FM.DataAccessLayer.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.DataAccessLayer\obj\Debug\net6.0\FM.DataAccessLayer.pdb
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.DataAccessLayer\obj\Debug\net6.0\ref\FM.DataAccessLayer.dll

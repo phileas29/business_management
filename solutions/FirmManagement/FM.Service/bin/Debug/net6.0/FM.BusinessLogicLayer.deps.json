@@ -1,0 +1,50 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "FM.BusinessLogicLayer/1.0.0": {
+        "dependencies": {
+          "FM.BusinessObjectLayer": "1.0.0",
+          "FM.DataAccessLayer": "1.0.0"
+        },
+        "runtime": {
+          "FM.BusinessLogicLayer.dll": {}
+        }
+      },
+      "FM.BusinessObjectLayer/1.0.0": {
+        "runtime": {
+          "FM.BusinessObjectLayer.dll": {}
+        }
+      },
+      "FM.DataAccessLayer/1.0.0": {
+        "dependencies": {
+          "FM.BusinessObjectLayer": "1.0.0"
+        },
+        "runtime": {
+          "FM.DataAccessLayer.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "FM.BusinessLogicLayer/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "FM.BusinessObjectLayer/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "FM.DataAccessLayer/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

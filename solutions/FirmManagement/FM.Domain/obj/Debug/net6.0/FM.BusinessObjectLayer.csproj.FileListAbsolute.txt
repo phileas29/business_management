@@ -1,0 +1,12 @@
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessObjectLayer\bin\Debug\net6.0\FM.BusinessObjectLayer.deps.json
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessObjectLayer\bin\Debug\net6.0\FM.BusinessObjectLayer.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessObjectLayer\bin\Debug\net6.0\FM.BusinessObjectLayer.pdb
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessObjectLayer\obj\Debug\net6.0\FM.BusinessObjectLayer.csproj.AssemblyReference.cache
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessObjectLayer\obj\Debug\net6.0\FM.BusinessObjectLayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessObjectLayer\obj\Debug\net6.0\FM.BusinessObjectLayer.AssemblyInfoInputs.cache
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessObjectLayer\obj\Debug\net6.0\FM.BusinessObjectLayer.AssemblyInfo.cs
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessObjectLayer\obj\Debug\net6.0\FM.BusinessObjectLayer.csproj.CoreCompileInputs.cache
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessObjectLayer\obj\Debug\net6.0\FM.BusinessObjectLayer.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessObjectLayer\obj\Debug\net6.0\refint\FM.BusinessObjectLayer.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessObjectLayer\obj\Debug\net6.0\FM.BusinessObjectLayer.pdb
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessObjectLayer\obj\Debug\net6.0\ref\FM.BusinessObjectLayer.dll

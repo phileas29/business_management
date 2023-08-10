@@ -1,0 +1,17 @@
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\bin\Debug\net6.0\FM.BusinessLogicLayer.deps.json
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\bin\Debug\net6.0\FM.BusinessLogicLayer.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\bin\Debug\net6.0\FM.BusinessLogicLayer.pdb
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\bin\Debug\net6.0\FM.BusinessObjectLayer.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\bin\Debug\net6.0\FM.DataAccessLayer.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\bin\Debug\net6.0\FM.BusinessObjectLayer.pdb
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\bin\Debug\net6.0\FM.DataAccessLayer.pdb
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\obj\Debug\net6.0\FM.BusinessLogicLayer.csproj.AssemblyReference.cache
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\obj\Debug\net6.0\FM.BusinessLogicLayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\obj\Debug\net6.0\FM.BusinessLogicLayer.AssemblyInfoInputs.cache
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\obj\Debug\net6.0\FM.BusinessLogicLayer.AssemblyInfo.cs
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\obj\Debug\net6.0\FM.BusinessLogicLayer.csproj.CoreCompileInputs.cache
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\obj\Debug\net6.0\FM.BusinessLogicLayer.csproj.CopyComplete
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\obj\Debug\net6.0\FM.BusinessLogicLayer.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\obj\Debug\net6.0\refint\FM.BusinessLogicLayer.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\obj\Debug\net6.0\FM.BusinessLogicLayer.pdb
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.BusinessLogicLayer\obj\Debug\net6.0\ref\FM.BusinessLogicLayer.dll
