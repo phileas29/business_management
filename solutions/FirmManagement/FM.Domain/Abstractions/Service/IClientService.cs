@@ -7,5 +7,7 @@ namespace FM.Domain.Abstractions.Service
     {
         FClient GetRepositoryClientFromWebModel(ClientWebModel wClient);
         Task PutClient(FClient fClient);
+        List<FClient> GetAllClients();
+
     }
 }

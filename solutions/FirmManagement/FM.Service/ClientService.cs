@@ -77,5 +77,11 @@ namespace FM.Service
         {
             await _clientRepository.InsertClientAsync(fClient);
         }
+
+        public List<FClient> GetAllClients()
+        {
+            return _clientRepository.SelectAllClients();
+        }
+
     }
 }

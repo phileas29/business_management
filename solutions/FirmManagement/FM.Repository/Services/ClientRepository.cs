@@ -17,5 +17,9 @@ namespace FM.Repository.Services
             _context.Add(fClient);
             await _context.SaveChangesAsync();
         }
+        public List<FClient> SelectAllClients()
+        {
+            return _context.FClients.ToList();
+        }
     }
 }

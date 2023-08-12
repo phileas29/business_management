@@ -19,9 +19,8 @@
                 </div>
                 <div>
                     <ul class="list-group">
-                        <li class="list-group-item"><a class="nav-link" asp-controller="FClients" asp-action="Create">Enter a customer</a></li>
-                        <li class="list-group-item"><a class="nav-link" asp-page="/SubMenus/Enter.html">Enter</a></li>
-                        <li class="list-group-item"><a class="nav-link" asp-page="/SubMenus/Consult.cshtml">Consult</a></li>
+                        <li class="list-group-item"><a class="nav-link" href="/SubMenus/Enter">Enter</a></li>
+                        <li class="list-group-item"><a class="nav-link" href="/SubMenus/Consult">Consult</a></li>
                         <li class="list-group-item"><a class="nav-link" href="/SubMenus/Execute">Execute</a></li>
                         <li class="list-group-item"><a class="nav-link" href="/SubMenus/Configure">Configure</a></li>
                     </ul>
@@ -30,12 +29,14 @@
 
             <!-- Column 2: Map -->
 			<div class="col-md-6">
+                <p>Already @Model.Count satisfied customers !!!</p>
                 <div id="mapid" style="height: 600px; width: 600px;"></div>
             </div>
         </div>
     </div>
 
 </div>
+
 
 
 @section Scripts {
@@ -62,5 +63,13 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
         }).addTo(mymap);
+
+        // loop through each city and add a marker to the map
+        @foreach (var c in Model)
+        {
+            <text>var marker = L.marker([@c.CLocationLat, @c.CLocationLong], { icon: redIcon }).addTo(mymap);
+            marker.bindPopup("<b>@c.CName</b>"); </text>
+
+        }
     </script>
 }
