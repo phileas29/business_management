@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-using FM.Domain.Models.Repository;
+using FM.Domain.Models.Web;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FM.PresentationLayer.Controllers
+namespace FM.Web.Controllers
 {
     public class HomeController : Controller
     {

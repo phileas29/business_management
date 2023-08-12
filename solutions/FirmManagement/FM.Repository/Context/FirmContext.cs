@@ -10,11 +10,9 @@ public partial class FirmContext : DbContext
     {
     }
 
-    public FirmContext(DbContextOptions<FirmContext> options, IConfiguration configuration, DbContextOptionsBuilder optionsBuilder)
+    public FirmContext(DbContextOptions<FirmContext> options)
         : base(options)
     {
-        optionsBuilder.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
-        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 
     public virtual DbSet<FCategory> FCategories { get; set; }

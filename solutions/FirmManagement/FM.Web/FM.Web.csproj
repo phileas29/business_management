@@ -7,7 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="towns.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="towns.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FM.Domain\FM.Domain.csproj" />
+    <ProjectReference Include="..\FM.Repository\FM.Repository.csproj" />
+    <ProjectReference Include="..\FM.Service\FM.Service.csproj" />
   </ItemGroup>
 
 </Project>

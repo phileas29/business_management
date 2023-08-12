@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "FM.PresentationLayer": {
+    "FM.Web": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

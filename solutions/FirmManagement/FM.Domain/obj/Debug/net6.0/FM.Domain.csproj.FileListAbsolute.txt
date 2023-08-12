@@ -1,0 +1,12 @@
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Domain\obj\Debug\net6.0\FM.Domain.csproj.AssemblyReference.cache
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Domain\obj\Debug\net6.0\FM.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Domain\obj\Debug\net6.0\FM.Domain.AssemblyInfoInputs.cache
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Domain\obj\Debug\net6.0\FM.Domain.AssemblyInfo.cs
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Domain\obj\Debug\net6.0\FM.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Domain\bin\Debug\net6.0\FM.Domain.deps.json
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Domain\bin\Debug\net6.0\FM.Domain.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Domain\bin\Debug\net6.0\FM.Domain.pdb
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Domain\obj\Debug\net6.0\FM.Domain.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Domain\obj\Debug\net6.0\refint\FM.Domain.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Domain\obj\Debug\net6.0\FM.Domain.pdb
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Domain\obj\Debug\net6.0\ref\FM.Domain.dll

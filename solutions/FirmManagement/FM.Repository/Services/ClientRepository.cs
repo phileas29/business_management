@@ -12,7 +12,7 @@ namespace FM.Repository.Services
         {
             _context = context;
         }
-        public async void InsertClientAsync(FClient fClient)
+        public async Task InsertClientAsync(FClient fClient)
         {
             _context.Add(fClient);
             await _context.SaveChangesAsync();

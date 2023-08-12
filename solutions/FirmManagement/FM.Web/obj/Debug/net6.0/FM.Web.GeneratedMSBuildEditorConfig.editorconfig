@@ -16,6 +16,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Web
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/Phileas/Documents/DOCS/Documents/travail/projets/micro-entreprise/r&d/management_controller/solutions/FirmManagement/FM.Web/Views/FClients/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRkNsaWVudHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Phileas/Documents/DOCS/Documents/travail/projets/micro-entreprise/r&d/management_controller/solutions/FirmManagement/FM.Web/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

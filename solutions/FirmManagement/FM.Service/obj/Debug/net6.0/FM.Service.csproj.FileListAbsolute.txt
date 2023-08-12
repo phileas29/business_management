@@ -1,0 +1,15 @@
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Service\obj\Debug\net6.0\FM.Service.csproj.AssemblyReference.cache
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Service\obj\Debug\net6.0\FM.Service.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Service\obj\Debug\net6.0\FM.Service.AssemblyInfoInputs.cache
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Service\obj\Debug\net6.0\FM.Service.AssemblyInfo.cs
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Service\obj\Debug\net6.0\FM.Service.csproj.CoreCompileInputs.cache
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Service\bin\Debug\net6.0\FM.Service.deps.json
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Service\bin\Debug\net6.0\FM.Service.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Service\bin\Debug\net6.0\FM.Service.pdb
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Service\bin\Debug\net6.0\FM.Domain.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Service\bin\Debug\net6.0\FM.Domain.pdb
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Service\obj\Debug\net6.0\FM.Service.csproj.CopyComplete
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Service\obj\Debug\net6.0\FM.Service.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Service\obj\Debug\net6.0\refint\FM.Service.dll
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Service\obj\Debug\net6.0\FM.Service.pdb
+C:\Users\Phileas\Documents\DOCS\Documents\travail\projets\micro-entreprise\r&d\management_controller\solutions\FirmManagement\FM.Service\obj\Debug\net6.0\ref\FM.Service.dll

@@ -6,7 +6,7 @@ namespace FM.Domain.Abstractions.Repository
     {
         public void InsertCityAsync(FCity fCity);
         public FCity SelectCityByCode(int code);
-        public void UpdateCity(FCity fCity);
+        public void UpdateCityAsync(FCity fCity);
         public CityJsonRepositoryModel SelectCityByNameFromFranceJsonDb(string cityName);
     }
 }

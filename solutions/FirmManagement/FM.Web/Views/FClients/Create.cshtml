@@ -1,0 +1,321 @@
+@model FM.Domain.Models.Web.ClientWebModel
+<h1>Record a new customer</h1>
+
+<div class="container">
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">Identity</div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="CName" class="form-label"></label>
+                            <input asp-for="CName" class="form-control" />
+                            <span asp-validation-for="CName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="CFirstname" class="form-label"></label>
+                            <input asp-for="CFirstname" class="form-control" />
+                            <span asp-validation-for="CFirstname" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="CEmail" class="form-label"></label>
+                            <input asp-for="CEmail" class="form-control" />
+                            <span asp-validation-for="CEmail" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="CPhoneFixed" class="form-label"></label>
+                            <input asp-for="CPhoneFixed" class="form-control" />
+                            <span asp-validation-for="CPhoneFixed" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="CPhoneCell" class="form-label"></label>
+                            <input asp-for="CPhoneCell" class="form-control" />
+                            <span asp-validation-for="CPhoneCell" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="CFkMediaId" class="form-label"></label>
+                            <select asp-for="CFkMediaId" class="form-control" asp-items="Model.Medias"></select>
+                            <span asp-validation-for="CFkMediaId" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="CIsPro" class="form-label"></label>
+                            <input asp-for="CIsPro" type="checkbox" class="form-check-input" />
+                            <span asp-validation-for="CIsPro" class="text-danger"></span>
+                        </div>
+                        <div class="card mt-3">
+                            <div class="card-header">
+                                <div class="form-check form-switch">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Register in the Urssaf api ?</label>
+                                    <input class="form-check-input" data-bs-toggle="collapse" type="checkbox" role="switch" id="enableUrssafPayment" href="#collapseCard">
+                                </div>
+                            </div>
+                            <div class="collapse" id="collapseCard">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label asp-for="IsMan" class="form-label">Is Man?</label>
+                                        <input type="checkbox" class="form-check-input" asp-for="IsMan">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label asp-for="CBirthDate" class="form-label">Birth Date</label>
+                                        <input type="date" class="form-control" asp-for="CBirthDate">
+                                        <span asp-validation-for="CBirthDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label asp-for="CBirthName" class="form-label">Birth Name</label>
+                                        <input type="text" class="form-control" asp-for="CBirthName">
+                                        <span asp-validation-for="CBirthName" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label asp-for="BirthCityInput" class="form-label">Birth City</label>
+                                        <input asp-for="BirthCityInput" type="text" class="form-control" id="birthCityInput" name="birthCity" placeholder="Enter birth city" autocomplete="off" />
+                                        <div class="dropdown">
+                                            <ul id="birthCitySuggestions" class="dropdown-menu" style="display: none;"></ul>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label asp-for="CAccountHolder" class="form-label">Account Holder</label>
+                                        <input type="text" class="form-control" asp-for="CAccountHolder">
+                                        <span asp-validation-for="CAccountHolder" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label asp-for="CIban" class="form-label">IBAN</label>
+                                        <input type="text" class="form-control" asp-for="CIban">
+                                        <span asp-validation-for="CIban" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label asp-for="CBic" class="form-label">BIC</label>
+                                        <input type="text" class="form-control" asp-for="CBic">
+                                        <span asp-validation-for="CBic" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Location</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Town" class="form-label">Town</label>
+                                    <input asp-for="Town" class="form-control" name="Town" placeholder="Enter town name" id="town"></input>
+                                    <span asp-validation-for="Town" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="CAddress" class="form-label"></label>
+                                    <input asp-for="CAddress" class="form-control" id="address" />
+                                    <span asp-validation-for="CAddress" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="CLocationLong" class="form-label"></label>
+                                    <input asp-for="CLocationLong" class="form-control" id="lon" />
+                                    <span asp-validation-for="CLocationLong" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="CLocationLat" class="form-label"></label>
+                                    <input asp-for="CLocationLat" class="form-control" id="lat" />
+                                    <span asp-validation-for="CLocationLat" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="CDistance" class="form-label"></label>
+                                    <input asp-for="CDistance" class="form-control" id="distance" />
+                                    <span asp-validation-for="CDistance" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="CTravelTime" class="form-label"></label>
+                                    <input asp-for="CTravelTime" class="form-control" id="travel_time" />
+                                    <span asp-validation-for="CTravelTime" class="text-danger"></span>
+                                </div>
+                            </div>
+							<div class="col-md-6">
+								<div id="map" style="height: 400px;" class="mb-3"></div>
+                                <button type="button" class="btn btn-danger" id="clear">Clear Map</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 d-flex flex-column align-items-end">
+                <button name="saveAndExit" value="false" asp-controller="FClients" asp-action="Create" class="btn btn-primary mb-4">Save and record an intervention</button>
+                <button name="saveAndExit" value="true" asp-controller="FClients" asp-action="Create" class="btn btn-primary mb-4">Save and exit</button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Leaflet JS -->
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <!-- Leaflet Polyline.encoded JS -->
+    <script src="https://cdn.jsdelivr.net/npm/polyline-encoded@0.0.9/Polyline.encoded.min.js"></script>
+
+    <script>
+        var map = L.map('map').setView([47.9384, -4.0234], 11);
+        var polyline;
+
+        map.on('click', onMapClick);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+            maxZoom: 18,
+        }).addTo(map);
+
+        var redIcon = L.icon({
+            iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            tooltipAnchor: [16, -28],
+            shadowSize: [41, 41]
+        });
+
+        var blueIcon = L.icon({
+            iconUrl: 'https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-blue.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            tooltipAnchor: [16, -28],
+            shadowSize: [41, 41]
+        });
+
+        var markerFirm = L.marker([47.93053, -4.07579], { icon: blueIcon }).addTo(map);
+        var marker = L.marker([0, 0], { icon: redIcon }).addTo(map);
+
+        function updateMarker(lat, lng) {
+            marker.setLatLng([lat, lng], { icon: redIcon });
+            //map.setView([lat, lng]);
+        }
+
+        function onMapClick(e) {
+            // Reverse geocode the clicked location to get an address
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" + e.latlng.lat + "&lon=" + e.latlng.lng, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    if (data.address != null) {
+                        var address = data.address.house_number + " " + data.address.road;
+                        document.getElementById("address").value = address;
+                        document.getElementById("lat").value = e.latlng.lat;
+                        document.getElementById("lon").value = e.latlng.lng;
+                        document.getElementById("town").value = data.address.town || data.address.city || data.address.village || "";
+                    }
+                }
+            };
+            xhr.send();
+            updateMarker(e.latlng.lat, e.latlng.lng);
+
+            var markerLatLng = markerFirm.getLatLng();
+            var url = "https://router.project-osrm.org/route/v1/driving/" + markerLatLng.lng + "," + markerLatLng.lat + ";" + e.latlng.lng + "," + e.latlng.lat + "?overview=full";
+            var xhr2 = new XMLHttpRequest();
+            xhr2.open('GET', url, true);
+            xhr2.onreadystatechange = function () {
+                if (xhr2.readyState === 4 && xhr2.status === 200) {
+                    var response = JSON.parse(xhr2.responseText);
+                    if (response.code === 'Ok' && response.routes.length > 0) {
+                        // Extract the route geometry from the response
+                        var route = response.routes[0];
+                        var geometry = route.geometry;
+                        
+                        // Extract the distance and travel time from the response
+                        var distance = route.distance; // Distance in meters
+                        var travelTime = route.duration; // Travel time in seconds
+
+                        // Set the formatted values to the inputs
+                        document.getElementById("distance").value = (distance / 1000).toFixed(1);
+                        document.getElementById("travel_time").value = Math.floor(travelTime / 60);
+
+                        if (polyline) {
+                            // Remove the existing polyline from the map
+                            map.removeLayer(polyline);
+                        }
+
+                        // Create a Leaflet polyline from the OSRM route geometry
+                        var decodedGeometry = L.PolylineUtil.decode(geometry);
+                        polyline = L.polyline(decodedGeometry, { color: 'blue' }).addTo(map);
+                    } else {
+                        console.log('Unable to find a route.');
+                    }
+                }
+            };
+            xhr2.send();
+        }
+
+        var clearButton = document.getElementById("clear");
+        clearButton.addEventListener("click", function () {
+            marker.setLatLng([0,0]);
+            document.getElementById("address").value = "";
+            document.getElementById("town").value = "";
+            document.getElementById("lat").value = "";
+            document.getElementById("lon").value = "";
+            document.getElementById("distance").value = "";
+            document.getElementById("travel_time").value = "";
+            if (polyline) {
+                // Remove the existing polyline from the map
+                map.removeLayer(polyline);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var birthCityInput = document.getElementById('birthCityInput');
+            var birthCitySuggestions = document.getElementById('birthCitySuggestions');
+
+            birthCityInput.addEventListener('input', function () {
+                var input = birthCityInput.value;
+                if (input.length >= 2) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', '/FClients/GetMatchingCities?input=' + encodeURIComponent(input));
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            var response = JSON.parse(xhr.responseText);
+                            birthCitySuggestions.innerHTML = '';
+                            response.forEach(function (city) {
+                                var suggestion = document.createElement('li');
+                                suggestion.className = 'dropdown-item';
+                                suggestion.textContent = city.nom;
+                                suggestion.addEventListener('click', function () {
+                                    birthCityInput.value = city.nom;
+                                    birthCitySuggestions.style.display = 'none';
+                                });
+                                birthCitySuggestions.appendChild(suggestion);
+                            });
+                            birthCitySuggestions.style.display = 'block';
+                        }
+                    };
+                    xhr.send();
+                } else {
+                    birthCitySuggestions.innerHTML = '';
+                    birthCitySuggestions.style.display = 'none';
+                }
+            });
+        });
+
+        const enableUrssafPaymentSwitch = document.getElementById("enableUrssafPayment");
+        const accountHolderInput = document.getElementById("CAccountHolder");
+        const firstnameInput = document.getElementById("CFirstname");
+        const nameInput = document.getElementById("CName");
+
+        enableUrssafPaymentSwitch.addEventListener("change", function () {
+            if (this.checked) {
+                accountHolderInput.value = firstnameInput.value + " " + nameInput.value;
+            } else {
+                accountHolderInput.value = "";
+            }
+        });
+    </script>
+}

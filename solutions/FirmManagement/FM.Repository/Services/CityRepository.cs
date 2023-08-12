@@ -1,12 +1,26 @@
 ﻿using FM.Repository.Context;
 using FM.Domain.Models.Repository;
 using FM.Domain.Abstractions.Repository;
+using System.Text.Json;
 
 namespace FM.Repository.Services
 {
     public class CityRepository : ICityRepository
     {
         private readonly FirmContext _context;
+
+        private static List<CityJsonRepositoryModel>? Cities { get; set; } = null;
+
+        private static List<CityJsonRepositoryModel>? LoadCitiesFromJson()
+        {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true // Ignore case when deserializing JSON properties
+            };
+            // Load and deserialize the "towns.json" file into a list of City objects
+            var json = File.ReadAllText("towns.json");
+            return JsonSerializer.Deserialize<List<CityJsonRepositoryModel>>(json, options);
+        }
 
         public CityRepository(FirmContext context)
         {
@@ -20,17 +34,22 @@ namespace FM.Repository.Services
 
         public FCity SelectCityByCode(int code)
         {
-            throw new NotImplementedException();
+            return _context.FCities.Where(c=>c.CiInseeCode==code).FirstOrDefault();
         }
 
-        public CityJsonRepositoryModel SelectCityByNameFromFranceJsonDb(string cityName)
+        public CityJsonRepositoryModel? SelectCityByNameFromFranceJsonDb(string cityName)
         {
-            throw new NotImplementedException();
+            Cities ??= LoadCitiesFromJson();
+
+            return Cities?
+                .Where(city => city.Nom.Equals(cityName, StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault();
         }
 
-        public void UpdateCity(FCity fCity)
+        public async void UpdateCityAsync(FCity fCity)
         {
-            throw new NotImplementedException();
+            _context.Update(fCity);
+            await _context.SaveChangesAsync();
         }
     }
 }
