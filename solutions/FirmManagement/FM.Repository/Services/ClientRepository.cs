@@ -1,6 +1,8 @@
-﻿using FM.Domain.Abstractions.Repository;
+﻿using System.Collections.Generic;
+using FM.Domain.Abstractions.Repository;
 using FM.Domain.Models.Repository;
 using FM.Repository.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace FM.Repository.Services
 {
@@ -12,14 +14,16 @@ namespace FM.Repository.Services
         {
             _context = context;
         }
-        public async Task InsertClientAsync(FClient fClient)
+        public async Task<int> InsertClientAsync(FClient fClient)
         {
             _context.Add(fClient);
-            await _context.SaveChangesAsync();
+            int res = await _context.SaveChangesAsync();
+            return res;
         }
-        public List<FClient> SelectAllClients()
+        public async Task<List<FClient>> SelectAllClientsAsync()
         {
-            return _context.FClients.ToList();
+            List<FClient> res = await _context.FClients.ToListAsync();
+            return res;
         }
     }
 }

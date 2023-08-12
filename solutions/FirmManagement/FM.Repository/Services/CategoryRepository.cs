@@ -1,6 +1,7 @@
 ﻿using FM.Domain.Abstractions.Repository;
 using FM.Domain.Models.Repository;
 using FM.Repository.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace FM.Repository.Services
 {
@@ -12,11 +13,11 @@ namespace FM.Repository.Services
         {
             _context = context;
         }
-        public List<FCategory> SelectCategoriesByType(string categoryType)
+        public async Task<List<FCategory>> SelectCategoriesByTypeAsync(string categoryType)
         {
-            return _context.FCategories
+            return await _context.FCategories
                 .Where(c=>c.CaFkCategoryType.CtName.Equals(categoryType))
-                .ToList();
+                .ToListAsync();
         }
     }
 }

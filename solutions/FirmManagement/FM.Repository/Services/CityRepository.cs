@@ -2,6 +2,7 @@
 using FM.Domain.Models.Repository;
 using FM.Domain.Abstractions.Repository;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace FM.Repository.Services
 {
@@ -9,7 +10,7 @@ namespace FM.Repository.Services
     {
         private readonly FirmContext _context;
 
-        private static List<CityJsonRepositoryModel>? Cities { get; set; } = null;
+        private static List<CityJsonRepositoryModel>? _Cities { get; set; } = null;
 
         private static List<CityJsonRepositoryModel>? LoadCitiesFromJson()
         {
@@ -26,30 +27,44 @@ namespace FM.Repository.Services
         {
             _context = context;
         }
-        public async void InsertCityAsync(FCity fCity)
+        public async Task<int> InsertCityAsync(FCity fCity)
         {
             _context.Add(fCity);
-            await _context.SaveChangesAsync();
+            int res = await _context.SaveChangesAsync();
+            return res;
         }
 
-        public FCity SelectCityByCode(int code)
+        public async Task<FCity?> SelectCityByCodeAsync(int code)
         {
-            return _context.FCities.Where(c=>c.CiInseeCode==code).FirstOrDefault();
+            FCity? fCity = await _context.FCities.Where(c=>c.CiInseeCode==code).FirstOrDefaultAsync();
+            return fCity;
         }
 
         public CityJsonRepositoryModel? SelectCityByNameFromFranceJsonDb(string cityName)
         {
-            Cities ??= LoadCitiesFromJson();
+            _Cities ??= LoadCitiesFromJson();
 
-            return Cities?
-                .Where(city => city.Nom.Equals(cityName, StringComparison.OrdinalIgnoreCase))
+            return _Cities?
+                .Where(city => cityName.Equals(city.Nom, StringComparison.OrdinalIgnoreCase))
                 .FirstOrDefault();
         }
 
-        public async void UpdateCityAsync(FCity fCity)
+        public async Task<int> UpdateCityAsync(FCity fCity)
         {
             _context.Update(fCity);
-            await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
+        }
+
+        public List<CityJsonRepositoryModel> SelectMatchingCitiesFromFranceJsonDb(string input)
+        {
+            _Cities ??= LoadCitiesFromJson();
+
+            List<CityJsonRepositoryModel> matchingCities = _Cities!
+                .Where(city => city.Nom != null && city.Nom.StartsWith(input, StringComparison.OrdinalIgnoreCase))
+                .Take(10) // Limit the number of suggestions
+                .ToList();
+
+            return matchingCities;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using FM.Domain.Abstractions.Repository;
+﻿using FM.Domain.Abstractions.Repository;
 using FM.Domain.Abstractions.Service;
 using FM.Domain.Models.Repository;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,10 +14,11 @@ namespace FM.Service
             _categoryRepository = categoryRepository;
         }
 
-        public SelectList GetSelectList(string categoryType)
+        public async Task<SelectList> GetSelectListAsync(string categoryType)
         {
-            List<SelectListItem> mediasWithNull = _categoryRepository
-                .SelectCategoriesByType(categoryType)
+            List<FCategory> fCategories = await _categoryRepository
+                .SelectCategoriesByTypeAsync(categoryType);
+            List<SelectListItem> mediasWithNull = fCategories
                 .Select(c => new SelectListItem
                 {
                     Text = c.CaName,

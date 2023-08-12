@@ -5,6 +5,6 @@ namespace FM.Domain.Abstractions.Service
 {
     public interface ICategoryService
     {
-        SelectList GetSelectList(string categoryType);
+        Task<SelectList> GetSelectListAsync(string categoryType);
     }
 }

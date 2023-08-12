@@ -15,7 +15,7 @@ namespace FM.Service
             _cityRepository = cityRepository;
         }
 
-        public FClient GetRepositoryClientFromWebModel(ClientWebModel wClient)
+        public async Task<FClient> GetRepositoryClientFromWebModelAsync(ClientWebModel wClient)
         {
             List<string?> jCities = new List<string?>() { wClient.Town, wClient.BirthCityInput };
             int[] cFkCities = new int[] { 0, 0 };
@@ -24,21 +24,24 @@ namespace FM.Service
             {
                 if (jCities[i] != null)
                 {
-                    CityJsonRepositoryModel jCity = _cityRepository.SelectCityByNameFromFranceJsonDb(jCities[i]!);
-                    FCity fCity = _cityRepository.SelectCityByCode(Int32.Parse(jCity.Code));
-                    if (fCity == null)
+                    CityJsonRepositoryModel? jCity = _cityRepository.SelectCityByNameFromFranceJsonDb(jCities[i]!);
+                    if (jCity != null)
                     {
-                        _cityRepository.InsertCityAsync(
-                            new FCity
-                            {
-                                CiPostalCode = jCity.CodesPostaux[0],
-                                CiName = jCity.Nom.ToUpper(),
-                                CiInseeCode = int.Parse(jCity.Code),
-                                CiDepartCode = int.Parse(jCity.CodeDepartement)
-                            });
+                        FCity? fCity = await _cityRepository.SelectCityByCodeAsync(int.Parse(jCity.Code!));
+                        if (fCity == null)
+                        {
+                            await _cityRepository.InsertCityAsync(
+                                new FCity
+                                {
+                                    CiPostalCode = jCity.CodesPostaux![0],
+                                    CiName = jCity.Nom!.ToUpper(),
+                                    CiInseeCode = int.Parse(jCity.Code!),
+                                    CiDepartCode = int.Parse(jCity.CodeDepartement!)
+                                });
+                        }
+                        else
+                            cFkCities[i] = fCity.CiId;
                     }
-                    else
-                        cFkCities[i] = fCity.CiId;
                 }
             }
 
@@ -73,14 +76,14 @@ namespace FM.Service
             return fClient;
         }
 
-        public async Task PutClient(FClient fClient)
+        public async Task<int> PutClientAsync(FClient fClient)
         {
-            await _clientRepository.InsertClientAsync(fClient);
+            return await _clientRepository.InsertClientAsync(fClient);
         }
 
-        public List<FClient> GetAllClients()
+        public async Task<List<FClient>> GetAllClientsAsync()
         {
-            return _clientRepository.SelectAllClients();
+            return await _clientRepository.SelectAllClientsAsync();
         }
 
     }

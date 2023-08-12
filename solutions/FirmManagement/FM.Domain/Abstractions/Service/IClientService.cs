@@ -5,9 +5,9 @@ namespace FM.Domain.Abstractions.Service
 {
     public interface IClientService
     {
-        FClient GetRepositoryClientFromWebModel(ClientWebModel wClient);
-        Task PutClient(FClient fClient);
-        List<FClient> GetAllClients();
+        Task<FClient> GetRepositoryClientFromWebModelAsync(ClientWebModel wClient);
+        Task<int> PutClientAsync(FClient fClient);
+        Task<List<FClient>> GetAllClientsAsync();
 
     }
 }

@@ -47,8 +47,8 @@
                         <div class="card mt-3">
                             <div class="card-header">
                                 <div class="form-check form-switch">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault">Register in the Urssaf api ?</label>
-                                    <input class="form-check-input" data-bs-toggle="collapse" type="checkbox" role="switch" id="enableUrssafPayment" href="#collapseCard">
+                                    <label asp-for="EnableUrssafPayment" class="form-check-label" for="flexSwitchCheckDefault">Register in the Urssaf api ?</label>
+                                    <input asp-for="EnableUrssafPayment" class="form-check-input" data-bs-toggle="collapse" type="checkbox" href="#collapseCard">
                                 </div>
                             </div>
                             <div class="collapse" id="collapseCard">
@@ -69,7 +69,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label asp-for="BirthCityInput" class="form-label">Birth City</label>
-                                        <input asp-for="BirthCityInput" type="text" class="form-control" id="birthCityInput" name="birthCity" placeholder="Enter birth city" autocomplete="off" />
+                                        <input asp-for="BirthCityInput" type="text" class="form-control" placeholder="Enter birth city" autocomplete="off" />
                                         <div class="dropdown">
                                             <ul id="birthCitySuggestions" class="dropdown-menu" style="display: none;"></ul>
                                         </div>
@@ -272,7 +272,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', function () {
-            var birthCityInput = document.getElementById('birthCityInput');
+            var birthCityInput = document.getElementById('BirthCityInput');
             var birthCitySuggestions = document.getElementById('birthCitySuggestions');
 
             birthCityInput.addEventListener('input', function () {
@@ -305,7 +305,7 @@
             });
         });
 
-        const enableUrssafPaymentSwitch = document.getElementById("enableUrssafPayment");
+        const enableUrssafPaymentSwitch = document.getElementById("EnableUrssafPayment");
         const accountHolderInput = document.getElementById("CAccountHolder");
         const firstnameInput = document.getElementById("CFirstname");
         const nameInput = document.getElementById("CName");

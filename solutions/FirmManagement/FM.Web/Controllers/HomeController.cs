@@ -16,9 +16,9 @@ namespace FM.Web.Controllers
             _clientService = clientService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_clientService.GetAllClients());
+            return View(await _clientService.GetAllClientsAsync());
         }
 
         public IActionResult Privacy()

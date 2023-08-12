@@ -37,7 +37,7 @@ public class ClientWebModel
     }
     [StringLength(100)]
     public string? CBirthName { get; set; }
-    public DateOnly? CBirthDate { get; set; }
+    public DateTime? CBirthDate { get; set; }
     [StringLength(100)]
     public string? BirthCityInput { get; set; }
     [StringLength(100)]
@@ -47,4 +47,5 @@ public class ClientWebModel
     [StringLength(100)]
     public string? CAccountHolder { get; set; }
     public IEnumerable<SelectListItem>? Medias { get; set; }
+    public bool EnableUrssafPayment { get; set; }
 }

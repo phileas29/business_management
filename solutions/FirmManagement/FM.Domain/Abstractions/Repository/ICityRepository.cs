@@ -4,9 +4,10 @@ namespace FM.Domain.Abstractions.Repository
 {
     public interface ICityRepository
     {
-        public void InsertCityAsync(FCity fCity);
-        public FCity SelectCityByCode(int code);
-        public void UpdateCityAsync(FCity fCity);
-        public CityJsonRepositoryModel SelectCityByNameFromFranceJsonDb(string cityName);
+        public Task<int> InsertCityAsync(FCity fCity);
+        public Task<FCity?> SelectCityByCodeAsync(int code);
+        public Task<int> UpdateCityAsync(FCity fCity);
+        public CityJsonRepositoryModel? SelectCityByNameFromFranceJsonDb(string cityName);
+        public List<CityJsonRepositoryModel> SelectMatchingCitiesFromFranceJsonDb(string input);
     }
 }

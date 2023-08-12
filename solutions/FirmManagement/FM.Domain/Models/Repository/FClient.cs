@@ -69,7 +69,7 @@ public partial class FClient
     public int? CBirthCountryCode { get; set; }
 
     [Column("c_birth_date")]
-    public DateOnly? CBirthDate { get; set; }
+    public DateTime? CBirthDate { get; set; }
 
     [Column("c_bic", TypeName = "character varying")]
     public string? CBic { get; set; }
