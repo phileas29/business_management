@@ -66,5 +66,14 @@ namespace FM.Repository.Services
 
             return matchingCities;
         }
+
+        public async Task<List<FCity>> SelectAllCitiesAsync()
+        {
+            return await _context.FCities
+                .Distinct()
+                .OrderBy(c=>c.CiName)
+                .Where(c=>c.FClientCFkCities.Any())
+                .ToListAsync();
+        }
     }
 }

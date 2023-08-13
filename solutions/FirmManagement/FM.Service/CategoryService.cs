@@ -25,7 +25,7 @@ namespace FM.Service
                     Value = c.CaId.ToString()
                 })
                 .ToList();
-            mediasWithNull.Add(new SelectListItem { Text = "Select a media", Value = "", Selected = true });
+            mediasWithNull.Insert(0,new SelectListItem { Text = "Select a " + categoryType, Value = "", Selected = true });
             return new SelectList(mediasWithNull, "Value", "Text", "");
         }
     }

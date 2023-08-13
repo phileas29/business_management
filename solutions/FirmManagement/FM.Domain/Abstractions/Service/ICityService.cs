@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FM.Domain.Models.Repository;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FM.Domain.Abstractions.Service
 {
-    internal interface ICityService
+    public interface ICityService
     {
+        public List<CityJsonRepositoryModel> GetMatchingCitiesFromFranceJsonDb(string input);
+        Task<SelectList> GetSelectListAsync();
     }
 }

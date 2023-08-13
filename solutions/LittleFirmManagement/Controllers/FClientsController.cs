@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using LittleFirmManagement.Models;
 using DinkToPdf;
 using DinkToPdf.Contracts;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Data.SqlTypes;
 
 namespace LittleFirmManagement.Controllers
 {
@@ -25,13 +28,12 @@ namespace LittleFirmManagement.Controllers
         {
             var clients = _context.FClients
                 .OrderBy(c=>c.CName)
-                .Include(f => f.CFkBirthCity)
                 .Include(f => f.CFkCity)
-                .Include(f => f.CFkMedia)
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(model.NameSearch))
                 clients = clients.Where(c => c.CName.ToLower().Contains(model.NameSearch.ToLower()));
+                //clients = clients.Where(c => -1 < c.CName.IndexOf(model.NameSearch, StringComparison.OrdinalIgnoreCase));
 
             if (!string.IsNullOrEmpty(model.FirstnameSearch))
                 clients = clients.Where(c => c.CFirstname.ToLower().Contains(model.FirstnameSearch.ToLower()));

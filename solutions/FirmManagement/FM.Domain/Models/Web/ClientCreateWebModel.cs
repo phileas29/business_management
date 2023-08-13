@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FM.Domain.Models.Web;
 
-public class ClientWebModel
+public class ClientCreateWebModel
 {
     public int? CFkMediaId { get; set; }
     public int CFkCityId { get; set; }
@@ -23,29 +23,30 @@ public class ClientWebModel
     public bool CIsPro { get; set; }
     public decimal? CLocationLong { get; set; }
     public decimal? CLocationLat { get; set; }
-    [StringLength(100)]
-    public string Town { get; set; } = "";
     public decimal? CDistance { get; set; }
     public int? CTravelTime { get; set; }
     [StringLength(100)]
     public string? CUrssafUuid { get; set; }
     public bool? CIsMan { get; set; }
-    public bool IsMan
-    {
-        get { return CIsMan ?? false; }
-        set { CIsMan = value; }
-    }
     [StringLength(100)]
     public string? CBirthName { get; set; }
     public DateTime? CBirthDate { get; set; }
-    [StringLength(100)]
-    public string? BirthCityInput { get; set; }
     [StringLength(100)]
     public string? CBic { get; set; }
     [StringLength(100)]
     public string? CIban { get; set; }
     [StringLength(100)]
     public string? CAccountHolder { get; set; }
+    [StringLength(100)]
+    public string Town { get; set; } = "";
     public IEnumerable<SelectListItem>? Medias { get; set; }
     public bool EnableUrssafPayment { get; set; }
+    public int Choice { get; set; }
+    public bool IsMan
+    {
+        get { return CIsMan ?? false; }
+        set { CIsMan = value; }
+    }
+    [StringLength(100)]
+    public string? BirthCityInput { get; set; }
 }

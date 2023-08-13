@@ -9,13 +9,15 @@ namespace FM.Service
     {
         private readonly IClientRepository _clientRepository;
         private readonly ICityRepository _cityRepository;
-        public ClientService(IClientRepository clientRepository, ICityRepository cityRepository)
+        private readonly ICityService _cityService;
+        public ClientService(IClientRepository clientRepository, ICityRepository cityRepository, ICityService cityService)
         {
             _clientRepository = clientRepository;
             _cityRepository = cityRepository;
+            _cityService = cityService;
         }
 
-        public async Task<FClient> GetRepositoryClientFromWebModelAsync(ClientWebModel wClient)
+        public async Task<FClient> GetRepositoryClientFromWebModelAsync(ClientCreateWebModel wClient)
         {
             List<string?> jCities = new List<string?>() { wClient.Town, wClient.BirthCityInput };
             int[] cFkCities = new int[] { 0, 0 };
@@ -86,5 +88,30 @@ namespace FM.Service
             return await _clientRepository.SelectAllClientsAsync();
         }
 
+        public async Task<ClientIndexWebModel> GetClientIndexWebModel(ClientIndexWebModel wClient)
+        {
+            List<FClient> selectedClients = await _clientRepository.SelectClientsByNameOrFirstnameOrCityAsync(wClient.NameSearch,wClient.FirstnameSearch,wClient.CitySearch,wClient.PageSize,wClient.Page);
+            wClient.Clients = GetClientsByPage(selectedClients, wClient.PageSize, wClient.Page);
+            wClient.ClientsGPS = GetClientsGPS(selectedClients,wClient.Clients, wClient.NameSearch, wClient.FirstnameSearch, wClient.CitySearch);
+            wClient.Cities = await _cityService.GetSelectListAsync();
+            int totalClients = selectedClients.Count();
+            int totalPages = (int)Math.Ceiling((double)totalClients / wClient.PageSize);
+            wClient.TotalClients = totalClients;
+            wClient.TotalPages = totalPages;
+            return wClient;
+        }
+
+        private static List<FClient> GetClientsByPage(List<FClient> selectedClients, int pageSize, int page)
+        {
+            return selectedClients.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        }
+
+        private static List<FClient>? GetClientsGPS(List<FClient> selectedClients, List<FClient> excludedClients, string? nameSearch, string? firstnameSearch, int? citySearch)
+        {
+            if (nameSearch == null && firstnameSearch == null && citySearch == null)
+                return null;
+            else
+                return selectedClients.Except(excludedClients).ToList();
+        }
     }
 }
