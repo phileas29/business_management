@@ -1,0 +1,23 @@
+@model FM.Domain.Models.Web.ClientGenerateTaxCertificatesWebModel
+
+<h1>Generate tax certificates</h1>
+
+
+<div class="container">
+    <form asp-action="GenerateTaxCertificates">
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label asp-for="CivilYearId" class="control-label"></label>
+                    <select asp-for="CivilYearId" class="form-control" asp-items="Model.CivilYear"></select>
+                    <span asp-validation-for="CivilYearId" class="text-danger"></span>
+                </div>
+            </div>
+        <div class="row">
+            <div class="col-md-4 d-flex flex-column align-items-end">
+                <button asp-controller="FClients" asp-action="GenerateTaxCertificates" class="btn btn-primary mb-4">Generate</button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

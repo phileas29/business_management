@@ -12,11 +12,13 @@ namespace LittleFirmManagement.Controllers
         private readonly ICategoryService _categoryService;
         private readonly IClientService _clientService;
         private readonly ICityService _cityService;
-        public FClientsController(ICategoryService categoryService, IClientService clientService, ICityService cityService)
+        private readonly IInvoiceService _invoiceService;
+        public FClientsController(ICategoryService categoryService, IClientService clientService, ICityService cityService, IInvoiceService invoiceService)
         {
             _categoryService = categoryService;
             _clientService = clientService;
             _cityService = cityService;
+            _invoiceService = invoiceService;
         }
 
         // GET: FClients/Create
@@ -46,6 +48,14 @@ namespace LittleFirmManagement.Controllers
             model.Medias = await _categoryService.GetSelectListAsync("média");
             return View(model);
         }
+
+        public async Task<IActionResult> GenerateTaxCertificatesAsync()
+        {
+            ClientGenerateTaxCertificatesWebModel wClient = new();
+            wClient.CivilYear = await _invoiceService.GetYearsSelectListAsync();
+            return View(wClient);
+        }
+
         public IActionResult GetMatchingCities(string input)
         {
             return Json(_cityService.GetMatchingCitiesFromFranceJsonDb(input));
@@ -54,7 +64,7 @@ namespace LittleFirmManagement.Controllers
         // GET: FClients/Index
         public async Task<IActionResult> IndexAsync(ClientIndexWebModel wClient)
         {
-            return View(await _clientService.GetClientIndexWebModel(wClient));
+            return View(await _clientService.GetClientIndexWebModelAsync(wClient));
         }
     }
 

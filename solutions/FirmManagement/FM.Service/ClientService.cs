@@ -88,30 +88,20 @@ namespace FM.Service
             return await _clientRepository.SelectAllClientsAsync();
         }
 
-        public async Task<ClientIndexWebModel> GetClientIndexWebModel(ClientIndexWebModel wClient)
+        public async Task<ClientIndexWebModel> GetClientIndexWebModelAsync(ClientIndexWebModel wClient)
         {
             List<FClient> selectedClients = await _clientRepository.SelectClientsByNameOrFirstnameOrCityAsync(wClient.NameSearch,wClient.FirstnameSearch,wClient.CitySearch,wClient.PageSize,wClient.Page);
-            wClient.Clients = GetClientsByPage(selectedClients, wClient.PageSize, wClient.Page);
-            wClient.ClientsGPS = GetClientsGPS(selectedClients,wClient.Clients, wClient.NameSearch, wClient.FirstnameSearch, wClient.CitySearch);
+            wClient.Clients = selectedClients.Skip((wClient.Page - 1) * wClient.PageSize).Take(wClient.PageSize).ToList();
+            if (wClient.NameSearch == null && wClient.FirstnameSearch == null && wClient.CitySearch == null)
+                wClient.ClientsGPS = null;
+            else
+                wClient.ClientsGPS = selectedClients.Except(wClient.Clients).ToList();
             wClient.Cities = await _cityService.GetSelectListAsync();
             int totalClients = selectedClients.Count();
             int totalPages = (int)Math.Ceiling((double)totalClients / wClient.PageSize);
             wClient.TotalClients = totalClients;
             wClient.TotalPages = totalPages;
             return wClient;
-        }
-
-        private static List<FClient> GetClientsByPage(List<FClient> selectedClients, int pageSize, int page)
-        {
-            return selectedClients.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-        }
-
-        private static List<FClient>? GetClientsGPS(List<FClient> selectedClients, List<FClient> excludedClients, string? nameSearch, string? firstnameSearch, int? citySearch)
-        {
-            if (nameSearch == null && firstnameSearch == null && citySearch == null)
-                return null;
-            else
-                return selectedClients.Except(excludedClients).ToList();
         }
     }
 }

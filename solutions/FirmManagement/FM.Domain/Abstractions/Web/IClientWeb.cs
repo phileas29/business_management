@@ -9,5 +9,6 @@ namespace FM.Domain.Abstractions.Web
         public Task<IActionResult> CreateAsync(ClientCreateWebModel wClient);
         public IActionResult GetMatchingCities(string input);
         public Task<IActionResult> IndexAsync(ClientIndexWebModel wClient);
+        public Task<IActionResult> GenerateTaxCertificatesAsync();
     }
 }
