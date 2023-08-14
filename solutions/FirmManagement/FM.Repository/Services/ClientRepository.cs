@@ -31,6 +31,15 @@ namespace FM.Repository.Services
             return res;
         }
 
+        public async Task<List<FClient>> SelectAllInvoicedClientsByYear(int year)
+        {
+            return await _context.FInterventions
+                .Include(i => i.IFkClient.CFkCity)
+                .Where(i => i.IFkInvoice != null && i.IFkInvoice.InInvoiceDate.Year == year)
+                .Select(i => i.IFkClient)
+                .ToListAsync();
+        }
+
         public async Task<List<FClient>> SelectClientsByNameOrFirstnameOrCityAsync(string? nameSearch, string? firstnameSearch, int? citySearch, int pageSize, int page)
         {
             var clients = _context.FClients

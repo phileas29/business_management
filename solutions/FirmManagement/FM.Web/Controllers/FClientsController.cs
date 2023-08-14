@@ -2,7 +2,6 @@ using FM.Domain.Abstractions.Service;
 using FM.Domain.Abstractions.Web;
 using FM.Domain.Models.Repository;
 using FM.Domain.Models.Web;
-using FM.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LittleFirmManagement.Controllers
@@ -13,12 +12,14 @@ namespace LittleFirmManagement.Controllers
         private readonly IClientService _clientService;
         private readonly ICityService _cityService;
         private readonly IInvoiceService _invoiceService;
-        public FClientsController(ICategoryService categoryService, IClientService clientService, ICityService cityService, IInvoiceService invoiceService)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public FClientsController(ICategoryService categoryService, IClientService clientService, ICityService cityService, IInvoiceService invoiceService, IWebHostEnvironment webHostEnvironment)
         {
             _categoryService = categoryService;
             _clientService = clientService;
             _cityService = cityService;
             _invoiceService = invoiceService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: FClients/Create
@@ -51,8 +52,25 @@ namespace LittleFirmManagement.Controllers
 
         public async Task<IActionResult> GenerateTaxCertificatesAsync()
         {
-            ClientGenerateTaxCertificatesWebModel wClient = new();
-            wClient.CivilYear = await _invoiceService.GetYearsSelectListAsync();
+            ClientGenerateTaxCertificatesWebModel wClient = new()
+            {
+                CivilYear = await _invoiceService.GetYearsSelectListAsync()
+            };
+            return View(wClient);
+        }
+
+        // POST: FClients/GenerateTaxCertificates
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GenerateTaxCertificatesAsync([Bind("CivilYear,CivilYearId")] ClientGenerateTaxCertificatesWebModel wClient)
+        {
+            if (ModelState.IsValid)
+            {
+                await _clientService.GenerateTaxCertificates(wClient, _webHostEnvironment.WebRootPath);
+                return RedirectToAction("Index", "Home");
+            }
             return View(wClient);
         }
 

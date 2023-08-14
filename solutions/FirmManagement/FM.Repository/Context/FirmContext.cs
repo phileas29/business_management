@@ -1,6 +1,5 @@
 ﻿using FM.Domain.Models.Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace FM.Repository.Context;
 

@@ -7,12 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
-	<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
+    <Compile Remove="Abstractions\NewFolder\**" />
+    <EmbeddedResource Remove="Abstractions\NewFolder\**" />
+    <None Remove="Abstractions\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Abstractions\NewFolder\" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+	<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
   </ItemGroup>
 
 </Project>

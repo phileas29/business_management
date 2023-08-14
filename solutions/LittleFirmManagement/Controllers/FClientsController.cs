@@ -4,9 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using LittleFirmManagement.Models;
 using DinkToPdf;
 using DinkToPdf.Contracts;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Data.SqlTypes;
 
 namespace LittleFirmManagement.Controllers
 {
@@ -312,7 +309,7 @@ namespace LittleFirmManagement.Controllers
                 .Select(i => 
                 new FClientGenerateTaxCertificatesBusinessModel
                 {
-                    Date = i.IFkInvoice.InInvoiceDate,
+                    Date = i.IFkInvoice!.InInvoiceDate,
                     Duration = Math.Round(i.IFkCategory.CaName == "assistance informatique" ? i.IFkInvoice.InAmount / 60m : i.IFkInvoice.InAmount / 40m,2),
                     HourlyRate = i.IFkCategory.CaName == "assistance informatique" ? 60 : 40,
                     Amount = i.IFkInvoice.InAmount
