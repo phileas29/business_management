@@ -5,5 +5,6 @@ namespace FM.Domain.Abstractions.Repository
     public interface IInterventionRepository
     {
         public Task<List<FIntervention>> SelectAllInvoicedInterventionsByYearAndByClient(int year, FClient client);
+        public Task<int> InsertInterventionAsync(FIntervention fIntervention);
     }
 }

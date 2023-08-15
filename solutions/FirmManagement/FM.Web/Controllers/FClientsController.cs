@@ -25,9 +25,9 @@ namespace LittleFirmManagement.Controllers
         // GET: FClients/Create
         public async Task<IActionResult> CreateAsync()
         {
-            ClientCreateWebModel model = new();
-            model.Medias = await _categoryService.GetSelectListAsync("média");
-            return View(model);
+            ClientCreateWebModel wClient = new();
+            wClient.Medias = await _categoryService.GetSelectListAsync("média");
+            return View(wClient);
         }
 
         // POST: FClients/Create
@@ -35,19 +35,19 @@ namespace LittleFirmManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateAsync([Bind("CFkMediaId,CName,CFirstname,CAddress,CEmail,CPhoneFixed,CPhoneCell,CIsPro,CLocationLong,CLocationLat,CDistance,CTravelTime,CUrssafUuid,CIsMan,IsMan,CBirthName,CBirthCountryCode,CBirthDate,CBic,CIban,CAccountHolder,Town,BirthCityInput,EnableUrssafPayment,Choice")] ClientCreateWebModel model)
+        public async Task<IActionResult> CreateAsync([Bind("CFkMediaId,CName,CFirstname,CAddress,CEmail,CPhoneFixed,CPhoneCell,CIsPro,CLocationLong,CLocationLat,CDistance,CTravelTime,CUrssafUuid,CIsMan,IsMan,CBirthName,CBirthCountryCode,CBirthDate,CBic,CIban,CAccountHolder,Town,BirthCityInput,EnableUrssafPayment,Choice")] ClientCreateWebModel wClient)
         {
             if (ModelState.IsValid)
             {
-                FClient fClient = await _clientService.GetRepositoryClientFromWebModelAsync(model);
+                FClient fClient = await _clientService.GetRepositoryClientFromWebModelAsync(wClient);
                 await _clientService.PutClientAsync(fClient);
-                if (model.Choice == 1)
+                if (wClient.Choice == 1)
                     return RedirectToAction(nameof(Index));
                 else
                     return RedirectToAction("Create", "FInterventions", new { id = fClient.CId });
             }
-            model.Medias = await _categoryService.GetSelectListAsync("média");
-            return View(model);
+            wClient.Medias = await _categoryService.GetSelectListAsync("média");
+            return View(wClient);
         }
 
         public async Task<IActionResult> GenerateTaxCertificatesAsync()
@@ -85,5 +85,4 @@ namespace LittleFirmManagement.Controllers
             return View(await _clientService.GetClientIndexWebModelAsync(wClient));
         }
     }
-
 }

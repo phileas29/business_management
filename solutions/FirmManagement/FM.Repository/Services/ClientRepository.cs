@@ -40,6 +40,14 @@ namespace FM.Repository.Services
                 .ToListAsync();
         }
 
+        public async Task<FClient> SelectClientByIdAndIncludeCityAsync(int id)
+        {
+            FClient client = await _context.FClients
+                .Include(c => c.CFkCity)
+                .FirstAsync(c => c.CId == id);
+            return client;
+        }
+
         public async Task<List<FClient>> SelectClientsByNameOrFirstnameOrCityAsync(string? nameSearch, string? firstnameSearch, int? citySearch, int pageSize, int page)
         {
             var clients = _context.FClients

@@ -135,7 +135,7 @@ namespace FM.Service
                 new ClientGenerateTaxCertificatesServiceModel
                 {
                     Date = i.IFkInvoice!.InInvoiceDate,
-                    Duration = Math.Round(i.IFkInvoice.InAmount / ( i.IFkCategory.CaName == "assistance informatique" ? 60m : 40m ) / i.IFkInvoice.InAmount, 2),
+                    Duration = Math.Round(i.IFkInvoice.InAmount / ( i.IFkCategory.CaName == "assistance informatique" ? 60m : 40m ), 2),
                     HourlyRate = i.IFkCategory.CaName == "assistance informatique" ? 60 : 40,
                     Amount = i.IFkInvoice.InAmount
                 })
@@ -161,109 +161,7 @@ namespace FM.Service
 
         private static string GetHtmlContent(FClient client, List<ClientGenerateTaxCertificatesServiceModel> invoices, int civilYearId, string webRootPath)
         {
-            string html = @"<!DOCTYPE html>
-                <html lang=""en"">
-
-                <head>
-                    <meta charset=""UTF-8"">
-                    <meta http-equiv=""X-UA-Compatible"" content=""IE=edge"">
-                    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-                    <title>Attestation fiscale _YYYY_ PHILEAS INFORMATIQUE de M-ME _NAME_ _FIRSTNAME_</title>
-                    <link href=""https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"" rel=""stylesheet""
-                        integrity=""sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"" crossorigin=""anonymous"">
-                </head>
-
-                <body>
-                    <div class=""container"">
-                        <div class=""row"" style=""height: 150px;"">
-                            <div class=""col-6 h-100"">
-                                <img class=""img-fluid h-100"" src=""_IMG_PATH_/logo_.jpg"" alt="""">
-                            </div>
-                            <div class=""col-6"">
-                                <h1>Attestation fiscale portant sur les dépenses de _YYYY_</h1>
-                            </div>
-                        </div>
-                        <div class=""row"">
-                            <div class=""col-6 d-flex flex-column"">
-                                <p class=""mb-0"">Émetteur :</p>
-                                <div class=""bg-secondary p-3 text-white h-100"">
-                                    <p class=""m-0"">Philéas informatique</p>
-                                    <p class=""m-0"">29 chemin de lesquidic-nevez</p>
-                                    <p class=""mb-2"">29950 GOUESNAC'H</p>
-                                    <p class=""m-0"">Tél.: 07 66 62 44 85</p>
-                                    <p class=""m-0"">Email: contact@phileasinformatique.fr</p>
-                                    <p class=""m-0"">Web: https://phileasinformatique.fr/</p>
-                                    <p class=""m-0"">Siret: 881 585 939 00013</p>
-                                </div>
-                            </div>
-                            <div class=""col-6 d-flex flex-column"">
-                                <p class=""mb-0"">Adressé à :</p>
-                                <div class=""border border-secondary p-3 h-100"">
-                                    <p class=""m-0"">_NAME_ _FIRSTNAME_</p>
-                                    <p class=""m-0"">_ADDRESS_</p>
-                                    <p class=""mb-2"">_CITY_</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class=""row"">
-                            <div class=""col"">
-                                <p>Je soussigné, M. PERON Philéas, dirigeant de la micro-entreprise « Philéas informatique », certifie
-                                    que M./Mme _NAME_ _FIRSTNAME_ a bénéficié d'une intervention à domicile.</p>
-                                <p>Montant total des interventions effectivement acquittées ouvrant droit à crédit d'impôt :
-                                    _TOTAL_AMOUNT_</p>
-                            </div>
-                        </div>
-                        <div class=""row"">
-                            <div class=""col"">
-                                <p class=""mb-0"">Montants exprimés en Euros</p>
-                                <table class=""table table-bordered border border-5"">
-                                    <thead>
-                                        <tr>
-                                            <th scope=""col"">Date</th>
-                                            <th scope=""col"">Intervenant</th>
-                                            <th scope=""col"">Durée</th>
-                                            <th scope=""col"">Taux horaire</th>
-                                            <th scope=""col"">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        _INVOICE_
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th colspan=""4"" scope=""row"">Montant éligible _YYYY_</th>
-                                            <td>_TOTAL_AMOUNT_</td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        </div>
-                        <div class=""row"">
-                            <div class=""col"">
-                                <p>La déclaration engage la responsabilité du seul contribuable.</p>
-                                <p>Fait pour valoir ce que de droit,</p>
-                            </div>
-                        </div>
-                        <div class=""row"">
-                            <div class=""col text-end"">
-                                <p>Le 01/01/_YYYY+1_</p>
-                                <img src=""_IMG_PATH_/signature.png"" alt="""">
-                            </div>
-                        </div>
-
-
-                        <div class=""row"">
-                            <div class=""col"">
-                                <p style=""font-size: 0.8rem;text-align: center;"">""Philéas informatique"" est une micro-entreprise agréée pour les services à la personne par arrêté
-                                    préfectoral n° SAP881585939 en date du 03/11/2020</p>
-                            </div>
-                        </div>
-                    </div>
-                </body>
-
-                </html>
-            "
-            ;
+            string html = File.ReadAllText("tax_certificate_model.html");
 
             html = html.Replace("_IMG_PATH_", webRootPath + "\\img");
 

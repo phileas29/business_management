@@ -9,5 +9,6 @@ namespace FM.Domain.Abstractions.Repository
         public Task<int> CountClientsAsync();
         public Task<List<FClient>> SelectClientsByNameOrFirstnameOrCityAsync(string? nameSearch, string? firstnameSearch, int? citySearch, int pageSize, int page);
         public Task<List<FClient>> SelectAllInvoicedClientsByYear(int year);
+        public Task<FClient> SelectClientByIdAndIncludeCityAsync(int id);
     }
 }

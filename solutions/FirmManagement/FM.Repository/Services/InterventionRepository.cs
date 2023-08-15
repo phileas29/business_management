@@ -14,6 +14,13 @@ namespace FM.Repository.Services
             _context = context;
         }
 
+        public async Task<int> InsertInterventionAsync(FIntervention fIntervention)
+        {
+            _context.Add(fIntervention);
+            int res = await _context.SaveChangesAsync();
+            return res;
+        }
+
         public async Task<List<FIntervention>> SelectAllInvoicedInterventionsByYearAndByClient(int year, FClient client)
         {
             return await _context.FInterventions
