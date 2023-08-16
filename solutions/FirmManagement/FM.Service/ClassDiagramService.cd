@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FM.Service.CategoryService">
+    <Position X="18.25" Y="0.5" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAgAAAAAAAA=</HashCode>
+      <FileName>CategoryService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FM.Service.CityService">
+    <Position X="13.75" Y="0.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABCAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>CityService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FM.Service.ClientService">
+    <Position X="0.5" Y="0.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAIAAkAAAAAABAACgAAAQAAAAAAAAEEAUAAAAA=</HashCode>
+      <FileName>ClientService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FM.Service.InterventionService">
+    <Position X="5" Y="0.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAIAIAAQAAAAAAAAAAAAAAIAAAAAAAEAIAAAAA=</HashCode>
+      <FileName>InterventionService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FM.Service.InvoiceService">
+    <Position X="9.5" Y="0.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIQAAAQIAAAAAAAAAAAAAAAAASAACEAAAAAAA=</HashCode>
+      <FileName>InvoiceService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

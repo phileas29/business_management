@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FM.Domain.Models.Repository.CityJsonRepositoryModel">
+    <Position X="11" Y="9.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAgAAAAACAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Repository\CityJsonRepositoryModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FM.Domain.Models.Repository.FCategory">
+    <Position X="14.25" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gABQAAAAAAAAAAgACAAAAAAAAAAAQIAAABAEAAAAEAA=</HashCode>
+      <FileName>Models\Repository\FCategory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FM.Domain.Models.Repository.FCategoryType">
+    <Position X="18.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAIAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Models\Repository\FCategoryType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FM.Domain.Models.Repository.FCity">
+    <Position X="11" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAEEAAgAAAAAAAABAAAAAAAAAAAAAABAAAAAQ=</HashCode>
+      <FileName>Models\Repository\FCity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FM.Domain.Models.Repository.FClient">
+    <Position X="0.5" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ABAAAQAQIAYAgIAAIIUAAABEAEAAAIAAABAAAAAQElA=</HashCode>
+      <FileName>Models\Repository\FClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FM.Domain.Models.Repository.FIntervention">
+    <Position X="4.25" Y="6.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAIAIIAAAAAAQCQAQAQAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Models\Repository\FIntervention.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FM.Domain.Models.Repository.FInvoice">
+    <Position X="8" Y="6.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAQAAAAAAAAAAAgAICCEAAAAAYAAEQ=</HashCode>
+      <FileName>Models\Repository\FInvoice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FM.Domain.Models.Repository.FPurchase">
+    <Position X="16.75" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>CICACAQAAAAAAAAAAAAAACAAAIAAAAAACgAAIACgAAA=</HashCode>
+      <FileName>Models\Repository\FPurchase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FM.Domain.Models.ClientGenerateTaxCertificatesServiceModel">
+    <Position X="0.5" Y="13.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACCAAAAAAAAACAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Service\ClientGenerateTaxCertificatesServiceModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FM.Domain.Models.Service.InvoiceCreateServiceModel">
+    <Position X="8" Y="13.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAIAAAAAAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Service\InvoiceCreateServiceModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FM.Domain.Models.Web.ClientCreateWebModel">
+    <Position X="0.5" Y="15.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ABAACQAQIgYAgIAgAIUAAAAEAEAACIAAABAAAAAREhQ=</HashCode>
+      <FileName>Models\Web\ClientCreateWebModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FM.Domain.Models.Web.ClientGenerateTaxCertificatesWebModel">
+    <Position X="0.5" Y="24.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Web\ClientGenerateTaxCertificatesWebModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FM.Domain.Models.Web.ClientIndexWebModel">
+    <Position X="0.5" Y="21.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EAACAgAAAAAQAAAgACAAAAEAgAAAAAAAAAAAEgAAAAA=</HashCode>
+      <FileName>Models\Web\ClientIndexWebModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FM.Domain.Models.Web.ErrorViewModel">
+    <Position X="20.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Web\ErrorViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FM.Domain.Models.Web.InterventionCreateWebModel">
+    <Position X="4.25" Y="15.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAgAAgAAAAAAAAAAACAABAAIAAIAAAAQ=</HashCode>
+      <FileName>Models\Web\InterventionCreateWebModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FM.Domain.Models.Web.InvoiceCreateWebModel">
+    <Position X="8" Y="15.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>RAAAIABAAABAAAAAgAAAAACBAAQACBCAIAAAAEAAAAQ=</HashCode>
+      <FileName>Models\Web\InvoiceCreateWebModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="FM.Domain.Abstractions.Repository.ICategoryRepository">
+    <Position X="14.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Abstractions\Repository\ICategoryRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FM.Domain.Abstractions.Repository.ICityRepository">
+    <Position X="11" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAABACQAAAAAAABAAAAgAAAAAAA=</HashCode>
+      <FileName>Abstractions\Repository\ICityRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FM.Domain.Abstractions.Repository.IClientRepository">
+    <Position X="0.5" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAACAgAAgAAAAQAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Abstractions\Repository\IClientRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FM.Domain.Abstractions.Repository.IInterventionRepository">
+    <Position X="4.25" Y="0.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAEAAAAAAAAAAQAAAQQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Abstractions\Repository\IInterventionRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FM.Domain.Abstractions.Repository.IInvoiceRepository">
+    <Position X="8" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAACAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Abstractions\Repository\IInvoiceRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FM.Domain.Abstractions.Service.ICategoryService">
+    <Position X="14.25" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Abstractions\Service\ICategoryService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FM.Domain.Abstractions.Service.ICityService">
+    <Position X="11" Y="2.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Abstractions\Service\ICityService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FM.Domain.Abstractions.Service.IClientService">
+    <Position X="0.5" Y="2.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAkAAAAAABAAAAAAAQAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Abstractions\Service\IClientService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FM.Domain.Abstractions.Service.IInterventionService">
+    <Position X="4.25" Y="2.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAIAAAAAAAAAAAAAAAAAIAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Abstractions\Service\IInterventionService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FM.Domain.Abstractions.Service.IInvoiceService">
+    <Position X="8" Y="2.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAAAAAAAASAACAAAAAAAA=</HashCode>
+      <FileName>Abstractions\Service\IInvoiceService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FM.Domain.Abstractions.Web.IClientWeb">
+    <Position X="0.5" Y="4.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAEAAAAAAAAAAAAAAAAACIAAAAA=</HashCode>
+      <FileName>Abstractions\Web\IClientWeb.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FM.Domain.Abstractions.Web.IInterventionWeb">
+    <Position X="4.25" Y="4.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Abstractions\Web\IInterventionWeb.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FM.Domain.Abstractions.Web.IInvoiceWeb">
+    <Position X="8" Y="4.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Abstractions\Web\IInvoiceWeb.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
