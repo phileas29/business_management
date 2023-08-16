@@ -1,4 +1,5 @@
 ﻿using FM.Domain.Abstractions.Repository;
+using FM.Domain.Models.Repository;
 using FM.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,21 @@ namespace FM.Repository.Services
         {
             _context = context;
         }
+
+        public async Task<int> InsertInvoiceAsync(FInvoice fInvoice)
+        {
+            _context.Add(fInvoice);
+            int res = await _context.SaveChangesAsync();
+            return res;
+        }
+
+        public int MaxInvoiceId()
+        {
+            return _context.FInvoices
+                .Max(i => i.InInvoiceId)
+                .GetValueOrDefault(-1);
+        }
+
         public async Task<List<int>> SelectYearsFromInvoicesAsync()
         {
             return await _context.FInvoices

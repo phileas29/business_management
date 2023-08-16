@@ -208,8 +208,7 @@ namespace LittleFirmManagement.Controllers
                 await _context.SaveChangesAsync();
 
                 List<FIntervention> fInterventions = _context.FInterventions
-                    .Where(i => model.SelectedInterventions
-                    .Contains(i.IId))
+                    .Where(i => model.SelectedInterventions.Contains(i.IId))
                     .ToList();
                 foreach (FIntervention inter in fInterventions)
                     inter.IFkInvoiceId = model.Invoice.InId;

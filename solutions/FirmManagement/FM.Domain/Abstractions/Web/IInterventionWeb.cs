@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FM.Domain.Abstractions.Web
 {
-    public interface IIntervention
+    public interface IInterventionWeb
     {
         public Task<IActionResult> CreateAsync(int id);
         public Task<IActionResult> CreateAsync(InterventionCreateWebModel wIntervention);

@@ -1,0 +1,96 @@
+@model FM.Domain.Models.Web.InvoiceCreateWebModel
+
+<h1>Record a new invoice</h1>
+
+<div class="container">
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Invoice</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="PaymentId" class="control-label"></label>
+                            <select asp-for="PaymentId" class="form-control" asp-items="Model.Payments"></select>
+                            <span asp-validation-for="PaymentId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="InvoiceId" class="control-label"></label>
+                            <input asp-for="InvoiceId" type="number" class="form-control" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="InvoiceDate" class="control-label"></label>
+                            <input asp-for="InvoiceDate" type="date" class="form-control" />
+                            <span asp-validation-for="InvoiceDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ReceiptDate" class="control-label"></label>
+                            <input asp-for="ReceiptDate" type="date" class="form-control" />
+                            <span asp-validation-for="ReceiptDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CreditDate" class="control-label"></label>
+                            <input asp-for="CreditDate" type="date" class="form-control" />
+                            <span asp-validation-for="CreditDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Amount" class="control-label"></label>
+                            <input asp-for="Amount" type="number" class="form-control" />
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="IsEligibleDeferredTaxCredit" class="form-check-label"></label>
+                            <input asp-for="IsEligibleDeferredTaxCredit" type="checkbox" role="switch" class="form-check-input" />
+                            <span asp-validation-for="IsEligibleDeferredTaxCredit" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UrssafPaymentRequestUuid" class="control-label"></label>
+                            <input asp-for="UrssafPaymentRequestUuid" type="text" class="form-control" />
+                            <span asp-validation-for="UrssafPaymentRequestUuid" class="text-danger"></span>
+                        </div>
+                        <div class="card mt-3">
+                            <div class="card-header">Associated interventions</div>
+                            <div class="card-body">
+                                <div class="card mt-3">
+                                    <div class="card-header">Client</div>
+                                    <div class="card-body">
+                                        <input type="hidden" asp-for="ClientId" />
+                                        <div class="mb-3">
+                                            <label class="form-label">Name : @Model.Client.CName</label>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Firstname : @Model.Client.CFirstname</label>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Address : @Model.Client.CAddress</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="SelectedInterventions" class="control-label">Select Interventions</label>
+                                    <select class="form-select" multiple asp-for="SelectedInterventions" asp-items="Model.Interventions"></select>
+                                    <span asp-validation-for="SelectedInterventions" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 d-flex flex-column align-items-end">
+                <button name="Choice" value="0" value="true" asp-controller="FInvoices" asp-action="Create" class="btn btn-primary mb-4">Valid and save</button>
+                <button name="Choice" value="1" value="false" asp-controller="FInvoices" asp-action="Create" class="btn btn-primary mb-4">Save</button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

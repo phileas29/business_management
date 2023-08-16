@@ -178,9 +178,9 @@ namespace FM.Service
                     <tr>
                         <td>{invoice.Date.ToShortDateString()}</td>
                         <td>Philéas PERON</td>
-                        <td>{invoice.Duration} h</td>
-                        <td>{invoice.HourlyRate} €/h</td>
-                        <td>{invoice.Amount} €</td>
+                        <td class=""text-end"">{invoice.Duration} h</td>
+                        <td class=""text-end"">{invoice.HourlyRate} €/h</td>
+                        <td class=""text-end"">{invoice.Amount} €</td>
                     </tr>
                 ";
             }

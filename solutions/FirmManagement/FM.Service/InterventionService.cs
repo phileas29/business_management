@@ -2,6 +2,7 @@
 using FM.Domain.Abstractions.Service;
 using FM.Domain.Models.Repository;
 using FM.Domain.Models.Web;
+using Microsoft.EntityFrameworkCore;
 
 namespace FM.Service
 {
@@ -36,7 +37,7 @@ namespace FM.Service
             return await _interventionRepository.InsertInterventionAsync(fIntervention);
         }
 
-        public async Task<InterventionCreateWebModel> SetInterventionWebModelAsync(InterventionCreateWebModel? wIntervention, int id)
+        public async Task<InterventionCreateWebModel> SetInterventionWebModelAsync(InterventionCreateWebModel? wIntervention, int id = 0)
         {
             InterventionCreateWebModel wInterventionResult;
             if (wIntervention == null)
@@ -55,12 +56,20 @@ namespace FM.Service
                     Date = wIntervention.Date,
                     Description = wIntervention.Description,
                     CategoryId = wIntervention.CategoryId,
-                    NbRoundTrip = wIntervention.NbRoundTrip
+                    NbRoundTrip = wIntervention.NbRoundTrip,
+                    ClientId = wIntervention.ClientId
                 };
             }
-            wInterventionResult.Client = await _clientRepository.SelectClientByIdAndIncludeCityAsync(id);
+            wInterventionResult.Client = await _clientRepository.SelectClientByIdAndIncludeCityAsync(wInterventionResult.ClientId);
             wInterventionResult.Activities = await _categoryService.GetSelectListAsync("activité");
             return wInterventionResult;
+        }
+
+        public async Task UpdateInvoicesIdsAsync(List<int>? ids, int id)
+        {
+            List<FIntervention> interventions = await _interventionRepository.SelectInterventionsByIdsAsync(ids);
+            await _interventionRepository.UpdateInterventionsInvoiceIdAsync(interventions, id);
+            return;
         }
     }
 }

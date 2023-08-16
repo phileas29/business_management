@@ -3,11 +3,10 @@ using FM.Domain.Abstractions.Web;
 using FM.Domain.Models.Repository;
 using FM.Domain.Models.Web;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FM.Web.Controllers
 {
-    public class FInterventionsController : Controller, IIntervention
+    public class FInterventionsController : Controller, IInterventionWeb
     {
         private readonly IInterventionService _interventionService;
         public FInterventionsController(IInterventionService interventionService)
@@ -38,7 +37,7 @@ namespace FM.Web.Controllers
                 else
                     return RedirectToAction("Create", "FInvoices", new { id = wIntervention.ClientId, iid = iid });
             }
-            wIntervention = await _interventionService.SetInterventionWebModelAsync(wIntervention, wIntervention.ClientId);
+            wIntervention = await _interventionService.SetInterventionWebModelAsync(wIntervention);
             return View(wIntervention);
         }
     }
