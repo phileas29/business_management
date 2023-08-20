@@ -5,10 +5,10 @@ namespace FM.Domain.Abstractions.Service
 {
     public interface IClientService
     {
-        Task<FClient> GetRepositoryClientFromWebModelAsync(ClientCreateWebModel wClient);
-        Task<int> PutClientAsync(FClient fClient);
-        Task<List<FClient>> GetAllClientsAsync();
-        Task<bool> GenerateTaxCertificates(ClientGenerateTaxCertificatesWebModel wClient, string webRootPath);
-        Task<ClientIndexWebModel> GetClientIndexWebModelAsync(ClientIndexWebModel wClient);
+        public Task<FClient> GetRepositoryClientFromWebModelAsync(ClientCreateWebModel wClient);
+        public Task<int> PutClientAsync(FClient fClient);
+        public Task<List<FClient>> GetAllClientsAsync();
+        public Task<bool> GenerateTaxCertificates(ClientGenerateTaxCertificatesWebModel wClient, string webRootPath);
+        public Task<ClientIndexWebModel> GetClientIndexWebModelAsync(ClientIndexWebModel wClient);
     }
 }

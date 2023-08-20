@@ -6,6 +6,6 @@ namespace FM.Domain.Abstractions.Service
     public interface ICityService
     {
         public List<CityJsonRepositoryModel> GetMatchingCitiesFromFranceJsonDb(string input);
-        Task<SelectList> GetSelectListAsync();
+        public Task<SelectList> GetSelectListAsync();
     }
 }
