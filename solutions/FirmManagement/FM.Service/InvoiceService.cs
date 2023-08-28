@@ -68,7 +68,8 @@ namespace FM.Service
                     ReceiptDate = DateTime.UtcNow,
                     IsEligibleDeferredTaxCredit = true,
                     InterventionId = iid,
-                    ClientId = id
+                    ClientId = id,
+                    Amount = 60
                 };
             }
             else

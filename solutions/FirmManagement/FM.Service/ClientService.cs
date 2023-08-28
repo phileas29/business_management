@@ -41,7 +41,7 @@ namespace FM.Service
                         FCity? fCity = await _cityRepository.SelectCityByCodeAsync(int.Parse(jCity.Code!));
                         if (fCity == null)
                         {
-                            await _cityRepository.InsertCityAsync(
+                            cFkCities[i] = await _cityRepository.InsertCityAsync(
                                 new FCity
                                 {
                                     CiPostalCode = jCity.CodesPostaux![0],

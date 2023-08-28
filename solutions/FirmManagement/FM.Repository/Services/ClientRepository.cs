@@ -37,6 +37,7 @@ namespace FM.Repository.Services
                 .Include(i => i.IFkClient.CFkCity)
                 .Where(i => i.IFkInvoice != null && i.IFkInvoice.InInvoiceDate.Year == year)
                 .Select(i => i.IFkClient)
+                .Distinct()
                 .ToListAsync();
         }
 

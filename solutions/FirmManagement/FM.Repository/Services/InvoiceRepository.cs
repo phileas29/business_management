@@ -17,8 +17,8 @@ namespace FM.Repository.Services
         public async Task<int> InsertInvoiceAsync(FInvoice fInvoice)
         {
             _context.Add(fInvoice);
-            int res = await _context.SaveChangesAsync();
-            return res;
+            await _context.SaveChangesAsync();
+            return fInvoice.InId;
         }
 
         public int MaxInvoiceId()

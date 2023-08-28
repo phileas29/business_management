@@ -30,8 +30,8 @@ namespace FM.Repository.Services
         public async Task<int> InsertCityAsync(FCity fCity)
         {
             _context.Add(fCity);
-            int res = await _context.SaveChangesAsync();
-            return res;
+            await _context.SaveChangesAsync();
+            return fCity.CiId;
         }
 
         public async Task<FCity?> SelectCityByCodeAsync(int code)
